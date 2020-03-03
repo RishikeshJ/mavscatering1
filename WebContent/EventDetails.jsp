@@ -8,7 +8,7 @@
 </head>
 <body>
 <nav>  
-    <li><a href="<c:url value='/eventController?action=ViewAssignedEvents'/>" >Back</a></li>
+    <li><a href="<c:url value='/HomePage.jsp'/>" >Back</a></li>
 </nav>
 <a href="<c:url value='/userController?action=logout' />"><span>Logout</span></a>
 <table>

@@ -11,7 +11,22 @@
 <h1>Manager Home page</h1>
   <ul>
   	<li><a href="<c:url value='/eventController?action=eventsummary' />">View Caterer Event Summary</a></li>
-  	<li><a href="<c:url value='/eventController?action=eventsummary' />">Update Profile</a></li>
+  	<li><a href="<c:url value='/userController?action=viewProfile' />">View/Modify Profile</a></li>
   </ul>
+<form action="<c:url value='/eventController?action=getDateforevent' />" method="post" >
+<table>
+<tr>
+<td colspan=5 width=350px>Select a date range to view your events:</td>
+</tr>
+<tr>
+	<td>Date: </td>
+	<td><input type="date" id="iddate" name="iddate" value="<c:out value='${date}'/>" ></td>
+	<td>Time: </td>
+	<td><input type="time" id="startTime" name="idtime" value="<c:out value='${time}'/>" ></td>
+  	<td><input type="submit" value="Submit"></td>
+</tr>
+</table>
+</form>
+  
 </body>
 </html>

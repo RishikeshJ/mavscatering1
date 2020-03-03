@@ -239,7 +239,7 @@ static SQLConnection DBMgr = SQLConnection.getInstance();
 		String sqlUpdate = "update mavs_catering.user set role='"
 				+user.getRole()+"', firstname='"
 				+user.getFirstname()+"', lastname='"
-				+user.getLastname()+"', phone='"
+				+user.getLastname()+"',password='"+user.getPassword()+"', phone='"
 				+user.getPhone()+"', email='"
 				+user.getEmail()+"', streetname='"
 				+user.getStreetname()+"', streetno='"

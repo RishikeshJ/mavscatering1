@@ -165,7 +165,7 @@ public class User implements Serializable{
 		else if(action.equals("modifyUserProfile")) {
 			errorMsgs.setFirstNameError(validateFirstname(user.getFirstname()));
 			errorMsgs.setLastNameError(validateLastname(user.getLastname()));
-			errorMsgs.setUsernameError(validateusername(user.getUsername()));
+			//errorMsgs.setUsernameError(validateusername(user.getUsername()));
 			errorMsgs.setPhoneError(validatePhone(user.getPhone()));
 			errorMsgs.setStreetNumberError(validateStreetnumber(user.getStreetnumber()));
 			errorMsgs.setStreetNameError(validateStreetname(user.getStreetname()));
@@ -188,8 +188,8 @@ public class User implements Serializable{
 			errorMsgs.setEmailError(validateEmail(user.getEmail()));
 		}
 		else if(action.equals("login")) {
-			errorMsgs.setUsernameError(validateusername(user.getUsername()));
-			errorMsgs.setPasswordError(validatePassword(user.getPassword()));
+			errorMsgs.setUsernameError(verifyUsername(user.getUsername()));
+			errorMsgs.setPasswordError(verifyPassword(user.getPassword(), user.getUsername()));
 		}
 	}
 	
@@ -234,7 +234,7 @@ public class User implements Serializable{
 		else if(utaid.length() != 10)
 			error = "UTA Id must have a length of 10";
 		else if(ids.contains(utaid))
-			error = "There can only be one account per UTA ID.";
+			error = "UTA ID already in use.";
 		return error;
 	}
 
@@ -250,6 +250,10 @@ public class User implements Serializable{
 			error = "Username length must be >4 and <21";
 		else if(!(isStringOnlyNumber(username) || !isStringOnlyAlphabet(username)))
 			error = "Username cannot contain special characters.";
+		else
+			if (!UserDAO.uniqueUsername(username))
+				error="Username already in the database.";
+
 		return error;
 	}
 	
@@ -308,6 +312,8 @@ public class User implements Serializable{
 		if(!streetnumber.isEmpty()) {
 			if(!(streetnumber.length() < 7 && streetnumber.length() > 0))
 				error = "Street number length must be >0 and <7.";
+			else if(Integer.parseInt(streetnumber) <= 0)
+				error = "Streetnumber must be > 0";
 			else if(!isStringOnlyNumber(streetnumber))
 				error = "Street number must be numeric";
 		}
@@ -425,7 +431,7 @@ public class User implements Serializable{
 			result = "Username cannot be blank";
 		else
 			if (UserDAO.uniqueUsername(username))
-				result="This username is not registered yet";
+				result="Username already in the database.";
 		return result;				
 	}
 	

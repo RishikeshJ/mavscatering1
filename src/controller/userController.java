@@ -157,9 +157,29 @@ public class userController extends HttpServlet {
 			}
 			else {
 
-				if(user1.getUsername().equals(user.getUsername())) {
+				System.out.println(user.getRole());
+				System.out.println(user.getUsername());
+				System.out.println(user1.getUsername());
+
+
+
+				if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("Admin")) {
 					UserDAO.modifyUserProfile(user);
 					url="/adminHomePage.jsp";			
+				}
+				else if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("Caterer Manager")) {
+					UserDAO.modifyUserProfile(user);
+					url="/ManagerHome.jsp";			
+				}
+				else if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("User")) {
+					UserDAO.modifyUserProfile(user);
+					//userProfile = UserDAO.getUser(user1.getUsername());
+					url="/UserHome.jsp";			
+				}
+				
+				else if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("Caterer Staff")) {
+					UserDAO.modifyUserProfile(user);
+					url="/HomePage.jsp";			
 				}
 				else {
 					UserDAO.modifyUserProfile(user);
@@ -215,17 +235,18 @@ public class userController extends HttpServlet {
 					session.setAttribute("lname", lastname);
 					session.setAttribute("date", selectedDate);
 					session.setAttribute("time", selectedTime);
-					
+					session.setAttribute("Event", event);
 					url = "/EventBook.jsp";
 				}
 				else {
 					url = "/EventRequest.jsp";
 				}
-
-				getServletContext().getRequestDispatcher(url).forward(request, response);
 				
-				}
+				//getServletContext().getRequestDispatcher(url).forward(request, response);
+
 			}
+
+		}
 		else if(action.equalsIgnoreCase("deleteSpecificUser")) {
 			String username = request.getParameter("id");
 			String lastname = request.getParameter("id1");

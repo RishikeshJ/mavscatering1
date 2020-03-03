@@ -61,6 +61,51 @@ public class Event implements Serializable{
 		this.depositAmount = depositAmount;
 	}
 	
+	public void setEvent_v2(String lastName,String firstName, String date,String startTime,String duration,String hallName,
+			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID, String staff_fname,String staff_lname) 
+	{	
+		//System.out.println(username+" : "+role+": "+firstName);
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.date = date;
+		this.startTime = startTime;
+		this.duration = duration;
+		this.hallName = hallName;
+		this.estAttendees = estAttendees;
+		this.eventName = eventName;
+		this.foodType = foodType;
+		this.meal = meal;
+		this.mealFormality = mealFormality;
+		this.drinkType = drinkType;
+		this.entertainmentItems = entertainmentItems;
+		this.eventID = eventID;
+		this.staff_fname = staff_fname;
+		this.staff_lname = staff_lname;
+
+		
+	}
+	public void setEventForUpdate(String lastName,String firstName, String date,String startTime,String duration,String hallName,
+			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID) 
+	{	
+		//System.out.println(username+" : "+role+": "+firstName);
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.date = date;
+		this.startTime = startTime;
+		this.duration = duration;
+		this.hallName = hallName;
+		this.estAttendees = estAttendees;
+		this.eventName = eventName;
+		this.foodType = foodType;
+		this.meal = meal;
+		this.mealFormality = mealFormality;
+		this.drinkType = drinkType;
+		this.entertainmentItems = entertainmentItems;
+		//this.eventStatus = eventStatus;
+		this.eventID = eventID;	
+	}
+
+	
 	public void updateEvent(String lastName,String firstName, String date,String startTime,String duration,String hallName,String estAttendees,
 			String eventName, String foodType,String meal, String mealFormality, String drinkType, String entertainmentItems,String eventStatus,String eventID,
 			String ccnumber,String ccpin, String ccexpdate, String userid, String depsoitAmount, String depositAmount) 
@@ -248,6 +293,39 @@ public class Event implements Serializable{
 		errorMsgs.setEventNameError(validateEventName(event.geteventName().toString(), errorMsgs));
 		errorMsgs.setErrorMsg();
 	}
+	
+	public void validateeventdurations(String selectedDate,String UserProfile, EventErrorMsgs errorMsgs) {
+		errorMsgs.setsamedayReserveError(verifyFacilityReservation(selectedDate, UserProfile));
+		if(errorMsgs.getsamedayReserveError().equals("")) {
+			errorMsgs.setsameweekReserverError(verifyFacilityReservationWeekly(selectedDate,UserProfile));
+		}
+		
+	}
+	
+	private String verifyFacilityReservation(String date, String UserProfile) {
+		int result=EventDAO.CheckDailyReservations(date,UserProfile);
+		System.out.println(result);
+		String Error="";
+		if(result>=2) {
+			Error = "There can be only 2 reservatiosn per day by a user";
+		}else {
+			Error = "";
+		}
+		return Error;
+	}
+	
+	private String verifyFacilityReservationWeekly(String date, String UserProfile) {
+		int result=EventDAO.CheckWeeklyReservations(date,UserProfile);
+		System.out.println(result);
+		String Error="";
+		if(result>=5) {
+			Error = "There can be only 5 reservations per week by a User";
+		}else {
+			Error = "";
+		}
+		return Error;
+	}
+	
 	
 	public String validateEventName(String eventName, EventErrorMsgs errorMsgs) {
 		String Error = "";

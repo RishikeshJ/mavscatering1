@@ -145,6 +145,49 @@ public static int CheckReservations(String date, String time, String hallname) {
 	return Integer.parseInt(count);
 }
 
+public static int CheckDailyReservations(String date, String UserProfile) {
+	Statement stmt = null;
+	Connection conn = SQLConnection.getDBConnection();
+	String count = "0";
+	try
+	{
+		stmt = conn.createStatement();
+		conn.setAutoCommit(false);
+		String reservations = "select count(*) as count from eventdetails Where date = '"+date+"'"
+						+ " and eventStatus = 'Reserved' and userid = '"+UserProfile+"'";
+		ResultSet Result = stmt.executeQuery(reservations);	
+		while(Result.next()) {count = Result.getString("count");}
+		
+		conn.commit();
+	}
+	catch(SQLException e)
+	{
+		e.printStackTrace();
+	}
+	return Integer.parseInt(count);
+}
+
+public static int CheckWeeklyReservations(String date, String UserProfile) {
+	Statement stmt = null;
+	Connection conn = SQLConnection.getDBConnection();
+	String count = "0";
+	try
+	{
+		stmt = conn.createStatement();	
+		conn.setAutoCommit(false);
+		String reservations = "select count(*) as count from eventdetails WHERE YEARWEEK(date) = YEARWEEK('"+date+"') and userid = '"+UserProfile+"'";
+		ResultSet Result = stmt.executeQuery(reservations);	
+		while(Result.next()) {count = Result.getString("count");}
+		conn.commit();
+	}
+	catch(SQLException e)
+	{
+		e.printStackTrace();
+	}
+	return Integer.parseInt(count);
+}
+
+
 public static String getlastname(String userid) {
 	Statement stmt = null;
 	Connection conn = SQLConnection.getDBConnection();
@@ -240,6 +283,83 @@ public static Event getSpecificEvent(String eventID) {
 	return event;
 }
 
+public static Event get_Specific_Event_details(String eventID) {
+	Statement stmt = null;   
+	Connection conn = null;  
+	Event event = new Event();
+	try {   
+		conn = SQLConnection.getDBConnection();  
+		stmt = conn.createStatement();
+		String searchSpecificEvent = " SELECT * from eventdetails WHERE eventID = '"+eventID+"'";
+		ResultSet eventList = stmt.executeQuery(searchSpecificEvent);
+		while(eventList.next()) {
+			String lastName = eventList.getString("lastName");
+			String firstName  = eventList.getString("firstName");
+			String date = eventList.getString("date");
+			String startTime  = eventList.getString("startTime");
+			String duration  = eventList.getString("duration");
+			String hallName = eventList.getString("hallName");
+			String estAttendees  = eventList.getString("estAttendees");
+			String eventName  = eventList.getString("eventName");
+			String foodType  = eventList.getString("foodType");
+			String meal  = eventList.getString("meal");
+			String mealFormality = eventList.getString("mealFormality");
+			String drinkType  = eventList.getString("drinkType");
+			String entertainmentItems  = eventList.getString("entertainmentItems");
+			String eventStatus  = eventList.getString("eventStatus");
+			String EventID  = eventList.getString("eventID");
+			String staff_fname = eventList.getString("staff_firstname");
+			String staff_lname = eventList.getString("staff_lastname");
+
+			event.setEvent_v2(lastName, firstName, date, startTime, duration, hallName, eventName, meal, mealFormality, foodType, drinkType
+					,estAttendees,entertainmentItems, EventID,staff_fname,staff_lname);
+		}
+		
+		} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		try {
+			conn.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		};
+	return event;
+}
+
+public static void Modifyevent_v2 (Event event,String old_eventID) {
+	Statement stmt = null; 
+	Connection conn = SQLConnection.getDBConnection(); 
+	
+	System.out.print(event.getfirstName());
+	String assignstaff = "update eventdetails set staff_firstname = '"+event.getStaff_fname()+"',staff_lastname = '"+event.getStaff_lname()+
+			"',firstName = '"+event.getfirstName()+ 	"',lastName = '"+event.getLastName()+"',date = '"+event.getdate()+
+			"',duration = '"+event.getduration()+	"',startTime = '"+event.getstartTime()+			"',hallName = '"+event.gethallName()+
+			"',estAttendees = '"+event.getestAttendees()+			"',eventName = '"+event.geteventName()+			"',foodType = '"+event.getfoodType()+
+			"',meal = '"+event.getmeal()+			"',mealFormality = '"+event.getmealFormality()+			"',drinkType = '"+event.getdrinkType()+
+			"',entertainmentItems = '"+event.getentertainmentItems()+			"',eventID = '"+event.geteventID()+"' where eventID = '"+old_eventID+"';";					
+	System.out.println("Query: "+assignstaff);
+	
+	try {   
+	conn = SQLConnection.getDBConnection();  
+	conn.setAutoCommit(false);   
+	stmt = conn.createStatement();
+	stmt.executeUpdate(assignstaff);
+	conn.commit();					 
+} catch (SQLException sqle) { 
+	sqle.printStackTrace();
+} finally {
+	try {
+		conn.close();
+		stmt.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	};
+}
+}
+
+
 public static ArrayList<Event> getEventSummary() {
 	Statement stmt = null; 	
 	Connection conn = null;  
@@ -314,6 +434,12 @@ public static ArrayList<Event>  listEvents1(String edate, String etime) {
 	
 	return ReturnMatchingEventList(" SELECT eventname, date, starttime, duration, hallname, lastname, firstname, eventID,eventStatus from eventdetails where date_format(date(concat(date,' ',starttime)), '%m-%d-%Y %H:%i') >= date_format(date(concat('"+edate+"',' ','"+etime+"')), '%m-%d-%Y %H:%i') order by date,startTime");
 }
+
+public static ArrayList<Event>  listEvents2(String edate, String etime, String fname, String lname) {  
+	
+	return ReturnMatchingEventList(" SELECT eventname, date, starttime, duration, hallname, lastname, firstname, eventID,eventStatus from eventdetails where date_format(date(concat(date,' ',starttime)), '%m-%d-%Y %H:%i') >= date_format(date(concat('"+edate+"',' ','"+etime+"')), '%m-%d-%Y %H:%i') and staff_firstname='"+fname+"' and staff_lastname='"+lname+"' order by date,startTime");
+}
+
 private static ArrayList<Event> ReturnMatchingEventList (String queryString) {
 	ArrayList<Event> eventListInDB = new ArrayList<Event>();
 	System.out.println(queryString);
@@ -338,6 +464,177 @@ private static ArrayList<Event> ReturnMatchingEventList (String queryString) {
 		}
 	} catch (SQLException e) {}
 	return eventListInDB;
+}
+
+public static void Modifyevent_User (Event event,String old_eventID) {
+	Statement stmt = null; 
+	Connection conn = SQLConnection.getDBConnection(); 
+	
+	System.out.print(event.getfirstName());
+	String assignstaff = "update eventdetails set firstName = '"+event.getfirstName()+ 	"',lastName = '"+event.getLastName()+"',date = '"+event.getdate()+
+			"',duration = '"+event.getduration()+	"',startTime = '"+event.getstartTime()+			"',hallName = '"+event.gethallName()+
+			"',estAttendees = '"+event.getestAttendees()+			"',eventName = '"+event.geteventName()+			"',foodType = '"+event.getfoodType()+
+			"',meal = '"+event.getmeal()+			"',mealFormality = '"+event.getmealFormality()+			"',drinkType = '"+event.getdrinkType()+
+			"',entertainmentItems = '"+event.getentertainmentItems()+			"',eventID = '"+event.geteventID()+"' where eventID = '"+old_eventID+"';";					
+	System.out.println("Query: "+assignstaff);
+	
+	try {   
+	conn = SQLConnection.getDBConnection();  
+	conn.setAutoCommit(false);   
+	stmt = conn.createStatement();
+	stmt.executeUpdate(assignstaff);
+	conn.commit();					 
+} catch (SQLException sqle) { 
+	sqle.printStackTrace();
+} finally {
+	try {
+		conn.close();
+		stmt.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	};
+}
+}
+
+public static Event getSpecificEventdetails(String eventID) {
+	Statement stmt = null;   
+	Connection conn = null;  
+	Event event = new Event();
+	try {   
+		conn = SQLConnection.getDBConnection();  
+		stmt = conn.createStatement();
+		String searchSpecificEvent = " SELECT * from eventdetails WHERE eventID = '"+eventID+"'";
+		ResultSet eventList = stmt.executeQuery(searchSpecificEvent);
+		while(eventList.next()) {
+			String lastName = eventList.getString("lastName");
+			String firstName  = eventList.getString("firstName");
+			String date = eventList.getString("date");
+			String startTime  = eventList.getString("startTime");
+			String duration  = eventList.getString("duration");
+			String hallName = eventList.getString("hallName");
+			String estAttendees  = eventList.getString("estAttendees");
+			String eventName  = eventList.getString("eventName");
+			String foodType  = eventList.getString("foodType");
+			String meal  = eventList.getString("meal");
+			String mealFormality = eventList.getString("mealFormality");
+			String drinkType  = eventList.getString("drinkType");
+			String entertainmentItems  = eventList.getString("entertainmentItems");
+			String eventStatus  = eventList.getString("eventStatus");
+			String EventID  = eventList.getString("eventID");
+
+			event.setEventForUpdate(lastName, firstName, date, startTime, duration, hallName, eventName, meal, mealFormality, foodType, drinkType
+					,estAttendees,entertainmentItems, EventID);
+		}
+		
+		} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		try {
+			conn.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		};
+	return event;
+}
+
+public static ArrayList<Event> getUserEventSummary(String Username, String firstname,String lastname) {
+	Statement stmt = null;
+	Statement stmt1 = null;
+	Connection conn = null;  
+	ArrayList<Event> eventlist = new ArrayList<Event>();
+	try {   
+		conn = SQLConnection.getDBConnection();  
+		stmt = conn.createStatement();
+		String updateuserevent = "update eventdetails set firstname='"+firstname+"', lastname='"+lastname+"' where userid='"+Username+"';";
+		System.out.print(updateuserevent);
+		stmt1 = conn.createStatement();
+		stmt1.executeUpdate(updateuserevent);
+		conn.commit();
+		String searchSpecificEvent = "SELECT * from eventdetails where userid = '"+Username+"' order by date,startTime;";
+		ResultSet eventList = stmt.executeQuery(searchSpecificEvent);
+		while(eventList.next()) {
+			Event event= new Event();
+			String lastName = eventList.getString("lastName");
+			String firstName  = eventList.getString("firstName");
+			String date = eventList.getString("date");
+			String startTime  = eventList.getString("startTime");
+			String duration  = eventList.getString("duration");
+			String hallName = eventList.getString("hallName");
+			String estAttendees  = eventList.getString("estAttendees");
+			String eventName  = eventList.getString("eventName");
+			String foodType  = eventList.getString("foodType");
+			String meal  = eventList.getString("meal");
+			String mealFormality = eventList.getString("mealFormality");
+			String drinkType  = eventList.getString("drinkType");
+			String entertainmentItems  = eventList.getString("entertainmentItems");
+			String eventStatus  = eventList.getString("eventStatus");
+			String eventID  = eventList.getString("eventID");
+
+			event.setEvent(lastName, firstName, date, startTime, duration, hallName, estAttendees, eventName, foodType, meal, mealFormality, drinkType, 
+					entertainmentItems, eventStatus, eventID, "", "", "", "","");
+			eventlist.add(event);
+			
+		}
+		
+		} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		try {
+			conn.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		};
+	return eventlist;
+}
+public static ArrayList<Event> getUserEventSummary1(String Username) {
+	Statement stmt = null;
+	Statement stmt1 = null;
+	Connection conn = null;  
+	ArrayList<Event> eventlist = new ArrayList<Event>();
+	try {   
+		conn = SQLConnection.getDBConnection();  
+		stmt = conn.createStatement();
+		String searchSpecificEvent = "SELECT * from eventdetails where userid = '"+Username+"' order by date,startTime;";
+		ResultSet eventList = stmt.executeQuery(searchSpecificEvent);
+		while(eventList.next()) {
+			Event event= new Event();
+			String lastName = eventList.getString("lastName");
+			String firstName  = eventList.getString("firstName");
+			String date = eventList.getString("date");
+			String startTime  = eventList.getString("startTime");
+			String duration  = eventList.getString("duration");
+			String hallName = eventList.getString("hallName");
+			String estAttendees  = eventList.getString("estAttendees");
+			String eventName  = eventList.getString("eventName");
+			String foodType  = eventList.getString("foodType");
+			String meal  = eventList.getString("meal");
+			String mealFormality = eventList.getString("mealFormality");
+			String drinkType  = eventList.getString("drinkType");
+			String entertainmentItems  = eventList.getString("entertainmentItems");
+			String eventStatus  = eventList.getString("eventStatus");
+			String eventID  = eventList.getString("eventID");
+
+			event.setEvent(lastName, firstName, date, startTime, duration, hallName, estAttendees, eventName, foodType, meal, mealFormality, drinkType, 
+					entertainmentItems, eventStatus, eventID, "", "", "", "","");
+			eventlist.add(event);
+			
+		}
+		
+		} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		try {
+			conn.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		};
+	return eventlist;
 }
 
 

@@ -7,7 +7,7 @@
 <link href="myStyle.css" rel="stylesheet" type="text/css" />
 <body>
     <div class="header_resize">
-      <div class="logo"><h1><a href="<c:url value='/ManagerHome.jsp' />">Catering Management Application</a></h1></div>
+      <div class="logo"><h1><a href="<c:url value='/adminHomePage.jsp' />">Catering Management Application</a></h1></div>
       <a href="<c:url value='/userController?action=logout' />"><span>Logout</span></a>
   </div>
  
@@ -41,8 +41,7 @@
 			<td class="myTable30 "><c:out value="${item.date}" /></td>
 			<td class="myTable30 "><c:out value="${item.estAttendees}" /></td>
             <td> <a href="<c:url value='/eventController?action=viewSpecificEvent&id=${item.eventID}' />">View</a></td>
-            <td> <a href="<c:url value='/eventController?action=goassignStaff&id=${item.eventID}' />"> Assign </a></td>
-            <td> <a href="<c:url value='/eventController?action=goupdateevent&id=${item.eventID}' />">Modify</a></td>
+            <td> <a href="<c:url value='/eventController?action=goupdateeventUsr&id=${item.eventID}' />">Modify</a></td>
 			
 			</tr>
 		</c:forEach>

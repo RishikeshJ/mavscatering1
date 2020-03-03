@@ -13,6 +13,9 @@ public class EventErrorMsgs {
 	private String eventNameError;
 	private String pastdateError;
 	private String durationError;
+	private String samedayReserveError;
+	private String sameweekReserverError;
+
 	
 	public EventErrorMsgs () {
 		this.errorMsg="";
@@ -26,6 +29,9 @@ public class EventErrorMsgs {
 		this.eventNameError = "";
 		this.pastdateError = "";
 		this.durationError = "";
+		this.samedayReserveError = "";
+		this.sameweekReserverError = "";
+
 	}
 	
 	public String getErrorMsg() {
@@ -41,7 +47,10 @@ public class EventErrorMsgs {
 				||!eventNameError.equals("")
 				||!pastdateError.equals("")
 				||!durationError.equals("")
-				||!capacityError.equals("") )
+				||!capacityError.equals("")
+				||!samedayReserveError.equals("")
+				||!sameweekReserverError.equals(""))
+
 		  errorMsg="Please correct the following errors";
 	}
 	
@@ -124,7 +133,22 @@ public class EventErrorMsgs {
 	public void setDurationError(String durationError) {
 		this.durationError = durationError;
 	}
-	
+	public String getsamedayReserveError() {
+		return samedayReserveError;
+	}
+
+	public void setsamedayReserveError(String samedayReserveError) {
+		this.samedayReserveError = samedayReserveError;
+	}
+
+	public  String getsameweekReserverError() {
+		return sameweekReserverError;
+	}
+
+	public void setsameweekReserverError(String sameweekReserverError) {
+		this.sameweekReserverError = sameweekReserverError;
+	}
+
 
 
 }

@@ -17,10 +17,10 @@
 				<td><a href="<c:url value='/userController?action=EventRequest' />" target="_top" style="margin-left: 118px;"> Request an event </a></td>
     </tr>
      <tr>
-				<td><a href="<c:url value='/userController?action=EventRequest' />" target="_top" style="margin-left: 118px;"> View my Event Summary </a></td>
+				<td><a href="<c:url value='/eventController?action=usereventsummary' />" target="_top" style="margin-left: 118px;"> View my Event Summary </a></td>
     </tr>
     <tr>
-				<td><a href="<c:url value='/userController?action=EventRequest' />" target="_top" style="margin-left: 118px;"> Update Profile</a></td>
+				<td><a href="<c:url value='/userController?action=viewProfile' />" target="_top" style="margin-left: 118px;"> Update Profile</a></td>
     </tr>
     </table>
 </body>

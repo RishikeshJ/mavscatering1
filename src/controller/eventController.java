@@ -16,8 +16,10 @@ import javax.servlet.http.HttpSession;
 //import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import data.EventDAO;
+import data.UserDAO;
 import model.Event;
 import model.User;
+import model.UserErrorMsgs;
 import model.EventErrorMsgs;
 
 /**
@@ -35,6 +37,15 @@ public class eventController extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    private void getEventParam (HttpServletRequest request, Event event) {
+		event.setEvent_v2(request.getParameter("lastname"),request.getParameter("firstname"),request.getParameter("date"),request.getParameter("startTime"),request.getParameter("duration"),
+				request.getParameter("hallName"),request.getParameter("eventName"),
+				request.getParameter("meal"),request.getParameter("mealFormality"),request.getParameter("foodType"),request.getParameter("drinkType"),
+				request.getParameter("est"),request.getParameter("entertainmentItems"),request.getParameter("eventID"),request.getParameter("staff_lname"),request.getParameter("staff_fname"));  
+	System.out.print(request.getParameter("est"));
+    
+    }
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -68,10 +79,10 @@ public class eventController extends HttpServlet {
 		Event event = new Event();
 
 		String url = "/EventBook.jsp";
-		if (action.equalsIgnoreCase("BookEvent") ) {  
+		if (action.equalsIgnoreCase("Book_Event") ) {  
 			User user = (User)session.getAttribute("currentUser");
 			EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
-			
+			session.setAttribute("TIMEERROR", EerrorMsgs);
 			//String HallName = request.getParameter("hallName");
 			//String FoodType = request.getParameter("foodType");
 			String MealFormality = request.getParameter("mealFormality");
@@ -83,7 +94,7 @@ public class eventController extends HttpServlet {
 			double DrinkCost = 0;
 			//double EntertainmentCost = 0;
 			double FinalDepositCost = 0;
-			String estAttendees = request.getParameter("estAttendees");
+			String estAttendees = request.getParameter("estAttendees").toString();
 			if(!estAttendees.isEmpty()) {
 				
 			
@@ -127,6 +138,14 @@ public class eventController extends HttpServlet {
 					request.getParameter("entertainmentItems"),"Pending","","N/A","N/A","N/A",user.getUsername(),
 					String.valueOf(FinalDepositCost));//UserErrorMsgs UerrorMsgs = new UserErrorMsgs();
 			
+			///ADDED TEMP
+			User user1 = (User)session.getAttribute("currentUser");
+			String selectedDate = session.getAttribute("date").toString()	;
+			event.validateeventdurations(selectedDate,user1.getUsername(), EerrorMsgs);
+			session.setAttribute("TIMEERROR", EerrorMsgs);
+			//EerrorMsgs.setErrorMsg();
+			
+			
 			session.setAttribute("EVENT",event);
 			event.validateEvent(event, EerrorMsgs);
 			event.validateduration(session.getAttribute("date").toString(),
@@ -163,10 +182,12 @@ public class eventController extends HttpServlet {
         	{
         	EventDAO.UpdateRequest(event.getuserid(), event.getdate(), event.getstartTime(), event.gethallName(), 
         	ccnumber, ccseccode, expdate,"0");
-        	url = "/PayDeposit.jsp";
+        	url = "/eventController?action=usereventsummary";
         	session.removeAttribute("DepositValue");
         	}
-        	url = "/PayDeposit.jsp";
+        	else {
+            	url = "/PayDeposit.jsp";
+        	}
         }
 		else if(action.equalsIgnoreCase("eventsummary")) {
 			System.out.print("printttt");
@@ -178,6 +199,19 @@ public class eventController extends HttpServlet {
 						
 			
 		}
+		else if(action.equalsIgnoreCase("usereventsummary")) {
+			
+			//Added by Rishi for A02
+			User user1 = (User)session.getAttribute("currentUser");
+			User userProfile = UserDAO.getUser(user1.getUsername());
+			ArrayList<Event> eventlist = EventDAO.getUserEventSummary(userProfile.getUsername(),userProfile.getFirstname(),userProfile.getLastname());     
+			session.setAttribute("Event", eventlist);		
+			
+			url="/Usereventsummary.jsp";
+						
+			
+		}
+
 		else if(action.equalsIgnoreCase("goassignStaff")) {
 			url="/assignstaff.jsp";
 			String temp = request.getParameter("id");
@@ -193,6 +227,8 @@ public class eventController extends HttpServlet {
 			session.setAttribute("errorMsgs", EerrorMsgs);
 			EerrorMsgs.setStaffError(User.validateStaff(request.getParameter("firstname"), request.getParameter("lastname")));
 			EerrorMsgs.setErrorMsg();
+			session.setAttribute("e_errorMsgs", EerrorMsgs);
+
 			if(EerrorMsgs.getErrorMsg().equals("")) {
 				event.setStaff_fname(request.getParameter("firstname"));
 				event.setStaff_lname(request.getParameter("lastname"));
@@ -204,6 +240,44 @@ public class eventController extends HttpServlet {
 			}
 			
 		}
+		else if(action.equalsIgnoreCase("goupdateevent")) {
+			url="/ModifyEvent.jsp";
+			Event eventdetails=EventDAO.getSpecificEventdetails(request.getParameter("id"));
+			session.setAttribute("EVENT", eventdetails);
+			session.setAttribute("eid", request.getParameter("id"));
+		}
+		
+		
+		else if(action.equals("ModifyEventDetails")) {
+			event.seteventID((String)session.getAttribute("eid"));
+			String id = session.getAttribute("eid").toString();
+			EventErrorMsgs E_errorMsgs = new EventErrorMsgs();
+			UserErrorMsgs U_errorMsgs = new UserErrorMsgs();
+			
+			session.setAttribute("e_errorMsgs", E_errorMsgs);
+			session.setAttribute("u_errorMsgs", U_errorMsgs);
+
+			U_errorMsgs.setErrorMsgs();
+			E_errorMsgs.setErrorMsg();
+			if(E_errorMsgs.getErrorMsg().equals("") && U_errorMsgs.getErrorMsgs().equals("")) {
+				
+				
+				getEventParam(request,event);
+				EventDAO.Modifyevent_v2(event,id);
+				String date = (String) session.getAttribute("Date");
+				String time = (String) session.getAttribute("Time");
+				ArrayList<Event> eventInDB=EventDAO.listEvents1(date,time);
+				session.setAttribute("EVENTS", eventInDB);
+				url="/viewEvents1.jsp";
+
+			}
+			
+			else {
+				url="/ModifyEvent.jsp";
+			}
+			
+		}
+		
 		else if (action.equalsIgnoreCase("EventDetails")) {
 		Event eventInDB2 = new Event();
 		System.out.println("ID "+request.getParameter("id"));
@@ -219,16 +293,63 @@ public class eventController extends HttpServlet {
 			String time = (String) request.getParameter("idtime");
 			session.setAttribute("Date", date);
 			session.setAttribute("Time", time);
-			url="/eventController?action=ViewAssignedEvents&id1="+date+"&id2="+time;
+			url="/eventController?action=ViewMyAssignedEvents&id1="+date+"&id2="+time;
 		}
 		else
-		if (action.equalsIgnoreCase("ViewAssignedEvents")) {
+		if (action.equalsIgnoreCase("ViewMyAssignedEvents")) {
+			ArrayList<Event> eventInDB = new ArrayList<Event>();
+			User user1 = (User)session.getAttribute("currentUser");
+
+			String date = (String) session.getAttribute("Date");
+			String time = (String) session.getAttribute("Time");
+			User userProfile = UserDAO.getUser(user1.getUsername());
+			String fname = userProfile.getFirstname();
+			String lname = userProfile.getLastname(); 
+			eventInDB=EventDAO.listEvents2(date,time,fname,lname);
+			session.setAttribute("EVENTS", eventInDB);				
+			url="/ViewAssignedEvents.jsp";
+		}
+		else if (action.equalsIgnoreCase("ViewAssignedEvents")) {
 			ArrayList<Event> eventInDB = new ArrayList<Event>();
 			String date = (String) session.getAttribute("Date");
 			String time = (String) session.getAttribute("Time");
 			eventInDB=EventDAO.listEvents1(date,time);
 			session.setAttribute("EVENTS", eventInDB);				
 			url="/ViewAssignedEvents.jsp";
+		}
+		else if (action.equalsIgnoreCase("getDateforevent")) {
+			System.out.println("Hello");
+			String date = (String) request.getParameter("iddate");
+			String time = (String) request.getParameter("idtime");
+			session.setAttribute("Date", date);
+			session.setAttribute("Time", time);
+			url="/eventController?action=ViewEventsbasedondate&id1="+date+"&id2="+time;
+		}
+		else if (action.equalsIgnoreCase("ViewEventsbasedondate")) {
+			ArrayList<Event> eventInDB = new ArrayList<Event>();
+			String date = (String) session.getAttribute("Date");
+			String time = (String) session.getAttribute("Time");
+			eventInDB=EventDAO.listEvents1(date,time);
+			session.setAttribute("EVENTS", eventInDB);				
+			url="/viewEvents1.jsp";
+		}
+		else if(action.equalsIgnoreCase("goupdateeventUsr")) {
+			url="/ModifyUserEvent.jsp";
+			Event eventdetails=EventDAO.getSpecificEventdetails(request.getParameter("id"));
+			session.setAttribute("EVENT", eventdetails);
+			session.setAttribute("eid", request.getParameter("id"));
+		}
+		else if(action.equals("Modify_Event_Details")) {
+				System.out.println("Modify_Event_Details");
+				String id = session.getAttribute("eid").toString();
+				getEventParam(request,event);
+				EventDAO.Modifyevent_User(event,id);
+				User user1 = (User)session.getAttribute("currentUser");
+				
+				ArrayList<Event> eventlist = EventDAO.getUserEventSummary1(user1.getUsername());     
+				session.setAttribute("Event", eventlist);		
+
+				url="/Usereventsummary.jsp";
 		}
 
 

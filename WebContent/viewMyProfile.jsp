@@ -6,7 +6,7 @@
 <title>Modify User Profile</title>
 </head>
 <body>
-<div class="logo"><h1><a href="<c:url value='/adminHomePage.jsp' />">Mavs Catering System</a></h1></div>
+<div class="logo"><h1>Campus Event Catering System</h1></div>
 <a href="<c:url value='/userController?action=logout' />"><span>Logout</span></a>
 <h2>Modify User Profile</h2>
 <input name="errMsg"  value="<c:out value='${errorMsgs.errorMsgs}'/>" type="text"  style ="background-color: white; color: red; border: none; width:800px" disabled="disabled">
@@ -21,6 +21,13 @@
     <td> <input name="username" value="<c:out value='${USER.username}'/>" type="text" >  </td>
   	<td> <input name="usernameError"  value="<c:out value='${errorMsgs.usernameError}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"   disabled="disabled" > </td>
     </tr>
+    
+    <tr>
+    <td> Password (*): </td>
+    <td> <input name="password" type="password" value="<c:out value='${User.password}'/>" type="text" >  </td>
+  	<td> <input name="passwordError"  value="<c:out value='${errorMsgs.passwordError}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"   disabled="disabled" > </td>
+    </tr>
+    
 
     <tr>
     <td> Role: (*): </td>
@@ -93,7 +100,7 @@
     <td colspan="2"><i>(*) Mandatory field</i></td>
     </tr>
     </table>
-    <input type="submit" value="Modify">
+    <!-- Javascript Popup Confirmation --><input type="submit" value="Modify" onclick="if (confirm('Modify Profile?')){return true;}else{event.stopPropagation(); event.preventDefault();};">
     </form>
 </td>
 </tr>

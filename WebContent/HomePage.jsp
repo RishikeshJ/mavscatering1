@@ -9,11 +9,11 @@
 <body style="width: 450px; ">
 <nav>
   <ul>
-    <li><a href="<c:url value='/' />">Home</a></li>
-    
   </ul>
 </nav>
 <a href="<c:url value='/userController?action=logout' />"><span>Logout</span></a>
+<a href="<c:url value='/userController?action=viewProfile' />"><span>View My Profile</span></a>
+
 <form action="<c:url value='/eventController?action=getDate' />" method="post" >
 <table>
 <tr>

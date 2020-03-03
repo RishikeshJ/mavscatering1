@@ -94,7 +94,7 @@
     <td colspan="2"><i>(*) Mandatory field</i></td>
     </tr>
     </table>
-    <input type="submit" value="Modify">
+    <input type="submit" value="Modify" onclick="if (confirm('Modify Profile?')){return true;}else{event.stopPropagation(); event.preventDefault();};"><!-- Javascript Popup Confirmation -->
     </form>
 </td>
 </tr>

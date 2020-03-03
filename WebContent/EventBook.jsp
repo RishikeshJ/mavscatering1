@@ -11,13 +11,12 @@
 <table>
   <tr>
    <td>
-    <form name="EventbookingForm" action="<c:url value='/eventController?action=BookEvent' />" method="post">
+    <form name="EventbookingForm" action="<c:url value='/eventController?action=Book_Event' />" method="post">
     <table style="width: 1200px; ">
     
     <tr>
     <td> Last Name: </td>
     <td> <input name="lastName" value="<c:out value='${lname}'/>" type="text" disabled="disabled"> </td>
-  	<td> <input name="duplicateResMsg"  value="<c:out value='${errorMsgs.duplicateResMsg}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"  disabled="disabled" > </td>
     </tr>
     
 	<tr>
@@ -29,7 +28,10 @@
 		<td>Date: </td>
 			<td>
 				<input type="date" id="iddate" name="iddate"  disabled="disabled" value="<c:out value='${date}'/>" >
+				
 			</td>
+			<td><input name="selecteddateerror"  value="<c:out value='${TIMEERROR.pastdateError}'/>" type="text"  style ="color: red; border: none; width: 300px;"></td>
+			
 	</tr>
 	
 	<tr>
@@ -63,6 +65,9 @@
       <option id="Shard" value="Shard">Shard</option>
       <option id="Liberty" value="Liberty">Liberty</option>
     </select>
+    </td>
+    <td> <input name="duplicateResMsg"  value="<c:out value='${errorMsgs.duplicateResMsg}'/>" type="text"  style ="background-color: white; color: red; border: none; width: 800px"  disabled="disabled" > </td>
+    
    	</tr>
    	
    	<tr>
@@ -129,6 +134,15 @@
     </table>
     <input type="submit" value="Book Event">
     </form>
+    <tr>
+	<td><input name="selecteddateerror2"  value="<c:out value='${TIMEERROR.samedayReserveError}'/>" type="text"  style ="color: red; border: none; width: 300px;"></td>
+	</tr>
+	<tr>
+		<td><input name="selecteddateerror3"  value="<c:out value='${TIMEERROR.sameweekReserverError}'/>" type="text"  style ="color: red; border: none; width: 400px;"></td>
+
+	</tr>
+	
+    
 </td>
 </tr>
 </table>

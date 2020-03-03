@@ -26,6 +26,7 @@
 	</tr>
     <tr>
 	<td><input name="selecteddateerror"  value="<c:out value='${TIMEERROR.pastdateError}'/>" type="text"  style ="color: red; border: none; width: 300px;"></td>
+	
 	</tr>
     
     </table>
