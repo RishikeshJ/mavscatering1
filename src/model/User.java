@@ -125,13 +125,25 @@ public class User implements Serializable{
 	    for (int i = 0; i < str.length(); i++) { 
 	        char ch = str.charAt(i); 
 	        if ((!(ch >= 'A' && ch <= 'Z')) 
-	            && (!(ch >= 'a' && ch <= 'z'))) { 
+	            && (!(ch >= 'a' && ch <= 'z')) && (!(ch >= '0' && ch <= '9'))) { 
 	            return false; 
 	        } 
 	    } 
 	    return true; 
 	}
 	
+	public static boolean isStringOnlyAlpha(String str) 
+	{ 
+	    for (int i = 0; i < str.length(); i++) { 
+	        char ch = str.charAt(i); 
+	        if ((!(ch >= 'A' && ch <= 'Z')) 
+	            && (!(ch >= 'a' && ch <= 'z'))) { 
+	            return false; 
+	        } 
+	    } 
+	    return true; 
+	}
+
 	public static boolean isStringOnlyNumber(String str) 
 	{ 
 	    for (int i = 0; i < str.length(); i++) { 
@@ -187,14 +199,15 @@ public class User implements Serializable{
 			errorMsgs.setRoleError(validateRole(user.getRole()));
 			errorMsgs.setEmailError(validateEmail(user.getEmail()));
 		}
-		else if(action.equals("login")) {
+		else {
+			user.verifyUser(user, errorMsgs);
 			errorMsgs.setUsernameError(verifyUsername(user.getUsername()));
 			errorMsgs.setPasswordError(verifyPassword(user.getPassword(), user.getUsername()));
 		}
 	}
 	
 	public String validateFirstname(String firstname) {
-		String error = "";
+		String error = "";	
 		
 		//System.out.println("In validate fname");
 		if(firstname.isEmpty())
@@ -203,7 +216,7 @@ public class User implements Serializable{
 				error = "First name must start with a capital letter";
 		else if(firstname.length() <= 2 || firstname.length() >= 30)
 			error = "First name length must be >2 and <30";
-		else if(!isStringOnlyAlphabet(firstname))
+		else if(!isStringOnlyAlpha(firstname))
 			error = "First name cannot contain a number or special characters";
 		return error;
 	}
@@ -248,7 +261,7 @@ public class User implements Serializable{
 				error = "Username must start with letter";
 		else if(username.length() <= 4 || username.length() >= 21)
 			error = "Username length must be >4 and <21";
-		else if(!(isStringOnlyNumber(username) || !isStringOnlyAlphabet(username)))
+		else if( !isStringOnlyAlphabet(username))
 			error = "Username cannot contain special characters.";
 		else
 			if (!UserDAO.uniqueUsername(username))
@@ -267,7 +280,7 @@ public class User implements Serializable{
 			error = "Password must contain a number.";
 		else if(!password.matches(".*[`~!@#$%^&*()\\\\-_=+\\\\\\\\|\\\\[{\\\\]};:'\\\",<.>/?].*"))
 			error = "Password must contain a special character.";
-		else if(!(password.length() > 7 && password.length() < 30))
+		else if(password.length() <= 7 || password.length() >= 30)
 			error = "Password length must be >7 and <30";
 		return error;
 	}
@@ -283,7 +296,7 @@ public class User implements Serializable{
 			error = "Invalid domain name.";
 		else if(!email.contains("@"))
 			error = "Email address needs to contain @.";
-		else if(!(email.length() >= 7 && email.length() <= 45))
+		else if(email.length() < 7 || email.length() > 45)
 			error = "Email address must be between 7 and 45 characters long.";
 		}else {
 			error = "Email address cannot be empty";
@@ -310,13 +323,15 @@ public class User implements Serializable{
 		
 		//System.out.println("In validate streetnumber");
 		if(!streetnumber.isEmpty()) {
-			if(!(streetnumber.length() < 7 && streetnumber.length() > 0))
+			if(streetnumber.length() > 7)
 				error = "Street number length must be >0 and <7.";
-			else if(Integer.parseInt(streetnumber) <= 0)
-				error = "Streetnumber must be > 0";
 			else if(!isStringOnlyNumber(streetnumber))
 				error = "Street number must be numeric";
+			else if(Integer.parseInt(streetnumber) <= 0)
+				error = "Streetnumber must be > 0";
 		}
+		else
+			error = "Street number length must be >0 and <7.";
 		return error;
 		
 	}
@@ -326,11 +341,13 @@ public class User implements Serializable{
 		
 		//System.out.println("In validate streetname");
 		if(!streetname.isEmpty()) {
-			if(!(streetname.length() > 0 && streetname.length() < 40))
-				error = "Street number length must be >0 and <40.";
-			else if(!isStringOnlyAlphabet(streetname))
-				error = "Street number must be non-numeric";
+			if((streetname.length() >= 40))
+				error = "Street name length must be >0 and <40.";
+			else if(!isStringOnlyAlpha(streetname))
+				error = "Street name must be non-numeric";
 		}
+		else
+			error = "Street name length must be >0 and <40.";
 		return error;
 		
 	}
@@ -359,6 +376,9 @@ public class User implements Serializable{
 			else if(!isStringOnlyAlphabet(city))
 				error = "City cannot contain a number or special characters";
 		}
+		else
+			error="City Name cannot be Empty";
+
 		return error;
 	}
 
@@ -368,7 +388,7 @@ public class User implements Serializable{
 				"MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY", "OH","OK","OR","PA","PR","PW","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY" };
 		List<String> list = Arrays.asList(states);
 		if(!state.isEmpty()) {
-			if(!isStringOnlyAlphabet(state))
+			if(!isStringOnlyAlpha(state))
 				error = "State must be non numeric.";
 			else if(state.length() != 2)
 				error = "State must be 2 letter abbreviation.";
@@ -376,6 +396,8 @@ public class User implements Serializable{
 				error = "State abbreviation not found.";
 			
 		}
+		else
+			error="State Cannot be Empty.";
 		return error;
 	}
 	
@@ -390,32 +412,23 @@ public class User implements Serializable{
 		return error;
 	}
 	
-	public static String validateStaff(String staff_fname,String staff_lname) {
-		String error = "";
-		if(!UserDAO.getStaff(staff_fname, staff_lname))
-			error = "Staff named "+staff_fname+" "+staff_lname+" does not exist.";
-		return error;
-	}
-	
+
 	public void setUser(String username, String password, String lastName, String firstName, String role, String utaId,
 			String phone, String email, String streetnumber, String streetname, String city,
 			String state, String zipcode) {
-		// TODO Auto-generated method stub
-		// System.out.println(username+" : "+role+": "+firstName);
-		this.username = username;
-		this.password = password;
-		this.firstname = firstName;
-		this.lastname = lastName;
-		this.role = role;
-		this.utaid = utaId;
-		this.phone = phone;
-		this.email = email;
-		this.streetnumber = streetnumber;
-		this.streetname = streetname;
-		this.city = city;
-		this.state = state;
-		this.zipcode = zipcode;
-		
+		this.setUsername(username);
+		this.setPassword(password);
+		this.setFirstname(firstName);
+		this.setLastname(lastName);
+		this.setRole(role);
+		this.setUtaid(utaId);
+		this.setPhone(phone);
+		this.setEmail(email);
+		this.setStreetnumber(streetnumber);
+		this.setStreetname(streetname);
+		this.setCity(city);
+		this.setState(state);
+		this.setZipcode(zipcode);
 	}
 
 	public void verifyUser (User user, UserErrorMsgs errorMsgs) {		
@@ -428,10 +441,10 @@ public class User implements Serializable{
 		String result="";
 		username = username.trim();
 		if (username.isEmpty())
-			result = "Username cannot be blank";
+			result = "Username can not be blank.";
 		else
 			if (UserDAO.uniqueUsername(username))
-				result="Username already in the database.";
+				result="Username not in the database.";
 		return result;				
 	}
 	

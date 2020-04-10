@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import data.EventDAO;
+import data.UserDAO;
+
 
 public class Event implements Serializable{
 	private static final long serialVersionUID = 2L;
@@ -38,30 +40,29 @@ public class Event implements Serializable{
 			String eventName, String foodType,String meal, String mealFormality, String drinkType, String entertainmentItems,String eventStatus, String eventID,
 			String ccnumber,String ccpin, String ccexpdate, String userid, String depositAmount) 
 	{	
-		//System.out.println(username+" : "+role+": "+firstName);
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.date = date;
-		this.startTime = startTime;
-		this.duration = duration;
-		this.hallName = hallName;
-		this.estAttendees = estAttendees;
-		this.eventName = eventName;
-		this.foodType = foodType;
-		this.meal = meal;
-		this.mealFormality = mealFormality;
-		this.drinkType = drinkType;
-		this.entertainmentItems = entertainmentItems;
-		this.eventStatus = eventStatus;
-		this.eventID = eventID;
-		this.ccnumber = ccnumber;
-		this.ccpin = ccpin;
-		this.ccexpdate = ccexpdate;
-		this.userid = userid;
-		this.depositAmount = depositAmount;
+		this.setLastName(lastName);
+		this.setfirstName(firstName);
+		this.setdate(date);
+		this.setstartTime(startTime);
+		this.setduration(duration);
+		this.sethallName(hallName);
+		this.setestAttendees(estAttendees);
+		this.seteventName(eventName);
+		this.setfoodType(foodType);
+		this.setmeal(mealFormality);
+		this.setmealFormality(mealFormality);
+		this.setdrinkType(drinkType);
+		this.setentertainmentItems(entertainmentItems);
+		this.seteventStatus(eventStatus);
+		this.seteventID(eventID);
+		this.setccnumber(ccnumber);
+		this.setccpin(ccpin);
+		this.setccexpdate(ccexpdate);
+		this.setuserid(userid);
+		this.setDepositAmount(depositAmount);
 	}
 	
-	public void setEvent_v2(String lastName,String firstName, String date,String startTime,String duration,String hallName,
+	/*public void setEvent_v2(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID, String staff_fname,String staff_lname) 
 	{	
 		//System.out.println(username+" : "+role+": "+firstName);
@@ -83,7 +84,7 @@ public class Event implements Serializable{
 		this.staff_lname = staff_lname;
 
 		
-	}
+	}*/
 	public void setEventForUpdate(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID) 
 	{	
@@ -106,7 +107,7 @@ public class Event implements Serializable{
 	}
 
 	
-	public void updateEvent(String lastName,String firstName, String date,String startTime,String duration,String hallName,String estAttendees,
+	/*public void updateEvent(String lastName,String firstName, String date,String startTime,String duration,String hallName,String estAttendees,
 			String eventName, String foodType,String meal, String mealFormality, String drinkType, String entertainmentItems,String eventStatus,String eventID,
 			String ccnumber,String ccpin, String ccexpdate, String userid, String depsoitAmount, String depositAmount) 
 	{	
@@ -130,7 +131,7 @@ public class Event implements Serializable{
 		this.ccexpdate = ccexpdate;
 		this.userid = userid;
 		this.depositAmount = depositAmount;
-	}
+	}*/
 	
 	public String geteventID() {
 		return eventID;
@@ -286,12 +287,22 @@ public class Event implements Serializable{
 	}
 
 //Validations
-	public void validateEvent (Event event, EventErrorMsgs errorMsgs) {
-		//if (action.equals("register")) {
-		errorMsgs.setduplicateResMsg(verifyFacilityAvailability(event.getdate(),event.getstartTime(),event.gethallName()));	
-		errorMsgs.setCapacityError(verifyHallCapacity(event.gethallName(), event.getestAttendees()));
-		errorMsgs.setEventNameError(validateEventName(event.geteventName().toString(), errorMsgs));
-		errorMsgs.setErrorMsg();
+	public void validateEvent (String action,Event event, EventErrorMsgs errorMsgs) throws ParseException {
+		if (action.equals("registerEvent")) {
+			errorMsgs.setduplicateResMsg(verifyFacilityAvailability(event.getdate(),event.getstartTime(),event.gethallName()));	
+			errorMsgs.setCapacityError(verifyHallCapacity(event.gethallName(), event.getestAttendees()));
+			errorMsgs.setEventNameError(validateEventName(event.geteventName().toString(), errorMsgs));
+			errorMsgs.setPastdateError(verifyifReservationInPast(event.getdate()));
+			validateSelectedDateTime(event.date,event.startTime,errorMsgs);
+			validateduration(event.date, event.startTime, event.duration, errorMsgs);
+			validateeventdurations(event.date,event.userid, errorMsgs);
+			validateselectedDate (event.date, errorMsgs);
+			errorMsgs.setErrorMsg();
+		}
+		else if(action.equals("payDeposit")){
+			validateCardinfo(event, errorMsgs);
+			errorMsgs.setErrorMsg();
+		}
 	}
 	
 	public void validateeventdurations(String selectedDate,String UserProfile, EventErrorMsgs errorMsgs) {
@@ -326,16 +337,16 @@ public class Event implements Serializable{
 		return Error;
 	}
 	
-	
 	public String validateEventName(String eventName, EventErrorMsgs errorMsgs) {
 		String Error = "";
 		if(!eventName.isEmpty()) {
-		if(!Character.isUpperCase(eventName.charAt(0))){
-			Error = "Event name must start with a capital letter";
+			if(!Character.isUpperCase(eventName.charAt(0))){
+				Error = "Event name must start with a capital letter";
+			}
+			else if(eventName.length()<=2 || eventName.length() > 30) {
+				Error = "Event name length must be >2 and <30";
+			}
 		}
-		else if(eventName.length()<2 || eventName.length() > 30) {
-			Error = "Event name length must be >2 and <30";
-		}}
 		else
 		{
 			Error = "Event name cannot be empty";
@@ -345,21 +356,21 @@ public class Event implements Serializable{
 	
 	public void validateselectedDate (String selecteddate, EventErrorMsgs errorMsgs) throws ParseException {
 		errorMsgs.setPastdateError(verifyifReservationInPast(selecteddate));
-		errorMsgs.setErrorMsg();
+		//errorMsgs.setErrorMsg();
 	}
 	
 	public void validateduration (String selecteddate, String selectedtime, String Duration, EventErrorMsgs errorMsgs) {
 		//if (action.equals("register")) {
 		errorMsgs.setDurationError(validateeventduration(selecteddate,selectedtime,Duration));
-		errorMsgs.setErrorMsg();
+		//errorMsgs.setErrorMsg();
 	}
-
 	
 	public void validateCardinfo(Event event, EventErrorMsgs errorMsgs) throws ParseException {
 		errorMsgs.setinvalidCCNum(validateCCnumber(event.getccnumber()));
 		errorMsgs.setinvalidpin(validatepin(event.getccpin()));
 		errorMsgs.setinvalidExpDate(validateExpDate(event.getccexpdate()));
-		errorMsgs.setErrorMsg();
+		//errorMsgs.settimeerror("");
+		//errorMsgs.setErrorMsg();
 	}
 	
 	public void validateSelectedDateTime(String date, String Time, EventErrorMsgs errorMsgs) {
@@ -371,11 +382,11 @@ public class Event implements Serializable{
 		int result=EventDAO.CheckReservations(date, startTime, hallName);
 		System.out.println(result);
 		String Error="";
-		if(result>0) {
-			Error = "Hall is already reserved for this time slot, please try again";
+		/*if(result>0) {
+			Error = "Hall is already reserved for this time slot please try again";
 		}else {
 			Error = "";
-		}
+		}*/
 		return Error;
 	}
 	
@@ -394,30 +405,33 @@ public class Event implements Serializable{
 		
 		String Error = "";
 		if(!estAttendees.isEmpty()) {
-		if(hallname.equals("Maverick") && Integer.parseInt(estAttendees) > 100) {
-			Error = "Maveric Hall cannot have an estimated attendance greater than 100";
+			if(!isTextAnInteger(estAttendees)) {
+				Error = "Estimated attendees must be a number";
+			}
+			else {
+				if(!(Integer.parseInt(estAttendees)>0)) {
+					Error = "Estimated attendees must be greater than 0";
+				}
+				else if(hallname.equals("Maverick") && Integer.parseInt(estAttendees) > 100) {
+					Error = "Maveric Hall cannot have an estimated attendance greater than 100";
+				}
+				else if(!(Integer.parseInt(estAttendees)<=100)) {
+					Error = "Estimated attendees must be <=100";
+				}
+				else if(hallname.equals("KC") && Integer.parseInt(estAttendees) > 25) {
+					Error = "KC Hall cannot have an estimated attendance greater than 25";
+				}
+				else if(hallname.equals("Arlington") && Integer.parseInt(estAttendees) > 50) {
+					Error = "Arlington Hall cannot have an estimated attendance greater than 50";
+				}
+				else if(hallname.equals("Shard") && Integer.parseInt(estAttendees) > 25) {
+					Error = "Shard Hall cannot have an estimated attendance greater than 25";
+				}
+				else if(hallname.equals("Liberty") && Integer.parseInt(estAttendees) > 75) {
+					Error = "Liberty cannot have an estimated attendance greater than 75";
+				}
+			}
 		}
-		else if(hallname.equals("KC") && Integer.parseInt(estAttendees) > 25) {
-			Error = "KC Hall cannot have an estimated attendance greater than 25";
-		}
-		else if(hallname.equals("Arlington") && Integer.parseInt(estAttendees) > 50) {
-			Error = "Arlington Hall cannot have an estimated attendance greater than 50";
-		}
-		else if(hallname.equals("Shard") && Integer.parseInt(estAttendees) > 25) {
-			Error = "Shard Hall cannot have an estimated attendance greater than 25";
-		}
-		else if(hallname.equals("Liberty") && Integer.parseInt(estAttendees) > 75) {
-			Error = "Liberty cannot have an estimated attendance greater than 75";
-		}
-		else if(!isTextAnInteger(estAttendees)) {
-			Error = "Estimated attendees must be a number";
-		}
-		else if(!(Integer.parseInt(estAttendees)>0)) {
-			Error = "Estimated attendees must be greater than 0";
-		}
-		else if(!(Integer.parseInt(estAttendees)<=100)) {
-			Error = "Estimated attendees must be <=100";
-		}}
 		else
 		{
 			Error = "Estimated attendees cannot be empty";
@@ -543,7 +557,6 @@ public class Event implements Serializable{
 		}	  
 		return result;
 	}
-
 	
 	private String validatedateandtime(String selecteddate, String selectedtime) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -630,7 +643,7 @@ public class Event implements Serializable{
 	    	{
 	    	if(x.before(weekdayopencal.getTime())
 	    		|| x.after(weekdayclosecal.getTime())) {
-	    		result = "Halls are open from 7am to 11pm on all days except Sunday, Please select a different time";
+	    		result = "Halls are open from 7am to 11pm on all days except Sunday Please select a different time";
 	    	}	    	
 	    }
 	    
@@ -639,7 +652,7 @@ public class Event implements Serializable{
 			if(x.before(sundayopencal.getTime())
 				|| x.after(weekendclosecal.getTime()))
 			{
-				result = "Halls are open from 12pm to 2am Sunday, Please select a different time";
+				result = "Halls are open from 12pm to 2am Sunday Please select a different time";
 			}
 		
 		}	  
@@ -650,23 +663,23 @@ public class Event implements Serializable{
 			if(x.before(weekdayopencal.getTime())
 				|| x.after(weekendclosecal.getTime()))
 			{
-				result = "Halls are open from 7am to 2am on Saturday, Please select a different time";
+				result = "Halls are open from 7am to 2am on Saturday Please select a different time";
 			}
 		}
 		return result;
 	}
-	
 	
 	private String validateCCnumber(String ccnum) {
 		//ccnum = ccnum.trim();
 		String result="";
 		if (!ccnum.isEmpty()) {
 			if (!isTextAnInteger(ccnum))
-				result="Your Credit Card Number field must be a number";
+				result="Your Credit Card Number field must be $ number";
 			else
 				if (ccnum.length()!=16){
-					result="Credit card number must be 16 digits";
-				}}
+					result="Credit card number must be $ digits";
+				}
+		}
 		else
 			result= "Your Credit Card Number cannot be empty";
 		return result;
@@ -698,19 +711,21 @@ public class Event implements Serializable{
 
 			return result;
 	}
-
 	
 	private String validateExpDate(String expdate) throws ParseException {
-		SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
-		Date ExpDate = sdformat.parse(expdate);
-		Date currentDate = sdformat.parse(java.time.LocalDate.now().toString());
-		expdate = expdate.trim();
 		String result="";
-		if (expdate.isEmpty())
-			result= "Your Expiry date field cannot be empty";
-		else if(ExpDate.compareTo(currentDate) < 0 ) {
+		SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+		Date ExpDate = new Date();
+		if (!expdate.isEmpty()) {
+			ExpDate = sdformat.parse(expdate);
+			Date currentDate = sdformat.parse(java.time.LocalDate.now().toString());
+			expdate = expdate.trim();
+			if(ExpDate.compareTo(currentDate) < 0 ) {
 				result = "Credit card exp date must not be in past";
-		}		
+			}
+		}	
+		else
+			result= "Your Expiry date field cannot be empty";
 		return result;
 	}
 	
@@ -735,22 +750,5 @@ public class Event implements Serializable{
 	public void setDepositAmount(String depositAmount) {
 		this.depositAmount = depositAmount;
 	}
-
-	public String getStaff_fname() {
-		return staff_fname;
-	}
-
-	public void setStaff_fname(String staff_fname) {
-		this.staff_fname = staff_fname;
-	}
-
-	public String getStaff_lname() {
-		return staff_lname;
-	}
-
-	public void setStaff_lname(String staff_lname) {
-		this.staff_lname = staff_lname;
-	}
-
 
 }

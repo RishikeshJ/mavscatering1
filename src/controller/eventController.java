@@ -38,11 +38,11 @@ public class eventController extends HttpServlet {
     }
 
     private void getEventParam (HttpServletRequest request, Event event) {
-		event.setEvent_v2(request.getParameter("lastname"),request.getParameter("firstname"),request.getParameter("date"),request.getParameter("startTime"),request.getParameter("duration"),
+		/*event.setEvent_v2(request.getParameter("lastname"),request.getParameter("firstname"),request.getParameter("date"),request.getParameter("startTime"),request.getParameter("duration"),
 				request.getParameter("hallName"),request.getParameter("eventName"),
 				request.getParameter("meal"),request.getParameter("mealFormality"),request.getParameter("foodType"),request.getParameter("drinkType"),
 				request.getParameter("est"),request.getParameter("entertainmentItems"),request.getParameter("eventID"),request.getParameter("staff_lname"),request.getParameter("staff_fname"));  
-	System.out.print(request.getParameter("est"));
+	System.out.print(request.getParameter("est"));*/
     
     }
     
@@ -147,7 +147,12 @@ public class eventController extends HttpServlet {
 			
 			
 			session.setAttribute("EVENT",event);
-			event.validateEvent(event, EerrorMsgs);
+			try {
+				event.validateEvent(action,event, EerrorMsgs);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			event.validateduration(session.getAttribute("date").toString(),
 					session.getAttribute("time").toString(),
 					request.getParameter("duration"),EerrorMsgs);
@@ -208,8 +213,6 @@ public class eventController extends HttpServlet {
 			session.setAttribute("Event", eventlist);		
 			
 			url="/Usereventsummary.jsp";
-						
-			
 		}
 
 		else if(action.equalsIgnoreCase("goassignStaff")) {
@@ -225,14 +228,14 @@ public class eventController extends HttpServlet {
 			System.out.println(id);
 			EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
 			session.setAttribute("errorMsgs", EerrorMsgs);
-			EerrorMsgs.setStaffError(User.validateStaff(request.getParameter("firstname"), request.getParameter("lastname")));
+			//EerrorMsgs.setStaffError(Event.validateStaff(request.getParameter("firstname"), request.getParameter("lastname")));
 			EerrorMsgs.setErrorMsg();
 			session.setAttribute("e_errorMsgs", EerrorMsgs);
 
 			if(EerrorMsgs.getErrorMsg().equals("")) {
-				event.setStaff_fname(request.getParameter("firstname"));
+				/*event.setStaff_fname(request.getParameter("firstname"));
 				event.setStaff_lname(request.getParameter("lastname"));
-				EventDAO.Modifyevent(event);
+				EventDAO.Modifyevent(event);*/
 				url="/eventsummary.jsp";
 			}
 			else {
