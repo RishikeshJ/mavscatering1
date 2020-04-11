@@ -285,8 +285,33 @@ public class Event implements Serializable{
 	public void setuserid(String userid) {
 		this.userid = userid;
 	}
+	
+	public String getDepositAmount() {
+		return depositAmount;
+	}
 
-//Validations
+	public void setDepositAmount(String depositAmount) {
+		this.depositAmount = depositAmount;
+	}
+
+	public String getStaff_fname() {
+		return staff_fname;
+	}
+
+	public void setStaff_fname(String staff_fname) {
+		this.staff_fname = staff_fname;
+	}
+
+	public String getStaff_lname() {
+		return staff_lname;
+	}
+
+	public void setStaff_lname(String staff_lname) {
+		this.staff_lname = staff_lname;
+	}
+
+
+	//Validations
 	public void validateEvent (String action,Event event, EventErrorMsgs errorMsgs) throws ParseException {
 		if (action.equals("registerEvent")) {
 			errorMsgs.setduplicateResMsg(verifyFacilityAvailability(event.getdate(),event.getstartTime(),event.gethallName()));	
@@ -310,7 +335,6 @@ public class Event implements Serializable{
 		if(errorMsgs.getsamedayReserveError().equals("")) {
 			errorMsgs.setsameweekReserverError(verifyFacilityReservationWeekly(selectedDate,UserProfile));
 		}
-		
 	}
 	
 	private String verifyFacilityReservation(String date, String UserProfile) {
@@ -705,7 +729,8 @@ public class Event implements Serializable{
 			else
 				if(pin.length()!=4) {
 					result="Credit card pin must be 4 digits";
-				}}	
+				}
+			}	
 		else
 			result= "Credit card pin cannot be empty";
 
@@ -743,12 +768,20 @@ public class Event implements Serializable{
 		return result;
 	}
 
-	public String getDepositAmount() {
-		return depositAmount;
-	}
 
-	public void setDepositAmount(String depositAmount) {
-		this.depositAmount = depositAmount;
+	public String validateStaff(String fname, String lname) {
+		// TODO Auto-generated method stub
+		String error="";
+		Event event = new Event();
+		event.setStaff_fname(fname);
+		event.setStaff_lname(lname);
+		if(UserDAO.getStaff(fname, lname)) {
+			EventDAO.Modifyevent(event);
+		}
+		else {
+			error="Staff with this name doesn't exist.";
+		}
+		return error;
 	}
 
 }

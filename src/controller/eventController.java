@@ -228,14 +228,14 @@ public class eventController extends HttpServlet {
 			System.out.println(id);
 			EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
 			session.setAttribute("errorMsgs", EerrorMsgs);
-			//EerrorMsgs.setStaffError(Event.validateStaff(request.getParameter("firstname"), request.getParameter("lastname")));
+			EerrorMsgs.setStaffError(event.validateStaff(request.getParameter("firstname"), request.getParameter("lastname")));
 			EerrorMsgs.setErrorMsg();
 			session.setAttribute("e_errorMsgs", EerrorMsgs);
 
 			if(EerrorMsgs.getErrorMsg().equals("")) {
-				/*event.setStaff_fname(request.getParameter("firstname"));
+				event.setStaff_fname(request.getParameter("firstname"));
 				event.setStaff_lname(request.getParameter("lastname"));
-				EventDAO.Modifyevent(event);*/
+				EventDAO.Modifyevent(event);
 				url="/eventsummary.jsp";
 			}
 			else {

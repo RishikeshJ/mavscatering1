@@ -333,19 +333,19 @@ public static void Modifyevent_v2 (Event event,String old_eventID) {
 	Connection conn = SQLConnection.getDBConnection(); 
 	
 	System.out.print(event.getfirstName());
-	/*String assignstaff = "update eventdetails set staff_firstname = '"+event.getStaff_fname()+"',staff_lastname = '"+event.getStaff_lname()+
+	String assignstaff = "update eventdetails set staff_firstname = '"+event.getStaff_fname()+"',staff_lastname = '"+event.getStaff_lname()+
 			"',firstName = '"+event.getfirstName()+ 	"',lastName = '"+event.getLastName()+"',date = '"+event.getdate()+
 			"',duration = '"+event.getduration()+	"',startTime = '"+event.getstartTime()+			"',hallName = '"+event.gethallName()+
 			"',estAttendees = '"+event.getestAttendees()+			"',eventName = '"+event.geteventName()+			"',foodType = '"+event.getfoodType()+
 			"',meal = '"+event.getmeal()+			"',mealFormality = '"+event.getmealFormality()+			"',drinkType = '"+event.getdrinkType()+
-			"',entertainmentItems = '"+event.getentertainmentItems()+			"',eventID = '"+event.geteventID()+"' where eventID = '"+old_eventID+"';";*/					
-	//System.out.println("Query: "+assignstaff);
+			"',entertainmentItems = '"+event.getentertainmentItems()+			"',eventID = '"+event.geteventID()+"' where eventID = '"+old_eventID+"';";					
+	System.out.println("Query: "+assignstaff);
 	
 	try {   
 	conn = SQLConnection.getDBConnection();  
 	conn.setAutoCommit(false);   
 	stmt = conn.createStatement();
-	//stmt.executeUpdate(assignstaff);
+	stmt.executeUpdate(assignstaff);
 	conn.commit();					 
 } catch (SQLException sqle) { 
 	sqle.printStackTrace();
@@ -405,7 +405,7 @@ public static ArrayList<Event> getEventSummary() {
 	return eventlist;
 }
 
-/*public static void Modifyevent (Event event) {
+public static void Modifyevent (Event event) {
 	Statement stmt = null;   
 	Connection conn = SQLConnection.getDBConnection();  
 	//Event event= new Event();
@@ -429,7 +429,7 @@ public static ArrayList<Event> getEventSummary() {
 		e.printStackTrace();
 	};
 }
-}*/
+}
 public static ArrayList<Event>  listEvents1(String edate, String etime) {  
 	
 	return ReturnMatchingEventList(" SELECT eventname, date, starttime, duration, hallname, lastname, firstname, eventID,eventStatus from eventdetails where date_format(date(concat(date,' ',starttime)), '%m-%d-%Y %H:%i') >= date_format(date(concat('"+edate+"',' ','"+etime+"')), '%m-%d-%Y %H:%i') order by date,startTime");

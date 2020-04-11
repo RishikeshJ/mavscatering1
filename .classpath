@@ -17,5 +17,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="C:/Users/DELL/Google Drive/Masters/Spring-20/6329 - STASE/Modules/M06 - Review of important JUnit testing principles/JUnitParams-1.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/DELL/Google Drive/Masters/Spring-20/6329 - STASE/Modules/M03 - Installing and Using MySQL and Tomcat/selenium-server-standalone-3.12.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

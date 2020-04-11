@@ -243,7 +243,7 @@ public class User implements Serializable{
 		if(utaid.isEmpty())
 			error = "UTA ID can not be blank.";
 		else if(!isStringOnlyNumber(utaid))
-				error = "UTA Id must be numeric";
+			error = "UTA Id must be numeric";
 		else if(utaid.length() != 10)
 			error = "UTA Id must have a length of 10";
 		else if(ids.contains(utaid))
