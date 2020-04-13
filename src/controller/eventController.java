@@ -230,7 +230,7 @@ public class eventController extends HttpServlet {
 			session.setAttribute("errorMsgs", EerrorMsgs);
 			EerrorMsgs.setStaffError(event.validateStaff(request.getParameter("firstname"), request.getParameter("lastname")));
 			EerrorMsgs.setErrorMsg();
-			session.setAttribute("e_errorMsgs", EerrorMsgs);
+			//session.setAttribute("e_errorMsgs", EerrorMsgs);
 
 			if(EerrorMsgs.getErrorMsg().equals("")) {
 				event.setStaff_fname(request.getParameter("firstname"));
@@ -302,9 +302,10 @@ public class eventController extends HttpServlet {
 		if (action.equalsIgnoreCase("ViewMyAssignedEvents")) {
 			ArrayList<Event> eventInDB = new ArrayList<Event>();
 			User user1 = (User)session.getAttribute("currentUser");
-
+			System.out.println("Hello");
 			String date = (String) session.getAttribute("Date");
 			String time = (String) session.getAttribute("Time");
+			System.out.println("Date: "+date+"Time: "+time);
 			User userProfile = UserDAO.getUser(user1.getUsername());
 			String fname = userProfile.getFirstname();
 			String lname = userProfile.getLastname(); 
