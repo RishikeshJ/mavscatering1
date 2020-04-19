@@ -84,9 +84,13 @@ public class CatererStaffTest extends CateringManagementFunctions{
 	@Test
 	@FileParameters("test/selenium/CatererStaffTestCase1.csv")
 	public void test(int testCaseNumber,String eventName,String eventDate, String eventTime, String eventDuration, String eventHallName,
-			String userLastName, String userFirstName,String eventViewDetails) {
+			String userLastName, String userFirstName,String eventViewDetails) throws InterruptedException {
 		//fail("Not yet implemented");
 		driver.get(sAppURL);
+		CM_Login(driver,"fbf2883c","Db@10uta","ViewAssignedEventTestCaseCatererStaff"+testCaseNumber);
+		verifyHomePageElements(driver,"CatererStaffVerifyElements"+testCaseNumber);
+		driver.findElement(By.xpath(prop.getProperty("Link_CatererStaff_Logout"))).click();
+		Thread.sleep(1000);
 		CM_Login(driver,"fbf2883c","Db@10uta","ViewAssignedEventTestCaseCatererStaff"+testCaseNumber);
 		viewAssignedEventStaff(driver,"04/10/2020","12:00AM","ViewAssignedEventTestCaseCatererStaffDate"+testCaseNumber);
 		verifyHeadersViewAssignedEvents(driver,eventName,eventDate,eventTime,eventDuration,
@@ -100,7 +104,8 @@ public class CatererStaffTest extends CateringManagementFunctions{
 			e.printStackTrace();
 		}
 		driver.findElement(By.xpath(prop.getProperty("Btn_ViewAssignedEvents_Logout"))).click();
-		
+		Thread.sleep(1000);
+
 	}
 	
 	@Test
@@ -108,11 +113,15 @@ public class CatererStaffTest extends CateringManagementFunctions{
 	public void test1(int testCaseNumber,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
 			String eventHallName,String eventEstAtnds,String eventName,String eventFoodType,String eventMeal,String eventMealFormality,
 			String eventDrinkType,String eventEntItems,String h1,String h2,String h3,String h4,String h5,String h6,String h7,String h8,String h9,
-			String h10,String h11,String h12,String h13) {
+			String h10,String h11,String h12,String h13) throws InterruptedException {
 		driver.get(sAppURL);
 		CM_Login(driver,"fbf2883c","Db@10uta","ViewAssignedEventTestCaseCatererStaff"+testCaseNumber);
+		Thread.sleep(1000);
+
 		viewAssignedEventStaff(driver,"04/10/2020","12:00AM","ViewAssignedEventTestCaseCatererStaffDate"+testCaseNumber);
 		driver.findElement(By.xpath(prop.getProperty("Btn_ViewAssignedEvents_ViewDetails1"))).click();
+		Thread.sleep(1000);
+
 		verifyEventDetailsHeader(driver,"Header_ViewSelectedEvent_FirstName",h1,
 				"Header_ViewSelectedEvent_LastName",h2,"Header_ViewSelectedEvent_Date",h3,
 				"Header_ViewSelectedEvent_StartTime",h4,
@@ -131,6 +140,8 @@ public class CatererStaffTest extends CateringManagementFunctions{
 				"Txt_ViewSelectedEvent_FoodType",eventFoodType,"Txt_ViewSelectedEvent_Meal",eventMeal,"Txt_ViewSelectedEvent_MealFormality",eventMealFormality,
 				"Txt_ViewSelectedEvent_DrinkType",eventDrinkType,"Txt_ViewSelectedEvent_EntItems",eventEntItems,"ViewSelectedEventsDetailsTestCase"+testCaseNumber);
 		driver.findElement(By.xpath(prop.getProperty("Btn_ViewSelectedEvent_Logout"))).click();
+		Thread.sleep(1000);
+
 		
 	}
 	

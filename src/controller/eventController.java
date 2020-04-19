@@ -220,6 +220,8 @@ public class eventController extends HttpServlet {
 			String temp = request.getParameter("id");
 			System.out.println(temp);
 			session.setAttribute("eid", request.getParameter("id"));
+			EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
+			session.setAttribute("errorMsgs", EerrorMsgs);
 		}
 		else if(action.equalsIgnoreCase("assignStaff")) {
 			System.out.print("In assign staff");

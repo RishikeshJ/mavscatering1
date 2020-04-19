@@ -4,6 +4,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import model.Event;
+import model.User;
 import util.SQLConnection;
 
 import static org.junit.Assert.assertTrue;
@@ -248,6 +249,19 @@ public class CateringManagementFunctions {
 		 
 	 }
 	 
+	 public void verifyHomePageElements(WebDriver driver,String SnapshotName) throws InterruptedException{
+		 
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_CatererStaff_ViewProfile"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Link_CatererStaff_ViewProfile"))).click();
+			 Thread.sleep(1000);
+
+			 driver.navigate().back();  
+			 Thread.sleep(1000);
+
+		 }
+		 takeScreenshot(driver,SnapshotName);
+	 }
+	 
 	 public void verifyEventContents(WebDriver driver,String eventFirstNameValueOnpage, String expectedEventFirstNameValue,
 			 String eventLastNameValueOnpage, String expectedEventLastNameValue,
 			 String eventDateValueOnpage, String expectedEventDateValue,
@@ -325,35 +339,62 @@ public class CateringManagementFunctions {
 			 String streetname, String streetnameErr,
 			 String city,String cityErr,
 			 String state, String stateErr,
-			 String zipcode, String zipcodeErr,String errMsgs,String SnapshotName) {
+			 String zipcode, String zipcodeErr,String errMsgs,String SnapshotName) throws InterruptedException {
 		 
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Username"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Username"))).sendKeys(username);
+		 //Thread.sleep(1000);
+		 
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Password"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Password"))).sendKeys(password);
+		 //Thread.sleep(1000);
+		 
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Role"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Role"))).sendKeys(role);
+		 //Thread.sleep(1000);
+		 
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_UTAID"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_UTAID"))).sendKeys(utaid);
+		 //Thread.sleep(1000);
+		 
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_FirstName"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_FirstName"))).sendKeys(firstname);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_LastName"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_LastName"))).sendKeys(lastname);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Phone"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Phone"))).sendKeys(phone);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Email"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Email"))).sendKeys(email);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_StreetNumber"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_StreetNumber"))).sendKeys(streetnumber);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_StreetName"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_StreetName"))).sendKeys(streetname);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_City"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_City"))).sendKeys(city);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_State"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_State"))).sendKeys(state);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_ZipCode"))).clear();
 		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_ZipCode"))).sendKeys(zipcode);
+		 //Thread.sleep(1000);
+
 		 driver.findElement(By.xpath(prop.getProperty("Btn_Register_Register"))).click();
+		 Thread.sleep(1000);
 		 
 		 System.out.println("Text: "+driver.findElement(By.xpath(prop.getProperty("TxtMsg_Register_ErrMsg"))).getAttribute("value"));
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtMsg_Register_ErrMsg"))).getAttribute("value").equals(errMsgs));
@@ -371,5 +412,515 @@ public class CateringManagementFunctions {
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtMsg_Register_State"))).getAttribute("value").equals(stateErr));
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtMsg_Register_ZipCode"))).getAttribute("value").equals(zipcodeErr));
 		 takeScreenshot(driver,SnapshotName);
+		 Thread.sleep(1000);
+
 	 }
+	 
+	 public void RegisterCatererManager(WebDriver driver,String username,
+			 String password,
+			 String role,
+			 String utaid,
+			 String firstname,
+			 String lastname, 
+			 String phone, 
+			 String email, 
+			 String streetnumber,
+			 String streetname, 
+			 String city,
+			 String state, 
+			 String zipcode, String SnapshotName) throws InterruptedException {
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Username"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Username"))).sendKeys(username);
+		 //Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Password"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Password"))).sendKeys(password);
+		 //Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Role"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Role"))).sendKeys(role);
+		 //Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_UTAID"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_UTAID"))).sendKeys(utaid);
+		 //Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_FirstName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_FirstName"))).sendKeys(firstname);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_LastName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_LastName"))).sendKeys(lastname);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Phone"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Phone"))).sendKeys(phone);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Email"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_Email"))).sendKeys(email);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_StreetNumber"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_StreetNumber"))).sendKeys(streetnumber);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_StreetName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_StreetName"))).sendKeys(streetname);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_City"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_City"))).sendKeys(city);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_State"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_State"))).sendKeys(state);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_ZipCode"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_Register_ZipCode"))).sendKeys(zipcode);
+		 //Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Btn_Register_Register"))).click();
+		 Thread.sleep(10000);
+
+		 
+	 }
+	 
+	 public void verifyCatererManagerHomeElements(WebDriver driver,String Title,String subtitle,String viewSummary,String viewProfile,String SnapshotName) throws InterruptedException {
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerHome_Title"))).getText().equals(Title));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerHome_SubTitle"))).getText().equals(subtitle));
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewEventSummary"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewEventSummary"))).getText().equals(viewSummary));
+			 driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewEventSummary"))).click();
+			 Thread.sleep(1000);
+
+			 driver.navigate().back();  
+			 Thread.sleep(1000);
+
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewProfile"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewProfile"))).getText().equals(viewProfile));
+			 driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewProfile"))).click();
+			 Thread.sleep(1000);
+
+			 driver.navigate().back();  
+			 Thread.sleep(1000);
+
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Date"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Date"))).clear();
+			 driver.findElement(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Date"))).sendKeys("04/15/2020");
+			 Thread.sleep(1000);
+
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Time"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Date"))).clear();
+			 driver.findElement(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Date"))).sendKeys("09:00AM");
+			 Thread.sleep(1000);
+
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Btn_CatererManagerHome_Submit"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Btn_CatererManagerHome_Submit"))).click();
+			 Thread.sleep(1000);
+
+			 driver.navigate().back();
+			 Thread.sleep(1000);
+
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Btn_CatereManagerHome_Logout"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Btn_CatereManagerHome_Logout"))).click();
+			 Thread.sleep(1000);
+
+		 }
+		 takeScreenshot(driver,SnapshotName);
+		 
+	 }
+	 
+	 public void verifyCMSummaryHeaders(WebDriver driver,String eventID,String eventName,String duration,String firstName,String lastName,String startTime,String hallName,
+			 String eventDate, String estAtnds,String SnapshotName) {
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_eventID"))).getText().equals(eventID));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_eventName"))).getText().equals(eventName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_duration"))).getText().equals(duration));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_firstname"))).getText().equals(firstName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_lastname"))).getText().equals(lastName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_startTime"))).getText().equals(startTime));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_hallName"))).getText().equals(hallName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_date"))).getText().equals(eventDate));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CatererManagerEventSummary_estAtnds"))).getText().equals(estAtnds));
+		 
+		 takeScreenshot(driver,SnapshotName);
+	 
+	 }
+	 
+	 public static ArrayList<Event> getEventSummary() {
+			Statement stmt = null; 	
+			Connection conn = null;  
+			ArrayList<Event> eventlist = new ArrayList<Event>();
+			try {   
+				conn = SQLConnection.getDBConnection();  
+				stmt = conn.createStatement();
+				String searchSpecificEvent = " SELECT * from eventdetails order by date,startTime;";
+				ResultSet eventList = stmt.executeQuery(searchSpecificEvent);
+				while(eventList.next()) {
+					Event event= new Event();
+					String lastName = eventList.getString("lastName");
+					String firstName  = eventList.getString("firstName");
+					String date = eventList.getString("date");
+					String startTime  = eventList.getString("startTime");
+					String duration  = eventList.getString("duration");
+					String hallName = eventList.getString("hallName");
+					String estAttendees  = eventList.getString("estAttendees");
+					String eventName  = eventList.getString("eventName");
+					String foodType  = eventList.getString("foodType");
+					String meal  = eventList.getString("meal");
+					String mealFormality = eventList.getString("mealFormality");
+					String drinkType  = eventList.getString("drinkType");
+					String entertainmentItems  = eventList.getString("entertainmentItems");
+					String eventStatus  = eventList.getString("eventStatus");
+					String eventID  = eventList.getString("eventID");
+
+					event.setEvent(lastName, firstName, date, startTime, duration, hallName, estAttendees, eventName, foodType, meal, mealFormality, drinkType, 
+							entertainmentItems, eventStatus, eventID, "", "", "", "","");
+					eventlist.add(event);
+				}
+				
+				} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					conn.close();
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				};
+			return eventlist;
+		}
+	 
+	 public String[][] getEventSummary(int rows){
+		 String [][] arrayDB = new String [rows-1][9];
+		 ArrayList<Event> fromDB = getEventSummary();
+		    int i=0;
+		    for (Event e:fromDB) {
+		    	
+		    	arrayDB[i][0]=e.geteventID();
+		    	arrayDB[i][1]=e.geteventName();
+		    	arrayDB[i][2]=e.getduration();
+		    	arrayDB[i][3]=e.getfirstName();
+		    	arrayDB[i][4]=e.getLastName();
+		    	arrayDB[i][5]=e.getstartTime();
+		    	arrayDB[i][6]=e.gethallName();
+		    	arrayDB[i][7]=e.getdate();
+		    	arrayDB[i][8]=e.getestAttendees();
+
+		    	System.out.println(i +" "+arrayDB[i][0]+" "+arrayDB[i][1]+" "+arrayDB[i][2]+" "+arrayDB[i][3]+" "+arrayDB[i][4]+" "+arrayDB[i][5]+" "
+						+arrayDB[i][6]+" "+arrayDB[i][7]+" "+arrayDB[i][8]);
+		 		i++;
+		    }
+
+		 return arrayDB;
+	 }
+	 
+	 public void verifyEventSummaryDetailsHeader(WebDriver driver,String h1OnPage,String exph1,
+			 String h2OnPage,String exph2,
+			 String h3OnPage,String exph3,
+			 String h4OnPage,String exph4,
+			 String h5OnPage,String exph5,
+			 String h6OnPage,String exph6,
+			 String h7OnPage,String exph7,
+			 String h8OnPage,String exph8,
+			 String h9OnPage,String exph9,
+			 String h10OnPage,String exph10,
+			 String h11OnPage,String exph11,
+			 String h12OnPage,String exph12,
+			 String h13OnPage,String exph13,
+			 String h14OnPage,String exph14,String SnapshotName) {
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h1OnPage))).getText().equals(exph1));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h2OnPage))).getText().equals(exph2));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h3OnPage))).getText().equals(exph3));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h4OnPage))).getText().equals(exph4));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h5OnPage))).getText().equals(exph5));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h6OnPage))).getText().equals(exph6));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h7OnPage))).getText().equals(exph7));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h8OnPage))).getText().equals(exph8));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h9OnPage))).getText().equals(exph9));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h10OnPage))).getText().equals(exph10));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h11OnPage))).getText().equals(exph11));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h12OnPage))).getText().equals(exph12));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h13OnPage))).getText().equals(exph13));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h14OnPage))).getText().equals(exph14));
+		 takeScreenshot(driver,SnapshotName);
+		 
+	 }
+	 
+	 public void verifyEventSummaryContents(WebDriver driver,String eventIDValueOnpage, String expectedEventIDValue,
+			 String eventFirstNameValueOnpage, String expectedEventFirstNameValue,
+			 String eventLastNameValueOnpage, String expectedEventLastNameValue,
+			 String eventDateValueOnpage, String expectedEventDateValue,
+			 String eventStartTimeValueOnpage, String expectedEventStartTimeValue,
+			 String eventDurationOnpage, String expectedEventDurationValue,
+			 String eventHallNameValueOnpage, String expectedEventHallNameValue,
+			 String eventEstAtndValueOnpage, String expectedEventEstAtndValue,
+			 String eventNameValueOnpage, String expectedEventNameValue,
+			 String eventFoodTypeValueOnpage, String expectedEventFoodTypeValue,
+			 String eventMealValueOnpage, String expectedEventMealValue,
+			 String eventMealFormalityValueOnpage, String expectedEventMealFormalityValue,
+			 String eventDrinkTypeValueOnpage, String expectedEventDrinkTypeValue,
+			 String eventEntItemsValueOnpage, String expectedEventEntItemsValue,String SnapshotName) {
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventIDValueOnpage))).getText().equals(expectedEventIDValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventFirstNameValueOnpage))).getText().equals(expectedEventFirstNameValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventLastNameValueOnpage))).getText().equals(expectedEventLastNameValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventDateValueOnpage))).getText().equals(expectedEventDateValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventStartTimeValueOnpage))).getText().equals(expectedEventStartTimeValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventDurationOnpage))).getText().equals(expectedEventDurationValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventHallNameValueOnpage))).getText().equals(expectedEventHallNameValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventEstAtndValueOnpage))).getText().equals(expectedEventEstAtndValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventNameValueOnpage))).getText().equals(expectedEventNameValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventFoodTypeValueOnpage))).getText().equals(expectedEventFoodTypeValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventMealValueOnpage))).getText().equals(expectedEventMealValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventMealFormalityValueOnpage))).getText().equals(expectedEventMealFormalityValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventDrinkTypeValueOnpage))).getText().equals(expectedEventDrinkTypeValue));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(eventEntItemsValueOnpage))).getText().equals(expectedEventEntItemsValue));
+		 takeScreenshot(driver,SnapshotName);
+	 }
+
+	 public void verifyAssignStaffPageElements(WebDriver driver, String title,String subtitle,String firstname,String lastname, String SnapshotName) throws InterruptedException {
+
+		 if(driver.findElements(By.xpath(prop.getProperty("Header_CMAssignStaff_Title"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CMAssignStaff_Title"))).getText().equals(title));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Header_CMAssignStaff_Subtitle"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CMAssignStaff_Subtitle"))).getText().equals(subtitle));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Header_CMAssignStaff_firstName"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CMAssignStaff_firstName"))).getText().equals(firstname));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Header_CMAssignStaff_lastName"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_CMAssignStaff_lastName"))).getText().equals(lastname));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_CMAssignStaff_firstName"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_firstName"))).clear();
+			 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_firstName"))).sendKeys("abscdds");
+			 Thread.sleep(1000);
+
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_CMAssignStaff_lastName"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_lastName"))).clear();
+			 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_lastName"))).sendKeys("abscdds");
+			 Thread.sleep(1000);
+
+		 }
+		 
+		 takeScreenshot(driver,SnapshotName);
+	 }
+	 
+	 public void validateAssignStaffError(WebDriver driver,String firstname,String lastname,String err,String staffErr,String SnapshotName) {
+		 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_firstName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_firstName"))).sendKeys(firstname);
+		 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_lastName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_lastName"))).sendKeys(lastname);
+		 driver.findElement(By.xpath(prop.getProperty("Btn_CMAssignStaff_submit"))).click();
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtMsg_CMAssignStaff_Err"))).getAttribute("value").equals(err));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtMsg_CMAssignStaff_Err1"))).getAttribute("value").equals(staffErr));
+		 takeScreenshot(driver,SnapshotName);
+	 }
+	 
+	 public void verifyAdminHomePageElements(WebDriver driver,String Title,String searchUser, String modifyProfile, String logout, String SnapshotName) throws InterruptedException {
+		 if(driver.findElements(By.xpath(prop.getProperty("Header_AdminHomePage_CateringManagementApplication"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_AdminHomePage_CateringManagementApplication"))).getText().equals(Title));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_AdminHomePage_Logout"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Logout"))).getText().equals(logout));
+			 driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Logout"))).click();
+			 Thread.sleep(1000);
+			 CM_Login(driver,"axk987","Bhumit!23","AdminLogin");
+			 Thread.sleep(1000);
+			 
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).getText().equals(searchUser));
+			 driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).click();
+			 Thread.sleep(1000);
+			 driver.navigate().back();
+			 Thread.sleep(1000);
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_AdminHomePage_view/ModifyProfile"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_view/ModifyProfile"))).getText().equals(modifyProfile));
+			 driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_view/ModifyProfile"))).click();
+			 Thread.sleep(1000);
+			 driver.navigate().back();
+			 Thread.sleep(1000);
+
+		 }
+		 takeScreenshot(driver,SnapshotName);
+
+
+	 }
+	 
+	 public void verifySearchUserPageElements(WebDriver driver, String title,String logout,String userLastNameHeader,String SnapshotName) throws InterruptedException {
+		 driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).click();
+		 Thread.sleep(1000);
+		 if(driver.findElements(By.xpath(prop.getProperty("Header_AdminSearchUser_CateringManagementApplication"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_AdminSearchUser_CateringManagementApplication"))).getText().equals(title));
+			 driver.findElement(By.xpath(prop.getProperty("Header_AdminSearchUser_CateringManagementApplication"))).click();
+			 Thread.sleep(1000);
+			 driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).click();
+			 Thread.sleep(1000);
+		 }	 
+		 if(driver.findElements(By.xpath(prop.getProperty("Header_AdminSearchUser_UsersLastname"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_AdminSearchUser_UsersLastname"))).getText().equals(userLastNameHeader));
+		 }	 
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).clear();
+			 driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).sendKeys("Patel");
+
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_AdminSearchUser_Logout"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_AdminSearchUser_Logout"))).getText().equals(logout));
+			 driver.findElement(By.xpath(prop.getProperty("Link_AdminSearchUser_Logout"))).click();
+			 Thread.sleep(1000);
+			 CM_Login(driver,"axk987","Bhumit!23","AdminLogin");
+			 Thread.sleep(1000);
+			 driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).click();
+			 Thread.sleep(1000);
+		 }
+		 takeScreenshot(driver,SnapshotName);
+
+	 }
+	 
+	 public void validateSearchUser(WebDriver driver, String lastName,String errMsg,String lastNameErr,String SnapshotName ) {
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).sendKeys(lastName);
+		 driver.findElement(By.xpath(prop.getProperty("Link_AdminSearchUser_submit"))).click();
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_ErrMsg"))).getAttribute("value").equals(errMsg));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_LastNameErrMsg"))).getAttribute("value").equals(lastNameErr));
+		 takeScreenshot(driver,SnapshotName);
+	 }
+	 
+	 private static ArrayList<User> ReturnMatchingUsersList (String queryString) {
+			ArrayList<User> userListInDB = new ArrayList<User>();
+			
+			Statement stmt = null;
+			Connection conn = SQLConnection.getDBConnection();  
+			try {
+				stmt = conn.createStatement();
+				ResultSet userList = stmt.executeQuery(queryString);
+				while (userList.next()) {
+					User user = new User(); 
+					user.setLastname(userList.getString("lastname"));
+					user.setFirstname(userList.getString("firstname"));
+					user.setUsername(userList.getString("username"));
+					user.setRole(userList.getString("role"));
+					user.setUtaid(userList.getString("utaid"));
+					user.setCity(userList.getString("city"));
+					user.setState(userList.getString("state"));
+					user.setZipcode(userList.getString("zipcode"));
+					user.setStreetname(userList.getString("streetname"));
+					user.setStreetnumber(userList.getString("streetno"));
+					user.setEmail(userList.getString("email"));
+					user.setPhone(userList.getString("phone"));
+					userListInDB.add(user);	
+				}
+			} catch (SQLException e) {}
+			return userListInDB;
+		}
+		
+	 public static ArrayList<User>  searchUsers(String userlastname)  {  
+			return ReturnMatchingUsersList(" SELECT * from user WHERE lastname LIKE '%"+userlastname+"%' ORDER BY lastname,firstname,role");
+		}
+
+	 public String[][] getUsersFromDB(int rows,String lastName) throws SQLException{
+		 ArrayList<User> fromDB = new ArrayList<User>();
+		 fromDB = searchUsers(lastName);
+		 System.out.println("Is Empty? "+fromDB.isEmpty());
+		    String [][] arrayDB = new String [rows-1][4];
+		    int i=0;
+		    for (User e:fromDB) {
+		    	
+		    	arrayDB[i][0]=e.getLastname();
+		    	arrayDB[i][1]=e.getFirstname();
+		    	arrayDB[i][2]=e.getUsername();
+		    	arrayDB[i][3]=e.getRole();
+		    	System.out.println(arrayDB[i][0]+arrayDB[i][1]+arrayDB[i][2]+arrayDB[i][3]);
+		 		i++;
+		    }
+		    return arrayDB;
+	 }
+
+	 public void verifySearchUserResultsHeaders(WebDriver driver,String lastName,String firstName,String userName,String role,String SnapshotName) throws InterruptedException {
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_AdminViewUser_Tablelastname"))).getText().equals(lastName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_AdminViewUser_TableFirstname"))).getText().equals(firstName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_AdminViewUser_TableUsername"))).getText().equals(userName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_AdminViewUser_TableRole"))).getText().equals(role));
+		 takeScreenshot(driver,SnapshotName);
+
+
+	 }
+	 
+	 public void verifyViewProfilePageHeaders(WebDriver driver,String title,String expTitle,
+			 String Subtitle,String expSubtitle,
+			 String h1OnPage,String exph1,
+			 String h2OnPage,String exph2,
+			 String h3OnPage,String exph3,
+			 String h4OnPage,String exph4,
+			 String h5OnPage,String exph5,
+			 String h6OnPage,String exph6,
+			 String h7OnPage,String exph7,
+			 String h8OnPage,String exph8,
+			 String h9OnPage,String exph9,
+			 String h10OnPage,String exph10,
+			 String h11OnPage,String exph11,
+			 String h12OnPage,String exph12,
+			 String SnapshotName) {
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(title))).getText().equals(expTitle));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(Subtitle))).getText().equals(expSubtitle));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h1OnPage))).getText().equals(exph1));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h2OnPage))).getText().equals(exph2));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h3OnPage))).getText().equals(exph3));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h4OnPage))).getText().equals(exph4));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h5OnPage))).getText().equals(exph5));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h6OnPage))).getText().equals(exph6));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h7OnPage))).getText().equals(exph7));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h8OnPage))).getText().equals(exph8));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h9OnPage))).getText().equals(exph9));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h10OnPage))).getText().equals(exph10));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h11OnPage))).getText().equals(exph11));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty(h12OnPage))).getText().equals(exph12));
+		 takeScreenshot(driver,SnapshotName);
+
+	}
+
+	 public static ArrayList<User>   searchUser (String username)  {  
+		return ReturnMatchingUsersList(" SELECT * from user WHERE username = '"+username+"'");
+	 }
+	 
+	 public void verifyViewUserContent(WebDriver driver,String username,String SnapshotName) {
+		 //System.out.println("Username: "+username);
+		 ArrayList<User> userDB = searchUser(username);
+		 System.out.println("Username: "+userDB.get(0).getUsername());
+		 System.out.println("Username1: "+driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Username"))).getAttribute("value"));
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Username"))).getAttribute("value").equals(userDB.get(0).getUsername()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Role"))).getAttribute("value").equals(userDB.get(0).getRole()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_UTAid"))).getAttribute("value").equals(userDB.get(0).getUtaid()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_FirstName"))).getAttribute("value").equals(userDB.get(0).getFirstname()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_LastName"))).getAttribute("value").equals(userDB.get(0).getLastname()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Phone"))).getAttribute("value").equals(userDB.get(0).getPhone()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Email"))).getAttribute("value").equals(userDB.get(0).getEmail()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_StreetNumber"))).getAttribute("value").equals(userDB.get(0).getStreetnumber()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_StreetName"))).getAttribute("value").equals(userDB.get(0).getStreetname()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_City"))).getAttribute("value").equals(userDB.get(0).getCity()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_State"))).getAttribute("value").equals(userDB.get(0).getState()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Zipcode"))).getAttribute("value").equals(userDB.get(0).getZipcode()));
+		 takeScreenshot(driver,SnapshotName);
+
+	 }
+
 }
