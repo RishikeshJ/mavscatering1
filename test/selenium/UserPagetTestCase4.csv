@@ -1,0 +1,8 @@
+1,Bhumit,Shah,05/15/2020,14:00PM,2,Maverick,,,American,Breakfast,Formal,Alcohol,Music,,,Hall is already reserved for this time slot please try again,Estimated attendees cannot be empty,Event name cannot be empty,There can be only 2 reservatiosn per day by a user,There can be only 5 reservations per week by a User,
+2,Bhumit,Shah,04/20/2020,18:00PM,6,Maverick,a,test,American,Breakfast,Formal,Alcohol,Music,Date must not be in past,Duration cannot exceed close time,,Estimated attendees must be a number,Event name must start with a capital letter,,,
+3,Bhumit,Shah,04/26/2020,12:00PM,2,Maverick,-1,Ab,American,Breakfast,Formal,Alcohol,Music,,,,Estimated attendees must be greater than 0,Event name length must be >2 and <30,,,Halls are open from 12pm to 2am Sunday Please select a different time
+4,Bhumit,Shah,04/25/2020,10:00AM,2,Maverick,101,Test,American,Breakfast,Formal,Alcohol,Music,,,,Maveric Hall cannot have an estimated attendance greater than 100,,,,Halls are open from 12pm to 2am on Saturday Please select a different time
+5,Bhumit,Shah,04/24/2020,10:00AM,2,KC,26,Test,American,Breakfast,Formal,Alcohol,Music,,,,KC Hall cannot have an estimated attendance greater than 25,,,,
+6,Bhumit,Shah,04/24/2020,10:00AM,2,Arlington,51,Test,American,Breakfast,Formal,Alcohol,Music,,,,Arlington Hall cannot have an estimated attendance greater than 50,,,,
+7,Bhumit,Shah,04/24/2020,10:00AM,2,Shard,26,Test,American,Breakfast,Formal,Alcohol,Music,,,,Shard Hall cannot have an estimated attendance greater than 25,,,,
+8,Bhumit,Shah,04/24/2020,10:00AM,2,Liberty,76,Test,American,Breakfast,Formal,Alcohol,Music,,,,Liberty cannot have an estimated attendance greater than 75,,,,

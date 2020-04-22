@@ -219,13 +219,23 @@ public class userController extends HttpServlet {
 				String selectedDate = request.getParameter("iddate");
 				String selectedTime = request.getParameter("idtime");
 				EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
-				event.validateSelectedDateTime(selectedDate, selectedTime, EerrorMsgs);
+//				event.setdate(selectedDate);
+//				event.setstartTime(selectedTime);
+//				
+//				try {
+//					event.validateEvent(action, event, EerrorMsgs);
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+				/*event.validateSelectedDateTime(selectedDate, selectedTime, EerrorMsgs);
 					try {
 						event.validateselectedDate(selectedDate, EerrorMsgs);
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}*/
+				
 				session.setAttribute("TIMEERROR", EerrorMsgs);
 				if (EerrorMsgs.getErrorMsg().equals("")) {
 					session.removeAttribute("errorMsgs");

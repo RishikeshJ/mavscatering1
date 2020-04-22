@@ -87,7 +87,7 @@ public class EventErrorMsgs {
 	}
 	
 	public String gettimeerror() {
-		return invalidCCNum;
+		return timeerror;
 	}
 
 	public void settimeerror(String timeerror) {

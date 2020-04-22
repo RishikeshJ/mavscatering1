@@ -30,7 +30,7 @@
 				<input type="date" id="iddate" name="iddate"  disabled="disabled" value="<c:out value='${date}'/>" >
 				
 			</td>
-			<td><input name="selecteddateerror"  value="<c:out value='${TIMEERROR.pastdateError}'/>" type="text"  style ="color: red; border: none; width: 300px;"></td>
+			<td><input name="selecteddateerror"  value="<c:out value='${errorMsgs.pastdateError}'/>" type="text"  style ="color: red; border: none; width: 300px;"></td>
 			
 	</tr>
 	
@@ -135,11 +135,13 @@
     <input type="submit" value="Book Event">
     </form>
     <tr>
-	<td><input name="selecteddateerror2"  value="<c:out value='${TIMEERROR.samedayReserveError}'/>" type="text"  style ="color: red; border: none; width: 300px;"></td>
+	<td><input name="selecteddateerror2"  value="<c:out value='${errorMsgs.samedayReserveError}'/>" type="text"  style ="color: red; border: none; width: 300px;"></td>
 	</tr>
 	<tr>
-		<td><input name="selecteddateerror3"  value="<c:out value='${TIMEERROR.sameweekReserverError}'/>" type="text"  style ="color: red; border: none; width: 400px;"></td>
-
+		<td><input name="selecteddateerror3"  value="<c:out value='${errorMsgs.sameweekReserverError}'/>" type="text"  style ="color: red; border: none; width: 400px;"></td>
+	</tr>
+	<tr>
+		<td><input name="selecteddateerror4"  value="<c:out value='${errorMsgs.timeerror}'/>" type="text"  style ="color: red; border: none; width: 400px;"></td>
 	</tr>
 	
     

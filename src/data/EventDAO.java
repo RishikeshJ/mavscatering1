@@ -133,6 +133,7 @@ public static int CheckReservations(String date, String time, String hallname) {
 				+ "WHERE Time_to_sec('"+time+"') between Time_to_sec(startTime)"
 						+ " and (Time_to_Sec(concat(duration,':00'))  +  Time_to_sec(startTime)) and date = '"+date+"'"
 						+ " and eventStatus = 'Reserved' and hallName = '"+hallname+"'";
+		System.out.println(reservations);
 		ResultSet Result = stmt.executeQuery(reservations);	
 		while(Result.next()) {count = Result.getString("count");}
 		
@@ -141,13 +142,14 @@ public static int CheckReservations(String date, String time, String hallname) {
 	catch(SQLException e)
 	{
 		e.printStackTrace();
-	}
+	}	
 	return Integer.parseInt(count);
 }
 
 public static int CheckDailyReservations(String date, String UserProfile) {
 	Statement stmt = null;
 	Connection conn = SQLConnection.getDBConnection();
+	System.out.println("Date: "+ date);
 	String count = "0";
 	try
 	{

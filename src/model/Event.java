@@ -313,15 +313,16 @@ public class Event implements Serializable{
 
 	//Validations
 	public void validateEvent (String action,Event event, EventErrorMsgs errorMsgs) throws ParseException {
-		if (action.equals("registerEvent")) {
-			errorMsgs.setduplicateResMsg(verifyFacilityAvailability(event.getdate(),event.getstartTime(),event.gethallName()));	
+		if (action.equals("Book_Event")) {
 			errorMsgs.setCapacityError(verifyHallCapacity(event.gethallName(), event.getestAttendees()));
-			errorMsgs.setEventNameError(validateEventName(event.geteventName().toString(), errorMsgs));
+			errorMsgs.setEventNameError(validateEventName(event.geteventName(),errorMsgs));
 			errorMsgs.setPastdateError(verifyifReservationInPast(event.getdate()));
-			validateSelectedDateTime(event.date,event.startTime,errorMsgs);
-			validateduration(event.date, event.startTime, event.duration, errorMsgs);
-			validateeventdurations(event.date,event.userid, errorMsgs);
-			validateselectedDate (event.date, errorMsgs);
+			errorMsgs.setDurationError(validateeventduration(event.getdate(),event.getstartTime(),event.getduration()));
+			errorMsgs.settimeerror(validatedateandtime(event.getdate(), event.getstartTime()));
+			errorMsgs.setduplicateResMsg(verifyFacilityAvailability(event.getdate(),event.getstartTime(),event.gethallName()));
+			errorMsgs.setsamedayReserveError(verifyFacilityReservation(event.getdate(), event.getuserid()));
+			errorMsgs.setsameweekReserverError(verifyFacilityReservationWeekly(event.getdate(),event.getuserid()));
+			System.out.println("Time err:"+errorMsgs.gettimeerror());
 			errorMsgs.setErrorMsg();
 		}
 		else if(action.equals("payDeposit")){
@@ -330,13 +331,15 @@ public class Event implements Serializable{
 		}
 	}
 	
-	public void validateeventdurations(String selectedDate,String UserProfile, EventErrorMsgs errorMsgs) {
+	
+/*	public void validateeventdurations(String selectedDate,String UserProfile, EventErrorMsgs errorMsgs) {
 		errorMsgs.setsamedayReserveError(verifyFacilityReservation(selectedDate, UserProfile));
 		if(errorMsgs.getsamedayReserveError().equals("")) {
 			errorMsgs.setsameweekReserverError(verifyFacilityReservationWeekly(selectedDate,UserProfile));
 		}
-	}
+	}*/
 	
+	//Reservation Daily Error
 	private String verifyFacilityReservation(String date, String UserProfile) {
 		int result=EventDAO.CheckDailyReservations(date,UserProfile);
 		System.out.println(result);
@@ -348,7 +351,7 @@ public class Event implements Serializable{
 		}
 		return Error;
 	}
-	
+	//Reservation Weekly Error
 	private String verifyFacilityReservationWeekly(String date, String UserProfile) {
 		int result=EventDAO.CheckWeeklyReservations(date,UserProfile);
 		System.out.println(result);
@@ -361,6 +364,7 @@ public class Event implements Serializable{
 		return Error;
 	}
 	
+	//Event Name Error
 	public String validateEventName(String eventName, EventErrorMsgs errorMsgs) {
 		String Error = "";
 		if(!eventName.isEmpty()) {
@@ -378,16 +382,16 @@ public class Event implements Serializable{
 		return Error;
 	}
 	
-	public void validateselectedDate (String selecteddate, EventErrorMsgs errorMsgs) throws ParseException {
+	/*public void validateselectedDate (String selecteddate, EventErrorMsgs errorMsgs) throws ParseException {
 		errorMsgs.setPastdateError(verifyifReservationInPast(selecteddate));
 		//errorMsgs.setErrorMsg();
-	}
+	}*/
 	
-	public void validateduration (String selecteddate, String selectedtime, String Duration, EventErrorMsgs errorMsgs) {
+	/*public void validateduration (String selecteddate, String selectedtime, String Duration, EventErrorMsgs errorMsgs) {
 		//if (action.equals("register")) {
 		errorMsgs.setDurationError(validateeventduration(selecteddate,selectedtime,Duration));
 		//errorMsgs.setErrorMsg();
-	}
+	}*/
 	
 	public void validateCardinfo(Event event, EventErrorMsgs errorMsgs) throws ParseException {
 		errorMsgs.setinvalidCCNum(validateCCnumber(event.getccnumber()));
@@ -397,23 +401,25 @@ public class Event implements Serializable{
 		//errorMsgs.setErrorMsg();
 	}
 	
-	public void validateSelectedDateTime(String date, String Time, EventErrorMsgs errorMsgs) {
+	/*public void validateSelectedDateTime(String date, String Time, EventErrorMsgs errorMsgs) {
 		errorMsgs.settimeerror(validatedateandtime(date, Time));
 		errorMsgs.setErrorMsg();
-	}
+	}*/
+	
 	
 	private String verifyFacilityAvailability(String date, String startTime, String hallName) {
 		int result=EventDAO.CheckReservations(date, startTime, hallName);
-		System.out.println(result);
+		System.out.println("Res:"+result);
 		String Error="";
-		/*if(result>0) {
+		if(result>0) {
 			Error = "Hall is already reserved for this time slot please try again";
 		}else {
 			Error = "";
-		}*/
+		}
 		return Error;
 	}
 	
+	//Past Date Error
 	private String verifyifReservationInPast(String date) throws ParseException {
 		String Error = "";
 		SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
@@ -425,6 +431,7 @@ public class Event implements Serializable{
 		return Error;
 	}
 	
+	//Capacity Error
 	private String verifyHallCapacity(String hallname, String estAttendees) {
 		
 		String Error = "";
@@ -464,6 +471,7 @@ public class Event implements Serializable{
 		return Error;
 	}
 
+	//Duration Error 
 	private String validateeventduration(String selecteddate, String selectedtime, String Duration) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date SelectedDate = null;
@@ -582,6 +590,7 @@ public class Event implements Serializable{
 		return result;
 	}
 	
+	
 	private String validatedateandtime(String selecteddate, String selectedtime) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date SelectedDate = null;
@@ -663,11 +672,13 @@ public class Event implements Serializable{
 	    Date x = calendar1.getTime();
 	    String result="";
 		//Validation : if its any day except Sunday and the time for request is less than 7am
+	    //System.out.print("Hall Time:"+ result);
 	    if(cal.get(Calendar.DAY_OF_WEEK)!=Calendar.SUNDAY)
 	    	{
 	    	if(x.before(weekdayopencal.getTime())
 	    		|| x.after(weekdayclosecal.getTime())) {
 	    		result = "Halls are open from 7am to 11pm on all days except Sunday Please select a different time";
+	    		//System.out.print("Hall Time1:"+ result);
 	    	}	    	
 	    }
 	    
@@ -677,6 +688,7 @@ public class Event implements Serializable{
 				|| x.after(weekendclosecal.getTime()))
 			{
 				result = "Halls are open from 12pm to 2am Sunday Please select a different time";
+				//System.out.print("Hall Time2:"+ result);
 			}
 		
 		}	  
@@ -687,7 +699,8 @@ public class Event implements Serializable{
 			if(x.before(weekdayopencal.getTime())
 				|| x.after(weekendclosecal.getTime()))
 			{
-				result = "Halls are open from 7am to 2am on Saturday Please select a different time";
+				result = "Halls are open from 12pm to 2am on Saturday Please select a different time";
+				//System.out.print("Hall Time3:"+ result);
 			}
 		}
 		return result;
@@ -698,10 +711,10 @@ public class Event implements Serializable{
 		String result="";
 		if (!ccnum.isEmpty()) {
 			if (!isTextAnInteger(ccnum))
-				result="Your Credit Card Number field must be $ number";
+				result="Your Credit Card Number field must be 4 number";
 			else
 				if (ccnum.length()!=16){
-					result="Credit card number must be $ digits";
+					result="Credit card number must be 4 digits";
 				}
 		}
 		else
@@ -767,7 +780,6 @@ public class Event implements Serializable{
         }
 		return result;
 	}
-
 
 	public String validateStaff(String fname, String lname) {
 		// TODO Auto-generated method stub

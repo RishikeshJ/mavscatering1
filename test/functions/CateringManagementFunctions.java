@@ -149,52 +149,52 @@ public class CateringManagementFunctions {
 		    return arrayDB;
 	 }
 	 
-//	 public static Event getSpecificEvent(String eventID) {
-//			Statement stmt = null;   
-//			Connection conn = null;  
-//			Event event = new Event();
-//			try {   
-//				conn = SQLConnection.getDBConnection();  
-//				stmt = conn.createStatement();
-//				String searchSpecificEvent = " SELECT * from eventdetails WHERE eventID = '"+eventID+"'";
-//				ResultSet eventList = stmt.executeQuery(searchSpecificEvent);
-//				while(eventList.next()) {
-//					String lastName = eventList.getString("lastName");
-//					String firstName  = eventList.getString("firstName");
-//					String date = eventList.getString("date");
-//					String startTime  = eventList.getString("startTime");
-//					String duration  = eventList.getString("duration");
-//					String hallName = eventList.getString("hallName");
-//					String estAttendees  = eventList.getString("estAttendees");
-//					String eventName  = eventList.getString("eventName");
-//					String foodType  = eventList.getString("foodType");
-//					String meal  = eventList.getString("meal");
-//					String mealFormality = eventList.getString("mealFormality");
-//					String drinkType  = eventList.getString("drinkType");
-//					String entertainmentItems  = eventList.getString("entertainmentItems");
-//					String eventStatus  = eventList.getString("eventStatus");
-//					String EventID  = eventList.getString("eventID");
-//					String ccNumber = eventList.getString("ccnum");
-//					String ccpin = eventList.getString("cvvnum");
-//					String ccexpdate = eventList.getString("expdate");
-//					String userid = eventList.getString("userid");
-//					String depositAmount = eventList.getString("depositAmount");
-//					event.setEvent(lastName, firstName, date, startTime, duration, hallName, estAttendees, eventName, foodType, meal, mealFormality, drinkType, 
-//							entertainmentItems, eventStatus, EventID, ccNumber, ccpin, ccexpdate, userid,depositAmount);
-//				}
-//				
-//				} catch (SQLException e) {
-//				e.printStackTrace();
-//			} finally {
-//				try {
-//					conn.close();
-//					stmt.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//				};
-//			return event;
-//		}
+	 public static Event getSpecificEvent(String eventID) {
+			Statement stmt = null;   
+			Connection conn = null;  
+			Event event = new Event();
+			try {   
+				conn = SQLConnection.getDBConnection();  
+				stmt = conn.createStatement();
+				String searchSpecificEvent = " SELECT * from eventdetails WHERE eventID = '"+eventID+"'";
+				ResultSet eventList = stmt.executeQuery(searchSpecificEvent);
+				while(eventList.next()) {
+					String lastName = eventList.getString("lastName");
+					String firstName  = eventList.getString("firstName");
+					String date = eventList.getString("date");
+					String startTime  = eventList.getString("startTime");
+					String duration  = eventList.getString("duration");
+					String hallName = eventList.getString("hallName");
+					String estAttendees  = eventList.getString("estAttendees");
+					String eventName  = eventList.getString("eventName");
+					String foodType  = eventList.getString("foodType");
+					String meal  = eventList.getString("meal");
+					String mealFormality = eventList.getString("mealFormality");
+					String drinkType  = eventList.getString("drinkType");
+					String entertainmentItems  = eventList.getString("entertainmentItems");
+					String eventStatus  = eventList.getString("eventStatus");
+					String EventID  = eventList.getString("eventID");
+					String ccNumber = eventList.getString("ccnum");
+					String ccpin = eventList.getString("cvvnum");
+					String ccexpdate = eventList.getString("expdate");
+					String userid = eventList.getString("userid");
+					String depositAmount = eventList.getString("depositAmount");
+					event.setEvent(lastName, firstName, date, startTime, duration, hallName, estAttendees, eventName, foodType, meal, mealFormality, drinkType, 
+							entertainmentItems, eventStatus, EventID, ccNumber, ccpin, ccexpdate, userid,depositAmount);
+				}
+				
+				} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					conn.close();
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				};
+			return event;
+		}
 //
 //	 
 //	 public String[][] getEventDetailsFromDB(String eid) {
@@ -922,5 +922,275 @@ public class CateringManagementFunctions {
 		 takeScreenshot(driver,SnapshotName);
 
 	 }
+
+	 public void verifyUserHomePageElements(WebDriver driver,String header,String l1,String l2,String l3,String SnapshotName) {
+		 if(driver.findElements(By.xpath(prop.getProperty("Header_UserHome_UserHome"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_UserHome_UserHome"))).getText().equals(header));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_UserHome_RequestEvent"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_UserHome_RequestEvent"))).getText().equals(l1));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_UserHome_ViewEventSummary"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_UserHome_ViewEventSummary"))).getText().equals(l2));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_UserHome_ViewProfile"))).size()>0) {
+			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Link_UserHome_ViewProfile"))).getText().equals(l3));
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Link_UserHome_Logout"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Link_UserHome_Logout"))).click();
+		 }
+		 takeScreenshot(driver,SnapshotName);
+	 }
+	
+	 public static User getUser(String username) {
+			Statement stmt = null;   
+			Connection conn = null;  
+			User user = new User();
+			try {   
+				conn = SQLConnection.getDBConnection();  
+				stmt = conn.createStatement();
+				String searchUsername = " SELECT * from USER WHERE USERNAME = '"+username+"'";
+				ResultSet userList = stmt.executeQuery(searchUsername);
+				while(userList.next()) {
+					String password = userList.getString("password");
+					String role  = userList.getString("role");
+					String utaId = userList.getString("utaid");
+					String firstName  = userList.getString("firstname");
+					String lastName  = userList.getString("lastname");
+					String phone = userList.getString("phone");
+					String email  = userList.getString("email");
+					String streetname  = userList.getString("streetname");
+					String streetno  = userList.getString("streetno");
+					String city  = userList.getString("city");
+					String state  = userList.getString("state");
+					String zipcode  = userList.getString("zipcode");
+					user.setUser( username, password, lastName, firstName, role, utaId, phone, email, streetno, streetname, city, state, zipcode);				  	
+				}
+				
+				} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					conn.close();
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				};
+			return user;
+		}
+
+	 public void verifyViewMyProfileContent(WebDriver driver,String username,String SnapshotName) {
+		 
+		 User userDB = getUser(username);
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_Username"))).getAttribute("value").equals(userDB.getUsername()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_Password"))).getAttribute("value").equals(userDB.getPassword()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_Role"))).getAttribute("value").equals(userDB.getRole()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_UTAid"))).getAttribute("value").equals(userDB.getUtaid()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_FirstName"))).getAttribute("value").equals(userDB.getFirstname()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_LastName"))).getAttribute("value").equals(userDB.getLastname()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_Phone"))).getAttribute("value").equals(userDB.getPhone()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_Email"))).getAttribute("value").equals(userDB.getEmail()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_StreetNumber"))).getAttribute("value").equals(userDB.getStreetnumber()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_StreetName"))).getAttribute("value").equals(userDB.getStreetname()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_City"))).getAttribute("value").equals(userDB.getCity()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_State"))).getAttribute("value").equals(userDB.getState()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewMyProfile_Zipcode"))).getAttribute("value").equals(userDB.getZipcode()));
+		 takeScreenshot(driver,SnapshotName);
+		 driver.findElement(By.xpath(prop.getProperty("Link_ViewMyProfile_Logout"))).click();
+		 
+	 }
+	 
+	 public void verifyEventRequestPageHeaders(WebDriver driver,String title,String h1,String h2,String h3,String h4,String h5,String h6,String h7,
+			 String h8,String h9,String h10,String h11,String h12,String h13) {
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_header"))).getText().equals(title));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_LastName"))).getText().equals(h1));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_FirstName"))).getText().equals(h2));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_Date"))).getText().equals(h3));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_Time"))).getText().equals(h4));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_Duration"))).getText().equals(h5));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_HallName"))).getText().equals(h6));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_EstAtnds"))).getText().equals(h7));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_EventName"))).getText().equals(h8));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_FoodType"))).getText().equals(h9));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_Meal"))).getText().equals(h10));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_MealFormality"))).getText().equals(h11));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_DrinkType"))).getText().equals(h12));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_DrinkType"))).getText().equals(h13));
+		 
+	 }
+	 
+	 public void veriyfEventRequestPageInputs(WebDriver driver) {
+		 
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_Duration"))).size()>0) {
+			 
+		 }
+		 
+	 }
+	 
+	 public void validateEventRequestPage(WebDriver driver, String FirstName,String LastName,String Date,String Time,String Duration,String HallName,
+			 String estAtnds,String EventName,String foodType,String Meal,String mealFormality,String DrinkType,String entItems,
+			 String pastDateErr,String durationErr,String capacityErr,String estAtndsErr,String eventNameErr,String sameDayErr,String sameWeekErr,
+			 String timeErr,String SnapshotName) throws InterruptedException {
+		 
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Link_UserHome_RequestEvent"))).click();
+		 Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventRequest_Date"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventRequest_Date"))).sendKeys(Date);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventRequest_Time"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventRequest_Time"))).sendKeys(Time);
+		 
+		 Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("btn_EventRequest_Next"))).click();
+		 Thread.sleep(1000);
+
+		 Select durationDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_Duration"))));
+		 Select hallDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_HallName"))));
+		 Select foodTypeDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_FoodType"))));
+		 Select mealDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_Meal"))));
+		 Select mealFormalityDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_MealFormality"))));
+		 Select drinkTypeDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_DrinkType"))));
+		 Select entItemsDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EntItems"))));
+
+		 durationDrpDown.selectByVisibleText(Duration);
+		 hallDrpDown.selectByVisibleText(HallName);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EstAtnds"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EstAtnds"))).sendKeys(estAtnds);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EventName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EventName"))).sendKeys(EventName);
+
+		 foodTypeDrpDown.selectByVisibleText(foodType);
+		 mealDrpDown.selectByVisibleText(Meal);
+		 mealFormalityDrpDown.selectByVisibleText(mealFormality);
+		 drinkTypeDrpDown.selectByVisibleText(DrinkType);
+		 entItemsDrpDown.selectByVisibleText(entItems);
+		 
+		 Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_EventBook_bookEvent"))).click();
+		 Thread.sleep(1000);
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_EventBook_PastDate"))).getAttribute("value").equals(pastDateErr));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_EventBook_Duration"))).getAttribute("value").equals(durationErr));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_EventBook_Capacity"))).getAttribute("value").equals(capacityErr));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_EventBook_EstAtnds"))).getAttribute("value").equals(estAtndsErr));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_EventBook_EventName"))).getAttribute("value").equals(eventNameErr));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_EventBook_SameDay"))).getAttribute("value").equals(sameDayErr));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_EventBook_SameWeek"))).getAttribute("value").equals(sameWeekErr));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_EventBook_Time"))).getAttribute("value").equals(timeErr));
+
+		 takeScreenshot(driver,SnapshotName);
+		 
+	 }
+	 
+	 public static ArrayList<Event> getUserEventSummary(String Username, String firstname,String lastname) {
+			Statement stmt = null;
+			Statement stmt1 = null;
+			Connection conn = null;  
+			ArrayList<Event> eventlist = new ArrayList<Event>();
+			try {   
+				conn = SQLConnection.getDBConnection();  
+				stmt = conn.createStatement();
+				String updateuserevent = "update eventdetails set firstname='"+firstname+"', lastname='"+lastname+"' where userid='"+Username+"';";
+				System.out.print(updateuserevent);
+				stmt1 = conn.createStatement();
+				stmt1.executeUpdate(updateuserevent);
+				conn.commit();
+				String searchSpecificEvent = "SELECT * from eventdetails where userid = '"+Username+"' order by date,startTime;";
+				ResultSet eventList = stmt.executeQuery(searchSpecificEvent);
+				while(eventList.next()) {
+					Event event= new Event();
+					String lastName = eventList.getString("lastName");
+					String firstName  = eventList.getString("firstName");
+					String date = eventList.getString("date");
+					String startTime  = eventList.getString("startTime");
+					String duration  = eventList.getString("duration");
+					String hallName = eventList.getString("hallName");
+					String estAttendees  = eventList.getString("estAttendees");
+					String eventName  = eventList.getString("eventName");
+					String foodType  = eventList.getString("foodType");
+					String meal  = eventList.getString("meal");
+					String mealFormality = eventList.getString("mealFormality");
+					String drinkType  = eventList.getString("drinkType");
+					String entertainmentItems  = eventList.getString("entertainmentItems");
+					String eventStatus  = eventList.getString("eventStatus");
+					String eventID  = eventList.getString("eventID");
+
+					event.setEvent(lastName, firstName, date, startTime, duration, hallName, estAttendees, eventName, foodType, meal, mealFormality, drinkType, 
+							entertainmentItems, eventStatus, eventID, "", "", "", "","");
+					eventlist.add(event);
+					
+				}
+				
+				} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					conn.close();
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				};
+			return eventlist;
+		}
+	 
+	 public String[][] userEventsummaryfromDB(int rows,String username,String firstname,String lastname) {
+		 String [][] arrayDB = new String [rows-1][9];
+		 ArrayList<Event> fromDB = getUserEventSummary(username,firstname,lastname);
+		    int i=0;
+		    for (Event e:fromDB) {
+		    	
+		    	arrayDB[i][0]=e.geteventID();
+		    	arrayDB[i][1]=e.geteventName();
+		    	arrayDB[i][2]=e.getduration();
+		    	arrayDB[i][3]=e.getfirstName();
+		    	arrayDB[i][4]=e.getLastName();
+		    	arrayDB[i][5]=e.getstartTime();
+		    	arrayDB[i][6]=e.gethallName();
+		    	arrayDB[i][7]=e.getdate();
+		    	arrayDB[i][8]=e.getestAttendees();
+
+		    	System.out.println(i +" "+arrayDB[i][0]+" "+arrayDB[i][1]+" "+arrayDB[i][2]+" "+arrayDB[i][3]+" "+arrayDB[i][4]+" "+arrayDB[i][5]+" "
+						+arrayDB[i][6]+" "+arrayDB[i][7]+" "+arrayDB[i][8]);
+		 		i++;
+		    }
+
+		 return arrayDB;
+	 }
+	 
+	 public void verifyViewEventContent(WebDriver driver,String EventID,String SnapshotName) {
+		 //System.out.println("Username: "+username);
+		 Event userDB = getSpecificEvent(EventID);
+		 System.out.print("Event id: "+userDB.geteventID());
+		 System.out.print("Event id1: "+driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_eventID"))).getText());
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_eventID"))).getText().equals(userDB.geteventID()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_Lastname"))).getText().equals(userDB.getLastName()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_Firstname"))).getText().equals(userDB.getfirstName()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_eventDate"))).getText().equals(userDB.getdate()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_startTime"))).getText().equals(userDB.getstartTime()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_duration"))).getText().equals(userDB.getduration()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_hallName"))).getText().equals(userDB.gethallName()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_estAtnds"))).getText().equals(userDB.getestAttendees()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_eventName"))).getText().equals(userDB.geteventName()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_foodtype"))).getText().equals(userDB.getfoodType()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_meal"))).getText().equals(userDB.getmeal()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_mealFormality"))).getText().equals(userDB.getmealFormality()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_drinkType"))).getText().equals(userDB.getdrinkType()));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Txt_ViewUserEvent_entItems"))).getText().equals(userDB.getentertainmentItems()));
+
+		 takeScreenshot(driver,SnapshotName);
+
+	 }
+
 
 }
