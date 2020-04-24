@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -730,6 +731,17 @@ public class CateringManagementFunctions {
 		 takeScreenshot(driver,SnapshotName);
 	 }
 	 
+	 public void assignStaff(WebDriver driver,String firstname,String lastname,String SnapshotName) throws InterruptedException {
+		 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_firstName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_firstName"))).sendKeys(firstname);
+		 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_lastName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_CMAssignStaff_lastName"))).sendKeys(lastname);
+		 takeScreenshot(driver,SnapshotName);
+		 Thread.sleep(1000);
+		 driver.findElement(By.xpath(prop.getProperty("Btn_CMAssignStaff_submit"))).click();
+		 Thread.sleep(1000);
+	 }
+	 
 	 public void verifyAdminHomePageElements(WebDriver driver,String Title,String searchUser, String modifyProfile, String logout, String SnapshotName) throws InterruptedException {
 		 if(driver.findElements(By.xpath(prop.getProperty("Header_AdminHomePage_CateringManagementApplication"))).size()>0) {
 			 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_AdminHomePage_CateringManagementApplication"))).getText().equals(Title));
@@ -1002,6 +1014,22 @@ public class CateringManagementFunctions {
 		 
 	 }
 	 
+	 public void verifyViewMyEventSummaryHeaders(WebDriver driver,String eventID,String eventName,String duration,String firstName,String lastName,
+			 String startTime,String hallName,String eventDate,String estAtnds,String SnapshotName) {
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_EventID"))).getText().equals(eventID));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_EventName"))).getText().equals(eventName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_EventDuration"))).getText().equals(duration));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_FirstName"))).getText().equals(firstName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_LastName"))).getText().equals(lastName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_StartTime"))).getText().equals(startTime));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_HallName"))).getText().equals(hallName));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_EventDate"))).getText().equals(eventDate));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_ViewMyEventSummary_EstAtnds"))).getText().equals(estAtnds));
+		 
+		 takeScreenshot(driver,SnapshotName);
+
+	 }
+	 
 	 public void verifyEventRequestPageHeaders(WebDriver driver,String title,String h1,String h2,String h3,String h4,String h5,String h6,String h7,
 			 String h8,String h9,String h10,String h11,String h12,String h13) {
 		 
@@ -1018,15 +1046,71 @@ public class CateringManagementFunctions {
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_Meal"))).getText().equals(h10));
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_MealFormality"))).getText().equals(h11));
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_DrinkType"))).getText().equals(h12));
-		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_DrinkType"))).getText().equals(h13));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Header_EventBook_EntItems"))).getText().equals(h13));
 		 
 	 }
 	 
-	 public void veriyfEventRequestPageInputs(WebDriver driver) {
+	 public void verifyEventRequestPageElements(WebDriver driver) {
 		 
+
 		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_Duration"))).size()>0) {
-			 
+			 Select durationDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_Duration"))));
+			 List<WebElement> options = durationDrpDown.getOptions();
+			 for(int i=0;i<options.size();i++) {
+				 durationDrpDown.selectByIndex(i);
+			 }
 		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_HallName"))).size()>0) {
+			 Select hallDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_HallName"))));
+			 List<WebElement> options = hallDrpDown.getOptions();
+			 for(int i=0;i<options.size();i++) {
+				 hallDrpDown.selectByIndex(i);
+			 }
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_EstAtnds"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EstAtnds"))).clear();
+			 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EstAtnds"))).sendKeys("100");
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_EventName"))).size()>0) {
+			 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EventName"))).clear();
+			 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EventName"))).sendKeys("Test");
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_FoodType"))).size()>0) {
+			 Select foodTypeDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_FoodType"))));
+			 List<WebElement> options = foodTypeDrpDown.getOptions();
+			 for(int i=0;i<options.size();i++) {
+				 foodTypeDrpDown.selectByIndex(i);
+			 }
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_Meal"))).size()>0) {
+			 Select mealDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_Meal"))));
+			 List<WebElement> options = mealDrpDown.getOptions();
+			 for(int i=0;i<options.size();i++) {
+				 mealDrpDown.selectByIndex(i);
+			 }
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_MealFormality"))).size()>0) {
+			 Select mealFormalityDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_MealFormality"))));
+			 List<WebElement> options = mealFormalityDrpDown.getOptions();
+			 for(int i=0;i<options.size();i++) {
+				 mealFormalityDrpDown.selectByIndex(i);
+			 }
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_DrinkType"))).size()>0) {
+			 Select drinkTypeDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_DrinkType"))));
+			 List<WebElement> options = drinkTypeDrpDown.getOptions();
+			 for(int i=0;i<options.size();i++) {
+				 drinkTypeDrpDown.selectByIndex(i);
+			 }
+		 }
+		 if(driver.findElements(By.xpath(prop.getProperty("Txt_EventBook_EntItems"))).size()>0) {
+			 Select entItemsDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EntItems"))));
+			 List<WebElement> options = entItemsDrpDown.getOptions();
+			 for(int i=0;i<options.size();i++) {
+				 entItemsDrpDown.selectByIndex(i);
+			 }
+		 }
+
 		 
 	 }
 	 
@@ -1190,6 +1274,57 @@ public class CateringManagementFunctions {
 
 		 takeScreenshot(driver,SnapshotName);
 
+	 }
+	 
+	 public void registerEvent(WebDriver driver,String firstname,String lastname,String date,String starttime,String duration,String hallName,
+			 String estAtnds,String eventName,String foodtype,String meal,String mealFormality,String drinkType,String entItems,String eventStatus,
+			 String userid,String ccnum,String cvvnum,String expdate,String depositAmount,String SnapshotName) throws InterruptedException {
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Link_UserHome_RequestEvent"))).click();
+		 Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventRequest_Date"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventRequest_Date"))).sendKeys(date);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventRequest_Time"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventRequest_Time"))).sendKeys(starttime);
+		 
+		 Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("btn_EventRequest_Next"))).click();
+		 Thread.sleep(1000);
+
+		 Select durationDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_Duration"))));
+		 Select hallDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_HallName"))));
+		 Select foodTypeDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_FoodType"))));
+		 Select mealDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_Meal"))));
+		 Select mealFormalityDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_MealFormality"))));
+		 Select drinkTypeDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_DrinkType"))));
+		 Select entItemsDrpDown = new Select(driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EntItems"))));
+
+		 durationDrpDown.selectByVisibleText(duration);
+		 hallDrpDown.selectByVisibleText(hallName);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EstAtnds"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EstAtnds"))).sendKeys(estAtnds);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EventName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_EventBook_EventName"))).sendKeys(eventName);
+
+		 foodTypeDrpDown.selectByVisibleText(foodtype);
+		 mealDrpDown.selectByVisibleText(meal);
+		 mealFormalityDrpDown.selectByVisibleText(mealFormality);
+		 drinkTypeDrpDown.selectByVisibleText(drinkType);
+		 entItemsDrpDown.selectByVisibleText(entItems);
+		 
+		 Thread.sleep(1000);
+		 
+		 takeScreenshot(driver,SnapshotName);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_EventBook_bookEvent"))).click();
+		 Thread.sleep(1000);
+
+		 
 	 }
 
 

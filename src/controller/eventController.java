@@ -38,11 +38,11 @@ public class eventController extends HttpServlet {
     }
 
     private void getEventParam (HttpServletRequest request, Event event) {
-		/*event.setEvent_v2(request.getParameter("lastname"),request.getParameter("firstname"),request.getParameter("date"),request.getParameter("startTime"),request.getParameter("duration"),
+		event.setEvent_v2(request.getParameter("lastname"),request.getParameter("firstname"),request.getParameter("date"),request.getParameter("startTime"),request.getParameter("duration"),
 				request.getParameter("hallName"),request.getParameter("eventName"),
 				request.getParameter("meal"),request.getParameter("mealFormality"),request.getParameter("foodType"),request.getParameter("drinkType"),
 				request.getParameter("est"),request.getParameter("entertainmentItems"),request.getParameter("eventID"),request.getParameter("staff_lname"),request.getParameter("staff_fname"));  
-	System.out.print(request.getParameter("est"));*/
+	System.out.print(request.getParameter("est"));
     
     }
     
@@ -94,33 +94,7 @@ public class eventController extends HttpServlet {
 					request.getParameter("mealFormality"),request.getParameter("drinkType"),
 					request.getParameter("entertainmentItems"),"Pending","","N/A","N/A","N/A",user.getUsername(),
 					String.valueOf(FinalDepositCost));//UserErrorMsgs UerrorMsgs = new UserErrorMsgs();
-
-
 			
-			
-			///ADDED TEMP
-//			User user1 = (User)session.getAttribute("currentUser");
-//			String selectedDate = session.getAttribute("date").toString()	;
-
-			/*event.validateeventdurations(selectedDate,user1.getUsername(), EerrorMsgs);
-			session.setAttribute("TIMEERROR", EerrorMsgs);
-			//EerrorMsgs.setErrorMsg();
-			
-			
-			session.setAttribute("EVENT",event);
-			try {
-				event.validateEvent(action,event, EerrorMsgs);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			event.validateduration(session.getAttribute("date").toString(),
-					session.getAttribute("time").toString(),
-					request.getParameter("duration"),EerrorMsgs);
-			session.setAttribute("errorMsgs",EerrorMsgs);
-			session.setAttribute("EVENT", event);*/
-			
-			//System.out.println("EstAtnds: "+event.getestAttendees());
 			System.out.println("User ID: "+event.getuserid());
 			try {
 				event.validateEvent(action,event, EerrorMsgs);
@@ -174,7 +148,9 @@ public class eventController extends HttpServlet {
 					}
 				}
 				session.setAttribute("DepositValue", FinalDepositCost);
-
+				session.setAttribute("EVENT", event);
+				System.out.println("Depsit:" + FinalDepositCost);
+				event.setDepositAmount(String.valueOf(FinalDepositCost));
 
 				EventDAO.registerEvent(event);
 				session.removeAttribute("errorMsgs");
@@ -184,7 +160,6 @@ public class eventController extends HttpServlet {
 		else if(action.equalsIgnoreCase("payDeposit"))
         {
 			EventErrorMsgs CarderrorMsgs = new EventErrorMsgs();
-        	//Event event1 = new Event();	
         	event = (Event) session.getAttribute("EVENT");
         	String ccnumber = request.getParameter("idccNum");
         	String ccseccode = request.getParameter("idinvalidpin");
@@ -193,7 +168,7 @@ public class eventController extends HttpServlet {
         	event.setccpin(ccseccode);
         	event.setccexpdate(expdate);
 			try {
-				event.validateCardinfo(event, CarderrorMsgs);
+				event.validateEvent(action,event, CarderrorMsgs);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -202,10 +177,10 @@ public class eventController extends HttpServlet {
         	//String depositAmount = session.getAttribute("DepositValue").toString();
         	if (CarderrorMsgs.getErrorMsg().equals("")) 
         	{
-        	EventDAO.UpdateRequest(event.getuserid(), event.getdate(), event.getstartTime(), event.gethallName(), 
-        	ccnumber, ccseccode, expdate,"0");
-        	url = "/eventController?action=usereventsummary";
-        	session.removeAttribute("DepositValue");
+	        	EventDAO.UpdateRequest(event.getuserid(), event.getdate(), event.getstartTime(), event.gethallName(), 
+	        	ccnumber, ccseccode, expdate,"0");
+	        	url = "/eventController?action=usereventsummary";
+	        	session.removeAttribute("DepositValue");
         	}
         	else {
             	url = "/PayDeposit.jsp";
@@ -366,6 +341,8 @@ public class eventController extends HttpServlet {
 				System.out.println("Modify_Event_Details");
 				String id = session.getAttribute("eid").toString();
 				getEventParam(request,event);
+				session.setAttribute("EVENT", event);
+				System.out.println("Dur: "+event.getduration());
 				EventDAO.Modifyevent_User(event,id);
 				User user1 = (User)session.getAttribute("currentUser");
 				

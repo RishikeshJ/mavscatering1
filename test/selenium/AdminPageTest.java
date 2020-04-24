@@ -75,6 +75,7 @@ public class AdminPageTest extends CateringManagementFunctions{
 		prop.load(new FileInputStream(sSharedUIMapPath));
 	}
 
+		//Verifying Admin HomePage Elements
 		@Test
 		@FileParameters("test/selenium/AdminHomePage1.csv")
 		public void test1(int testCaseNumber, String title, String logout,String searchUser, String viewProfile) throws InterruptedException {
@@ -84,6 +85,7 @@ public class AdminPageTest extends CateringManagementFunctions{
 			verifyAdminHomePageElements(driver,title,searchUser,viewProfile,logout,"AdminHomePageVerify");
 		}
 	
+		//Verifying SearchUserPage Elements
 		@Test
 		@FileParameters("test/selenium/AdminHomePage2.csv")
 		public void test2(int testCaseNumber,String title,String logout, String hLastName) throws InterruptedException {
@@ -94,6 +96,7 @@ public class AdminPageTest extends CateringManagementFunctions{
 			
 		}
 
+		//Verifying  Search User Validation
 		@Test
 		@FileParameters("test/selenium/AdminHomePage3.csv")
 		public void test3(int testCaseNumber,String lastName,String errMsg,String lastNameErr) throws InterruptedException {
@@ -107,6 +110,7 @@ public class AdminPageTest extends CateringManagementFunctions{
 			
 		}
 		
+		//Verifying Search user results
 		@Test
 		@FileParameters("test/selenium/AdminHomePage4.csv")
 		public void test4(int testCaseNumber,String lastNameHeader,String firstNameHeader,String userNameHeader,String roleHeader,String lastName) throws InterruptedException {
@@ -132,6 +136,7 @@ public class AdminPageTest extends CateringManagementFunctions{
 			Thread.sleep(1000);
 		}
 		
+		//Verifying view profile page elements
 		@Test
 		@FileParameters("test/selenium/AdminHomePage5.csv")
 		public void test5(int testCaseNumber,String title,String subtitle,String h1,String h2,String h3,String h4,String h5,String h6,String h7,String h8,

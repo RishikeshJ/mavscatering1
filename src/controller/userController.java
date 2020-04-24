@@ -133,23 +133,19 @@ public class userController extends HttpServlet {
 			getUserParam(request,user);
 			User user1 = (User)session.getAttribute("currentUser");
 			User userProfile = UserDAO.getUser(user1.getUsername());
-			System.out.println("Usenrmae: "+user1.getUsername()+" "+user.getUsername());
 			if(user1.getUsername().equals(user.getUsername())) {
-				System.out.println("In admin0:");
 				if(userProfile.getRole().equals("Admin") || userProfile.getRole().equals("Caterer Manager")){
 					System.out.println("In admin:");
 					user.validateUser("modifyUserProfile",user,uerrorMsgs);
 				}
 				else {
 					user.validateUser("userProfile",user,uerrorMsgs);
-					System.out.println("In register:");
 				}
 			}
 			else {
 				user.validateUser("userProfile",user,uerrorMsgs);
-				System.out.println("In register:");
 			}
-			uerrorMsgs.setErrorMsgs();
+			//uerrorMsgs.setErrorMsgs();
 			if (!uerrorMsgs.getErrorMsgs().equals("")) {// if error messages
 				getUserParam(request,user);
 				session.setAttribute("errorMsgs", uerrorMsgs);
@@ -157,12 +153,8 @@ public class userController extends HttpServlet {
 			}
 			else {
 
-				System.out.println(user.getRole());
-				System.out.println(user.getUsername());
-				System.out.println(user1.getUsername());
-
-
-
+				System.out.println("In modify"+user.getRole());
+	
 				if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("Admin")) {
 					UserDAO.modifyUserProfile(user);
 					url="/adminHomePage.jsp";			
@@ -173,7 +165,6 @@ public class userController extends HttpServlet {
 				}
 				else if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("User")) {
 					UserDAO.modifyUserProfile(user);
-					//userProfile = UserDAO.getUser(user1.getUsername());
 					url="/UserHome.jsp";			
 				}
 				
@@ -185,8 +176,6 @@ public class userController extends HttpServlet {
 					UserDAO.modifyUserProfile(user);
 					url="/userController?action=refreshPage&id="+user.getLastname();			
 				}
-				//UserDAO.modifyUser(user.getUsername(), user.getRole());
-				//url="/userController?action=refreshPage&id="+user.getLastname();			
 
 			}
 		}
@@ -219,23 +208,6 @@ public class userController extends HttpServlet {
 				String selectedDate = request.getParameter("iddate");
 				String selectedTime = request.getParameter("idtime");
 				EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
-//				event.setdate(selectedDate);
-//				event.setstartTime(selectedTime);
-//				
-//				try {
-//					event.validateEvent(action, event, EerrorMsgs);
-//				} catch (ParseException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-				/*event.validateSelectedDateTime(selectedDate, selectedTime, EerrorMsgs);
-					try {
-						event.validateselectedDate(selectedDate, EerrorMsgs);
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
-				
 				session.setAttribute("TIMEERROR", EerrorMsgs);
 				if (EerrorMsgs.getErrorMsg().equals("")) {
 					session.removeAttribute("errorMsgs");

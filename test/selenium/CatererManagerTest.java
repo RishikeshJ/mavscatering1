@@ -272,8 +272,20 @@ public class CatererManagerTest extends CateringManagementFunctions{
 	}
 	
 	@Test
+	public void test6() throws InterruptedException {
+		driver.get(sAppURL);
+		CM_Login(driver,"bxs5836","Asdf!234","loginFunctionTestCase3");
+		driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewEventSummary"))).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummary_eventPrefix")+"2"+prop.getProperty("link_CatererManagerEventSummary_assignEvent"))).click();
+		assignStaff(driver,"Mary","Levine","AssigningStaff");
+
+	}
+
+	
+	@Test
 	@FileParameters("test/selenium/CatererManagerAssignStaffTestCase.csv")
-	public void test6(int testCaseNumber,String firstname,String lastname,String err,String staffErr) throws InterruptedException {
+	public void test7(int testCaseNumber,String firstname,String lastname,String err,String staffErr) throws InterruptedException {
 		driver.get(sAppURL);
 		CM_Login(driver,"bxs5836","Asdf!234","loginFunctionTestCase3"+testCaseNumber);
 		driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewEventSummary"))).click();
@@ -285,7 +297,8 @@ public class CatererManagerTest extends CateringManagementFunctions{
 		Thread.sleep(1000);
 
 	}
-	
+
+
 	
 	@After
 	  public void tearDown() throws Exception {

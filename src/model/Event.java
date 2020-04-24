@@ -62,7 +62,7 @@ public class Event implements Serializable{
 		this.setDepositAmount(depositAmount);
 	}
 	
-	/*public void setEvent_v2(String lastName,String firstName, String date,String startTime,String duration,String hallName,
+	public void setEvent_v2(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID, String staff_fname,String staff_lname) 
 	{	
 		//System.out.println(username+" : "+role+": "+firstName);
@@ -84,7 +84,7 @@ public class Event implements Serializable{
 		this.staff_lname = staff_lname;
 
 		
-	}*/
+	}
 	public void setEventForUpdate(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID) 
 	{	
@@ -397,15 +397,7 @@ public class Event implements Serializable{
 		errorMsgs.setinvalidCCNum(validateCCnumber(event.getccnumber()));
 		errorMsgs.setinvalidpin(validatepin(event.getccpin()));
 		errorMsgs.setinvalidExpDate(validateExpDate(event.getccexpdate()));
-		//errorMsgs.settimeerror("");
-		//errorMsgs.setErrorMsg();
 	}
-	
-	/*public void validateSelectedDateTime(String date, String Time, EventErrorMsgs errorMsgs) {
-		errorMsgs.settimeerror(validatedateandtime(date, Time));
-		errorMsgs.setErrorMsg();
-	}*/
-	
 	
 	private String verifyFacilityAvailability(String date, String startTime, String hallName) {
 		int result=EventDAO.CheckReservations(date, startTime, hallName);
@@ -711,27 +703,16 @@ public class Event implements Serializable{
 		String result="";
 		if (!ccnum.isEmpty()) {
 			if (!isTextAnInteger(ccnum))
-				result="Your Credit Card Number field must be 4 number";
+				result="Your Credit Card Number field must be a number";
 			else
 				if (ccnum.length()!=16){
-					result="Credit card number must be 4 digits";
+					result="Credit card number must be 16 digits";
 				}
 		}
 		else
 			result= "Your Credit Card Number cannot be empty";
 		return result;
 	}
-	
-	/*private String validatepin(String pin) {
-		pin = pin.trim();
-		String result="";
-		if (pin.isEmpty())
-			result= "Your Security Number field cannot be empty";
-		else
-			if (!isTextAnInteger(pin))
-				result="Your Security Number must be a number";
-		return result;
-	}*/
 	
 	private String validatepin(String pin) {
 		//pin = pin.trim();
