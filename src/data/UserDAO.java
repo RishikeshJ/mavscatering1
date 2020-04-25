@@ -32,14 +32,12 @@ static SQLConnection DBMgr = SQLConnection.getInstance();
 				+ user.getCity() + "','"
 				+ user.getState() + "','"
 				+ user.getZipcode() + "')" ;
-		System.out.println("Query: "+registerUser);
 		
 		try {   
 		conn = SQLConnection.getDBConnection();  
 		conn.setAutoCommit(false);   
 		stmt = conn.createStatement();
 		stmt.executeUpdate(registerUser);
-		System.out.println(registerUser);
 		conn.commit();					 
 	} catch (SQLException sqle) { 
 		sqle.printStackTrace();
@@ -164,7 +162,6 @@ static SQLConnection DBMgr = SQLConnection.getInstance();
 		      
 		      stmt.executeUpdate(sql);
 		      conn.commit();	
-		      System.out.println("Record deleted successfully");
 		    } catch (SQLException e) {
 		      e.printStackTrace();
 		    }
@@ -190,7 +187,7 @@ static SQLConnection DBMgr = SQLConnection.getInstance();
 			while(roleList.next()) {
 				roles.add(roleList.getString("role"));
 			}
-			//conn.close();
+			conn.close();
 		}catch(SQLException e) {}
 		return roles;
 	}
@@ -206,7 +203,7 @@ static SQLConnection DBMgr = SQLConnection.getInstance();
 			while(idList.next()) {
 				ids.add(idList.getString("utaid"));
 			}
-			//conn.close();
+			conn.close();
 		}catch(SQLException e) {}
 		return ids;
 	}
@@ -277,7 +274,7 @@ static SQLConnection DBMgr = SQLConnection.getInstance();
 				staff = true;}
 			else
 				staff = false;
-			//conn.close();
+			conn.close();
 		}catch(SQLException e) {}
 		return staff;
 	}

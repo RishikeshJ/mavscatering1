@@ -23,16 +23,17 @@ public class EventTest {
 	}
 
 	@Test
-	@FileParameters("test/model/EventTestCases.csv")
-	public void test(int testCaseNo,String action,String lastName, String firstName,String date,String startTime,String duration, String hallName,String estAttendees,
-			String eventName, String foodType, String meal, String mealFormality,String drinkType,String entItems,String userID,String ccnum,String cvvnum,String expdate,
-			String stafffname, String stafflname,String errMsgs, String pastdateErr, String duplicateResMsg, String timeErr, String capacityErr,String eventNameErr,String durationErr,
-			String samedayReserveError,String sameweekReserverError, String invalidCCNum,String invalidpin, String invalidExpDate,String staffErr) throws ParseException {
+	@FileParameters("test/model/EventTestCases1.csv")
+	public void test(int testCaseNo,String action,String userID,String date,String startTime,String duration, String hallName,String estAttendees,
+			String eventName, String ccnum,String cvvnum,String expdate,String staffFirstName,String staffLastName,String errMsgs, String duplicateResMsg,
+			String timeErr, String capacityErr,String staffErr,String eventNameErr,String pastdateErr,String durationErr,String samedayReserveError,
+			String sameweekReserverError, String invalidCCNum,String invalidpin, String invalidExpDate) throws ParseException {
 		
-		event.setEvent(lastName, firstName, date, startTime, duration, hallName, estAttendees, eventName, foodType, meal, mealFormality, drinkType, entItems,
+		event.setEvent("", "", date, startTime, duration, hallName, estAttendees, eventName, "", "", "", "", "",
 				"", "", ccnum, cvvnum, expdate, userID, "");
+		event.setStaff_fname(staffFirstName);
+		event.setStaff_lname(staffLastName);
 		event.validateEvent(action,event, EerrMsgs);
-		EerrMsgs.setErrorMsg();
 
 		assertTrue(errMsgs.equals(EerrMsgs.getErrorMsg()));
 		assertTrue(pastdateErr.equals(EerrMsgs.getPastdateError()));

@@ -36,17 +36,14 @@ public static void registerEvent(Event event) {
 			+ event.getccpin()+ "','"
 			+ event.getccexpdate()+ "','"
 			+ event.getDepositAmount()+ "')";
-	System.out.println("Query: "+registerUser);
 	
 	try {   
 	conn = SQLConnection.getDBConnection();  
 	conn.setAutoCommit(false);   
 	stmt = conn.createStatement();
 	stmt.executeUpdate(registerUser);
-	System.out.println(registerUser);
 	conn.commit();					 
 } catch (SQLException sqle) { 
-	System.out.println(sqle.toString());
 	sqle.printStackTrace();
 } finally {
 	try {
@@ -60,7 +57,6 @@ public static void registerEvent(Event event) {
 }
 
 private static ArrayList<Event> ReturnPendingEventList (String queryString) {
-	System.out.println("db manager"+DBMgr);
 	ArrayList<Event> PendingEventsinDB= new ArrayList<Event>();
 	
 	Statement stmt = null;
@@ -111,7 +107,6 @@ public static void UpdateRequest(String userid, String date, String time, String
 				+ " cvvnum = '"+cvvnum+"',"
 				+ "expdate = '"+expdate+"' "
 				+ "WHERE userid = '"+userid+"' and date = '"+date+"' and startTime = '"+time+"' and hallName = '"+hallname+"'";
-		System.out.println(editUser);
 		stmt.executeUpdate(editUser);	
 		conn.commit();
 	}
@@ -133,7 +128,6 @@ public static int CheckReservations(String date, String time, String hallname) {
 				+ "WHERE Time_to_sec('"+time+"') between Time_to_sec(startTime)"
 						+ " and (Time_to_Sec(concat(duration,':00'))  +  Time_to_sec(startTime)) and date = '"+date+"'"
 						+ " and eventStatus = 'Reserved' and hallName = '"+hallname+"'";
-		System.out.println(reservations);
 		ResultSet Result = stmt.executeQuery(reservations);	
 		while(Result.next()) {count = Result.getString("count");}
 		
@@ -149,7 +143,6 @@ public static int CheckReservations(String date, String time, String hallname) {
 public static int CheckDailyReservations(String date, String UserProfile) {
 	Statement stmt = null;
 	Connection conn = SQLConnection.getDBConnection();
-	System.out.println("Date: "+ date);
 	String count = "0";
 	try
 	{
@@ -200,7 +193,6 @@ public static String getlastname(String userid) {
 		conn.setAutoCommit(false);
 		String reservations = "select lastname from user "
 				+ "WHERE username = '"+userid+"'";
-		System.out.println(reservations);
 		ResultSet Result = stmt.executeQuery(reservations);	
 		while(Result.next()) {lastName = Result.getString("lastname");}
 		
@@ -223,7 +215,6 @@ public static String getfirstname(String userid) {
 		conn.setAutoCommit(false);
 		String reservations = "select firstname from user "
 				+ "WHERE username = '"+userid+"'";
-		System.out.println(reservations);
 		ResultSet Result = stmt.executeQuery(reservations);	
 		while(Result.next()) {
 			lastName = Result.getString("firstname");}
@@ -341,7 +332,6 @@ public static void Modifyevent_v2 (Event event,String old_eventID) {
 			"',estAttendees = '"+event.getestAttendees()+			"',eventName = '"+event.geteventName()+			"',foodType = '"+event.getfoodType()+
 			"',meal = '"+event.getmeal()+			"',mealFormality = '"+event.getmealFormality()+			"',drinkType = '"+event.getdrinkType()+
 			"',entertainmentItems = '"+event.getentertainmentItems()+			"',eventID = '"+event.geteventID()+"' where eventID = '"+old_eventID+"';";					
-	System.out.println("Query: "+assignstaff);
 	
 	try {   
 	conn = SQLConnection.getDBConnection();  
@@ -412,14 +402,12 @@ public static void Modifyevent (Event event) {
 	Connection conn = SQLConnection.getDBConnection();  
 	//Event event= new Event();
 	String assignstaff = "update eventdetails set staff_firstname = '"+event.getStaff_fname()+"',staff_lastname = '"+event.getStaff_lname()+"' where eventID = '"+event.geteventID()+"';";					
-	System.out.println("Query: "+assignstaff);
 	
 	try {   
 	conn = SQLConnection.getDBConnection();  
 	conn.setAutoCommit(false);   
 	stmt = conn.createStatement();
 	stmt.executeUpdate(assignstaff);
-	System.out.println(assignstaff);
 	conn.commit();					 
 } catch (SQLException sqle) { 
 	sqle.printStackTrace();
@@ -444,7 +432,6 @@ public static ArrayList<Event>  listEvents2(String edate, String etime, String f
 
 private static ArrayList<Event> ReturnMatchingEventList (String queryString) {
 	ArrayList<Event> eventListInDB = new ArrayList<Event>();
-	System.out.println(queryString);
 	Statement stmt = null;
 	Connection conn = SQLConnection.getDBConnection();  
 	try {
@@ -461,7 +448,6 @@ private static ArrayList<Event> ReturnMatchingEventList (String queryString) {
 			staff.setfirstName(eventList.getString("firstname"));
 			staff.seteventID(eventList.getString("eventID"));
 			staff.seteventStatus(eventList.getString("eventStatus"));
-			//System.out.println(staff.getEventname());
 			eventListInDB.add(staff);	
 		}
 	} catch (SQLException e) {}
@@ -478,7 +464,6 @@ public static void Modifyevent_User (Event event,String old_eventID) {
 			"',estAttendees = '"+event.getestAttendees()+			"',eventName = '"+event.geteventName()+			"',foodType = '"+event.getfoodType()+
 			"',meal = '"+event.getmeal()+			"',mealFormality = '"+event.getmealFormality()+			"',drinkType = '"+event.getdrinkType()+
 			"',entertainmentItems = '"+event.getentertainmentItems()+			"',eventID = '"+event.geteventID()+"' where eventID = '"+old_eventID+"';";					
-	System.out.println("Query: "+assignstaff);
 	
 	try {   
 	conn = SQLConnection.getDBConnection();  

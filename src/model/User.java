@@ -209,7 +209,6 @@ public class User implements Serializable{
 	public String validateFirstname(String firstname) {
 		String error = "";	
 		
-		//System.out.println("In validate fname");
 		if(firstname.isEmpty())
 			error = "First Name can not be blank.";
 		else if(!Character.isUpperCase(firstname.charAt(0)))
@@ -224,7 +223,6 @@ public class User implements Serializable{
 	public String validateLastname(String lastname) {
 		String error = "";
 		
-		//System.out.println("In validate lname");
 		if(lastname.isEmpty())
 			error = "Last Name can not be blank.";
 		else if(!Character.isUpperCase(lastname.charAt(0)))
@@ -239,7 +237,6 @@ public class User implements Serializable{
 	public String validateutaid(String utaid) {
 		String error = "";
 		ArrayList<String> ids = UserDAO.getUTAId();
-		//System.out.println("In validate fname");
 		if(utaid.isEmpty())
 			error = "UTA ID can not be blank.";
 		else if(!isStringOnlyNumber(utaid))
@@ -254,7 +251,6 @@ public class User implements Serializable{
 	public String validateusername(String username) {
 		String error = "";
 		
-		//System.out.println("In validate fname");
 		if(username.isEmpty())
 			error = "Username can not be blank.";
 		else if(!Character.isAlphabetic(username.charAt(0)))
@@ -291,7 +287,6 @@ public class User implements Serializable{
 		List<String> domains1 = Arrays.asList(domains);
 		if(!email.isEmpty()) {
 		String domain = email.substring(email.length() - 4);
-		System.out.println("Domain : "+domain);
 		if(!domains1.contains(domain))
 			error = "Invalid domain name.";
 		else if(!email.contains("@"))
@@ -308,7 +303,6 @@ public class User implements Serializable{
 
 		String error = "";
 		
-		//System.out.println("In validate phone");
 		if(!phone.isEmpty()) {
 			if(!isStringOnlyNumber(phone))
 				error = "Phone number must be numeric";
@@ -321,7 +315,6 @@ public class User implements Serializable{
 	public String validateStreetnumber(String streetnumber) {
 		String error = "";
 		
-		//System.out.println("In validate streetnumber");
 		if(!streetnumber.isEmpty()) {
 			if(streetnumber.length() > 7)
 				error = "Street number length must be >0 and <7.";
@@ -339,7 +332,6 @@ public class User implements Serializable{
 	public String validateStreetname(String streetname) {
 		String error = "";
 		
-		//System.out.println("In validate streetname");
 		if(!streetname.isEmpty()) {
 			if((streetname.length() >= 40))
 				error = "Street name length must be >0 and <40.";
@@ -354,7 +346,6 @@ public class User implements Serializable{
 	
 	public String validatezipcode(String zipcode) {
 		String error = "";
-		//System.out.println("In validate zipcode");
 		if(!zipcode.isEmpty()) {
 			if(!isStringOnlyNumber(zipcode))
 				error = "Zipcode must be numeric";
@@ -367,7 +358,6 @@ public class User implements Serializable{
 	
 	public String validatecity(String city ){
 		String error = "";
-		//System.out.println("In validate city");
 		if(!city.isEmpty()) {
 			if(!Character.isUpperCase(city.charAt(0)))
 					error = "City must start with a capital letter";
@@ -402,7 +392,6 @@ public class User implements Serializable{
 	}
 	
 	public String validateRole(String Role) {
-		//System.out.println("In validate role");
 		String error = "";
 		ArrayList<String> roles = UserDAO.checkRoles();
 		if(Role.equals("Admin") && roles.contains("Admin"))

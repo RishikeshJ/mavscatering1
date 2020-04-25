@@ -65,7 +65,6 @@ public class Event implements Serializable{
 	public void setEvent_v2(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID, String staff_fname,String staff_lname) 
 	{	
-		//System.out.println(username+" : "+role+": "+firstName);
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.date = date;
@@ -88,7 +87,6 @@ public class Event implements Serializable{
 	public void setEventForUpdate(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID) 
 	{	
-		//System.out.println(username+" : "+role+": "+firstName);
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.date = date;
@@ -102,36 +100,35 @@ public class Event implements Serializable{
 		this.mealFormality = mealFormality;
 		this.drinkType = drinkType;
 		this.entertainmentItems = entertainmentItems;
-		//this.eventStatus = eventStatus;
 		this.eventID = eventID;	
 	}
 
 	
-	/*public void updateEvent(String lastName,String firstName, String date,String startTime,String duration,String hallName,String estAttendees,
-			String eventName, String foodType,String meal, String mealFormality, String drinkType, String entertainmentItems,String eventStatus,String eventID,
-			String ccnumber,String ccpin, String ccexpdate, String userid, String depsoitAmount, String depositAmount) 
-	{	
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.date = date;
-		this.startTime = startTime;
-		this.duration = duration;
-		this.hallName = hallName;
-		this.estAttendees = estAttendees;
-		this.eventName = eventName;
-		this.foodType = foodType;
-		this.meal = meal;
-		this.mealFormality = mealFormality;
-		this.drinkType = drinkType;
-		this.entertainmentItems = entertainmentItems;
-		this.eventStatus = eventStatus;
-		this.eventID = eventID;
-		this.ccnumber = ccnumber;
-		this.ccpin = ccpin;
-		this.ccexpdate = ccexpdate;
-		this.userid = userid;
-		this.depositAmount = depositAmount;
-	}*/
+//	public void updateEvent(String lastName,String firstName, String date,String startTime,String duration,String hallName,String estAttendees,
+//			String eventName, String foodType,String meal, String mealFormality, String drinkType, String entertainmentItems,String eventStatus,String eventID,
+//			String ccnumber,String ccpin, String ccexpdate, String userid, String depsoitAmount, String depositAmount) 
+//	{	
+//		this.lastName = lastName;
+//		this.firstName = firstName;
+//		this.date = date;
+//		this.startTime = startTime;
+//		this.duration = duration;
+//		this.hallName = hallName;
+//		this.estAttendees = estAttendees;
+//		this.eventName = eventName;
+//		this.foodType = foodType;
+//		this.meal = meal;
+//		this.mealFormality = mealFormality;
+//		this.drinkType = drinkType;
+//		this.entertainmentItems = entertainmentItems;
+//		this.eventStatus = eventStatus;
+//		this.eventID = eventID;
+//		this.ccnumber = ccnumber;
+//		this.ccpin = ccpin;
+//		this.ccexpdate = ccexpdate;
+//		this.userid = userid;
+//		this.depositAmount = depositAmount;
+//	}
 	
 	public String geteventID() {
 		return eventID;
@@ -322,27 +319,31 @@ public class Event implements Serializable{
 			errorMsgs.setduplicateResMsg(verifyFacilityAvailability(event.getdate(),event.getstartTime(),event.gethallName()));
 			errorMsgs.setsamedayReserveError(verifyFacilityReservation(event.getdate(), event.getuserid()));
 			errorMsgs.setsameweekReserverError(verifyFacilityReservationWeekly(event.getdate(),event.getuserid()));
-			System.out.println("Time err:"+errorMsgs.gettimeerror());
 			errorMsgs.setErrorMsg();
 		}
 		else if(action.equals("payDeposit")){
 			validateCardinfo(event, errorMsgs);
 			errorMsgs.setErrorMsg();
 		}
-	}
-	
-	
-/*	public void validateeventdurations(String selectedDate,String UserProfile, EventErrorMsgs errorMsgs) {
-		errorMsgs.setsamedayReserveError(verifyFacilityReservation(selectedDate, UserProfile));
-		if(errorMsgs.getsamedayReserveError().equals("")) {
-			errorMsgs.setsameweekReserverError(verifyFacilityReservationWeekly(selectedDate,UserProfile));
+		else if(action.equals("assignStaff")){
+			errorMsgs.setStaffError(validateStaff(event.getStaff_fname(), event.getStaff_lname()));
+			errorMsgs.setErrorMsg();
 		}
-	}*/
+		else {
+			setEventForUpdate(event.getLastName(), event.getfirstName(), event.getdate(), event.getstartTime(), event.getduration(), event.gethallName(),
+					event.geteventName(), event.getmeal(), event.getmealFormality(), event.getfoodType(), event.getdrinkType()
+					,event.getestAttendees(),event.getentertainmentItems(), event.geteventID());
+			setEvent_v2(lastName, firstName, date, startTime, duration, hallName, eventName, meal, mealFormality, foodType, drinkType
+					,estAttendees,entertainmentItems, eventID,staff_fname,staff_lname);
+			event.geteventStatuss();
+			event.getDepositAmount();
+
+		}
+	}
 	
 	//Reservation Daily Error
 	private String verifyFacilityReservation(String date, String UserProfile) {
 		int result=EventDAO.CheckDailyReservations(date,UserProfile);
-		System.out.println(result);
 		String Error="";
 		if(result>=2) {
 			Error = "There can be only 2 reservatiosn per day by a user";
@@ -354,7 +355,6 @@ public class Event implements Serializable{
 	//Reservation Weekly Error
 	private String verifyFacilityReservationWeekly(String date, String UserProfile) {
 		int result=EventDAO.CheckWeeklyReservations(date,UserProfile);
-		System.out.println(result);
 		String Error="";
 		if(result>=5) {
 			Error = "There can be only 5 reservations per week by a User";
@@ -371,7 +371,7 @@ public class Event implements Serializable{
 			if(!Character.isUpperCase(eventName.charAt(0))){
 				Error = "Event name must start with a capital letter";
 			}
-			else if(eventName.length()<=2 || eventName.length() > 30) {
+			else if(eventName.length()<=2 || eventName.length() >= 30) {
 				Error = "Event name length must be >2 and <30";
 			}
 		}
@@ -382,17 +382,6 @@ public class Event implements Serializable{
 		return Error;
 	}
 	
-	/*public void validateselectedDate (String selecteddate, EventErrorMsgs errorMsgs) throws ParseException {
-		errorMsgs.setPastdateError(verifyifReservationInPast(selecteddate));
-		//errorMsgs.setErrorMsg();
-	}*/
-	
-	/*public void validateduration (String selecteddate, String selectedtime, String Duration, EventErrorMsgs errorMsgs) {
-		//if (action.equals("register")) {
-		errorMsgs.setDurationError(validateeventduration(selecteddate,selectedtime,Duration));
-		//errorMsgs.setErrorMsg();
-	}*/
-	
 	public void validateCardinfo(Event event, EventErrorMsgs errorMsgs) throws ParseException {
 		errorMsgs.setinvalidCCNum(validateCCnumber(event.getccnumber()));
 		errorMsgs.setinvalidpin(validatepin(event.getccpin()));
@@ -401,7 +390,6 @@ public class Event implements Serializable{
 	
 	private String verifyFacilityAvailability(String date, String startTime, String hallName) {
 		int result=EventDAO.CheckReservations(date, startTime, hallName);
-		System.out.println("Res:"+result);
 		String Error="";
 		if(result>0) {
 			Error = "Hall is already reserved for this time slot please try again";
@@ -438,9 +426,9 @@ public class Event implements Serializable{
 				else if(hallname.equals("Maverick") && Integer.parseInt(estAttendees) > 100) {
 					Error = "Maveric Hall cannot have an estimated attendance greater than 100";
 				}
-				else if(!(Integer.parseInt(estAttendees)<=100)) {
-					Error = "Estimated attendees must be <=100";
-				}
+//				else if(!(Integer.parseInt(estAttendees)<=100)) {
+//					Error = "Estimated attendees must be <=100";
+//				}
 				else if(hallname.equals("KC") && Integer.parseInt(estAttendees) > 25) {
 					Error = "KC Hall cannot have an estimated attendance greater than 25";
 				}
@@ -557,10 +545,8 @@ public class Event implements Serializable{
  	    if(StartTimeinMins + durationinMins > 1380 )
  	    {
  	    	String Error = "Duration cannot exceed close time";
- 	    	System.out.println(Error);
  	    }
 	    
-	    //System.out.println(temp3);
 	    //weekday close cal "23:00:00"
 	    
 	    String result="";
@@ -573,7 +559,7 @@ public class Event implements Serializable{
 	    }
 	    
 	    //Validation : if its a weekend and the time of request is less than noon
-		if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+		if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
 			if(TotalDuration > 1560)
 			{
 				result = "Duration cannot exceed close time";
@@ -664,23 +650,24 @@ public class Event implements Serializable{
 	    Date x = calendar1.getTime();
 	    String result="";
 		//Validation : if its any day except Sunday and the time for request is less than 7am
-	    //System.out.print("Hall Time:"+ result);
 	    if(cal.get(Calendar.DAY_OF_WEEK)!=Calendar.SUNDAY)
 	    	{
-	    	if(x.before(weekdayopencal.getTime())
-	    		|| x.after(weekdayclosecal.getTime())) {
+	    	if(x.before(weekdayopencal.getTime())) {
 	    		result = "Halls are open from 7am to 11pm on all days except Sunday Please select a different time";
-	    		//System.out.print("Hall Time1:"+ result);
-	    	}	    	
+	    	}
+	    	if(x.after(weekdayclosecal.getTime())) {
+	    		result = "Halls are open from 7am to 11pm on all days except Sunday Please select a different time";
+	    	}
 	    }
 	    
 	    //Validation : if its a weekend and the time of request is less than noon
 		if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			if(x.before(sundayopencal.getTime())
-				|| x.after(weekendclosecal.getTime()))
+			if(x.before(sundayopencal.getTime()))
 			{
 				result = "Halls are open from 12pm to 2am Sunday Please select a different time";
-				//System.out.print("Hall Time2:"+ result);
+			}
+			if(x.after(weekendclosecal.getTime())) {
+				result = "Halls are open from 12pm to 2am Sunday Please select a different time";
 			}
 		
 		}	  
@@ -688,11 +675,13 @@ public class Event implements Serializable{
 
 	    //Validation : if its a weekend and the time of request is less than noon
 		if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-			if(x.before(weekdayopencal.getTime())
-				|| x.after(weekendclosecal.getTime()))
+			if(x.before(weekdayopencal.getTime()))
 			{
 				result = "Halls are open from 12pm to 2am on Saturday Please select a different time";
 				//System.out.print("Hall Time3:"+ result);
+			}
+			if(x.after(weekendclosecal.getTime())) {
+				result = "Halls are open from 12pm to 2am on Saturday Please select a different time";
 			}
 		}
 		return result;
