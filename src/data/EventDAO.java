@@ -56,7 +56,7 @@ public static void registerEvent(Event event) {
 
 }
 
-private static ArrayList<Event> ReturnPendingEventList (String queryString) {
+/*private static ArrayList<Event> ReturnPendingEventList (String queryString) {
 	ArrayList<Event> PendingEventsinDB= new ArrayList<Event>();
 	
 	Statement stmt = null;
@@ -88,12 +88,12 @@ private static ArrayList<Event> ReturnPendingEventList (String queryString) {
 		}
 	} catch (SQLException e) {}
 	return PendingEventsinDB;
-}
+}*/
 
-public static ArrayList<Event> listEvents() {
+/*public static ArrayList<Event> listEvents() {
 	// TODO Auto-generated method stub
 	return ReturnPendingEventList("SELECT * from eventdetails where eventStatus = 'Pending'");
-}
+}*/
 
 public static void UpdateRequest(String userid, String date, String time, String hallname, String ccnum, String cvvnum, String expdate, String depositAmount) {
 	Statement stmt = null;
@@ -332,6 +332,7 @@ public static void Modifyevent_v2 (Event event,String old_eventID) {
 			"',estAttendees = '"+event.getestAttendees()+			"',eventName = '"+event.geteventName()+			"',foodType = '"+event.getfoodType()+
 			"',meal = '"+event.getmeal()+			"',mealFormality = '"+event.getmealFormality()+			"',drinkType = '"+event.getdrinkType()+
 			"',entertainmentItems = '"+event.getentertainmentItems()+			"',eventID = '"+event.geteventID()+"' where eventID = '"+old_eventID+"';";					
+	System.out.println(assignstaff);
 	
 	try {   
 	conn = SQLConnection.getDBConnection();  

@@ -108,7 +108,7 @@ public class UserTest extends CateringManagementFunctions{
 		//fail("Not yet implemented");
 		
 		driver.get(sAppURL);
-		CM_Login(driver,"bdf252","Bhumit&89","loginFunctionTestCase"+testCaseNumber);
+		CM_Login(driver,"bdf252","Bhumit!23","loginFunctionTestCase"+testCaseNumber);
 		verifyUserHomePageElements(driver,header,l1,l2,l3,"verifyUserHomePageElements"+testCaseNumber);
 	}
 
@@ -120,7 +120,7 @@ public class UserTest extends CateringManagementFunctions{
 		//fail("Not yet implemented");
 		
 		driver.get(sAppURL);
-		CM_Login(driver,"bdf252","Bhumit&89","loginFunctionTestCase"+testCaseNumber);
+		CM_Login(driver,"bdf252","Bhumit!23","loginFunctionTestCase"+testCaseNumber);
 		driver.findElement(By.xpath(prop.getProperty("Link_UserHome_ViewProfile"))).click();
 		Thread.sleep(1000);
 		verifyRegisterPageHeaders(driver,"Header_ViewMyProfile_header",title,"Header2_ViewMyProfile_header2",subtitle,
@@ -150,7 +150,7 @@ public class UserTest extends CateringManagementFunctions{
 		//fail("Not yet implemented");
 		
 		driver.get(sAppURL);
-		CM_Login(driver,"bdf252","Bhumit&89","loginFunctionTestCase"+testCaseNumber);
+		CM_Login(driver,"bdf252","Bhumit!23","loginFunctionTestCase"+testCaseNumber);
 		driver.findElement(By.xpath(prop.getProperty("Link_UserHome_RequestEvent"))).click();
 		Thread.sleep(1000);
 		driver.findElement(By.xpath(prop.getProperty("btn_EventRequest_Next"))).click();
@@ -169,7 +169,7 @@ public class UserTest extends CateringManagementFunctions{
 		//fail("Not yet implemented");
 		
 		driver.get(sAppURL);
-		CM_Login(driver,"bdf252","Bhumit&89","loginFunctionTestCase"+testCaseNumber);
+		CM_Login(driver,"bdf252","Bhumit!23","loginFunctionTestCase"+testCaseNumber);
 		//verifyEventRequestPageHeaders(driver,title,h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,h11,h12,h13);
 		validateEventRequestPage(driver, FirstName,LastName,Date,Time,Duraion,HallName,
 				 estAtnds,EventName,foodType,Meal,mealFormality,DrinkType,entItems,
@@ -177,27 +177,69 @@ public class UserTest extends CateringManagementFunctions{
 				 timeErr,"RequestEventValidation"+testCaseNumber);
 	}
 	
-	//registerEvent
+	//registerEvent and Paydeposit Valiadations
 	@Test
-	public void test6() throws InterruptedException {
+	@FileParameters("test/selenium/UserPagetTestCase7.csv")
+	public void test6(int testCaseNumber,String FirstName,String LastName,String Date,String Time,String Duration,String HallName,String estAtnds,
+			String EventName,String foodType,String Meal,String mealFormality,String DrinkType,String entItems,String Pending,String username,String CCnum,
+			String CCPin,String expDate,String Amount,String invalidCCNum,String invalidCCPin,String invalidexpDate) throws InterruptedException {
 		driver.get(sAppURL);
-		CM_Login(driver,"bdf252","Bhumit&89","loginFunctionTestCase");
+		CM_Login(driver,"bxs5835","Bhumit&89","loginFunctionTestCase");
 
-		registerEvent(driver,"Bhumit","Shah","06/17/2020","14:00PM","2","Maverick",
-				 "50","Register","American","Breakfast","Formal","Alcohol","Music","Pending",
-				 "bdf252","N/A","N/A","N/A","0.0","RegisterEvent");
+		registerEvent(driver,FirstName,LastName,Date,Time,Duration,HallName,
+				 estAtnds,EventName,foodType,Meal,mealFormality,DrinkType,entItems,Pending,
+				 username,"N/A","N/A","N/A",Amount,"RegisterEvent"+testCaseNumber);
+		payDepositValidation(driver,CCnum,CCPin,expDate,Amount,invalidCCNum,invalidCCPin,
+				 invalidexpDate,"PayDepositValidation"+testCaseNumber);
 
 	}
 	
+	@Test
+	@FileParameters("test/selenium/UserPagetTestCase9.csv")
+	public void test7(int testCaseNumber,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
+			 String eventHallName,String eventEstAtnds,String eventName,String eventFoodType,String eventMeal,String eventMealFormality,
+			 String eventDrinkType,String eventEntItems) throws InterruptedException {
+		driver.get(sAppURL);
+		CM_Login(driver,"bdf252","Bhumit!23","loginFunctionTestCase");
+		driver.findElement(By.xpath(prop.getProperty("Link_UserHome_ViewEventSummary"))).click();
+		Thread.sleep(1000);
+
+		driver.findElement(By.xpath(prop.getProperty("Link_ViewMyEventSummary_modify"))).click();
+		Thread.sleep(1000);
+		
+		ModifyEventDetailsUser(driver,eventID,eventFirstName,eventLastName,eventDate,eventStartTime,eventDuration,
+		 eventHallName,eventEstAtnds,eventName,eventFoodType,eventMeal,eventMealFormality,
+		 eventDrinkType,eventEntItems,"ModifyEventDetailsUser"+testCaseNumber);
+
+
+	}
+	
+	
+	//Paydeposit
+	@Test
+	@FileParameters("test/selenium/UserPagetTestCase8.csv")
+	public void test7(int testCaseNumber,String FirstName,String LastName,String Date,String Time,String Duration,String HallName,String estAtnds,
+			String EventName,String foodType,String Meal,String mealFormality,String DrinkType,String entItems,String Pending,String username,String CCnum,
+			String CCPin,String expDate,String Amount) throws InterruptedException {
+		driver.get(sAppURL);
+		CM_Login(driver,"bdf252","Bhumit!23","loginFunctionTestCase");
+
+		registerEvent(driver,FirstName,LastName,Date,Time,Duration,HallName,
+				 estAtnds,EventName,foodType,Meal,mealFormality,DrinkType,entItems,Pending,
+				 username,"N/A","N/A","N/A",Amount,"RegisterEvent"+testCaseNumber);
+		payDeposit(driver,CCnum,CCPin,expDate,"PayDeposit"+testCaseNumber);
+
+	}
+
 	//verifying event summary page
 	@Test
 	@FileParameters("test/selenium/UserPagetTestCase5.csv")
-	public void test7(int testCaseNumber,String eventID,String eventName,String duration,String firstName,String lastName,
+	public void test8(int testCaseNumber,String eventID,String eventName,String duration,String firstName,String lastName,
 			 String startTime,String hallName,String eventDate,String estAtnds) throws InterruptedException {
 		//fail("Not yet implemented");
 		
 		driver.get(sAppURL);
-		CM_Login(driver,"bdf252","Bhumit&89","loginFunctionTestCase");
+		CM_Login(driver,"bdf252","Bhumit!23","loginFunctionTestCase");
 		
 		driver.findElement(By.xpath(prop.getProperty("Link_UserHome_ViewEventSummary"))).click();
 		Thread.sleep(1000);
@@ -212,12 +254,12 @@ public class UserTest extends CateringManagementFunctions{
 	//verifying view selected event
 	@Test
 	@FileParameters("test/selenium/UserPagetTestCase6.csv")
-	public void test8(int testCaseNumber,String exph1, String exph2, String exph3, String exph4, String exph5, String exph6, String exph7, String exph8, String exph9,
+	public void test9(int testCaseNumber,String exph1, String exph2, String exph3, String exph4, String exph5, String exph6, String exph7, String exph8, String exph9,
 			 String exph10, String exph11, String exph12, String exph13, String exph14) throws InterruptedException {
 		//fail("Not yet implemented");
 		
 		driver.get(sAppURL);
-		CM_Login(driver,"bdf252","Bhumit&89","loginFunctionTestCase");
+		CM_Login(driver,"bdf252","Bhumit!23","loginFunctionTestCase");
 		driver.findElement(By.xpath(prop.getProperty("Link_UserHome_ViewEventSummary"))).click();
 		Thread.sleep(1000);
 

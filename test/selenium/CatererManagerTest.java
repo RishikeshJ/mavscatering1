@@ -65,6 +65,36 @@ public class CatererManagerTest extends CateringManagementFunctions{
 
 	}
 	
+	public String[][] getTableContentsFromCMDate(int rows){
+
+		String [][] eventArray = new String[rows-1][7];
+		for (int i=0; i<rows-1; i++) {
+			eventArray[i][0]=  driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummaryDate_eventPrefix")+(i+2)+
+								prop.getProperty("Txt_CatererManagerEventSummaryDate_eventNameCol"))).getText();
+			eventArray[i][1] = driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummaryDate_eventPrefix")+(i+2)+
+								prop.getProperty("Txt_CatererManagerEventSummaryDate_dateCol"))).getText();
+			eventArray[i][2] = driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummaryDate_eventPrefix")+(i+2)+
+								prop.getProperty("Txt_CatererManagerEventSummaryDate_startTimeCol"))).getText();
+			eventArray[i][3] = driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummaryDate_eventPrefix")+(i+2)+
+								prop.getProperty("Txt_CatererManagerEventSummaryDate_durationCol"))).getText();
+			eventArray[i][4] = driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummaryDate_eventPrefix")+(i+2)+
+								prop.getProperty("Txt_CatererManagerEventSummaryDate_hallNameCol"))).getText();
+			eventArray[i][5] = driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummaryDate_eventPrefix")+(i+2)+
+								prop.getProperty("Txt_CatererManagerEventSummaryDate_userLNameCol"))).getText();
+			eventArray[i][6] = driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummaryDate_eventPrefix")+(i+2)+
+								prop.getProperty("Txt_CatererManagerEventSummaryDate_userFNameCol"))).getText();
+
+			
+			System.out.println("Table:");
+			System.out.println(i +" "+eventArray[i][0]+" "+eventArray[i][1]+" "+eventArray[i][2]+" "+eventArray[i][3]+" "+eventArray[i][4]+" "+eventArray[i][5]+" "
+					+eventArray[i][6]);
+
+		}
+		//System.out.println("IS EMPTY? "+eventArray.length);
+	  return eventArray;
+
+	}
+
 	private Boolean arraysDiff (String [][] array1, String [][] array2) { // this method compares the contents of the two tables
 		  Boolean diff= false || (array1.length!=array2.length);
 		  for (int i=0;i<array1.length && !diff;i++) {
@@ -76,6 +106,18 @@ public class CatererManagerTest extends CateringManagementFunctions{
 		  }
 		  return diff;
 	  }
+
+	private Boolean arraysDiff1 (String [][] array1, String [][] array2) { // this method compares the contents of the two tables
+		  Boolean diff= false || (array1.length!=array2.length);
+		  for (int i=0;i<array1.length && !diff;i++) {
+			 diff  = !array1[i][0].equals(array2[i][0]) || !array1[i][1].equals(array2[i][1]) || 
+					 !array1[i][2].equals(array2[i][2]) || !array1[i][3].equals(array2[i][3]) ||
+					 !array1[i][4].equals(array2[i][4]) || !array1[i][5].equals(array2[i][5]) ||
+					 !array1[i][6].equals(array2[i][6]);
+		  }
+		  return diff;
+	  }
+	
 	
 	public void verifyLinks(int rows) throws InterruptedException {
 		for(int i = 0;i<1;i++) {
@@ -281,11 +323,45 @@ public class CatererManagerTest extends CateringManagementFunctions{
 		assignStaff(driver,"Mary","Levine","AssigningStaff");
 
 	}
+	
+	@Test
+	@FileParameters("test/selenium/CatererManagerEventUpdate.csv")
+	public void test7(int testCaseNumber,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
+			 String eventHallName,String eventEstAtnds,String eventName,String eventFoodType,String eventMeal,String eventMealFormality,
+			 String eventDrinkType,String eventEntItems) throws InterruptedException {
+		driver.get(sAppURL);
+		CM_Login(driver,"bxs5836","Asdf!234","loginFunctionTestCase3");
+		driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewEventSummary"))).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath(prop.getProperty("Txt_CatererManagerEventSummary_eventPrefix")+"3"+prop.getProperty("link_CatererManagerEventSummary_modifyEvent"))).click();
+		ModifyEventDetailsManager(driver,eventID,eventFirstName,eventLastName,eventDate,eventStartTime,eventDuration,
+				 eventHallName,eventEstAtnds,eventName,eventFoodType,eventMeal,eventMealFormality,
+				 eventDrinkType,eventEntItems,"ModifyEventDetailsManager"+testCaseNumber);
+	}	
+	
+	@Test
+	@FileParameters("test/selenium/CatererManagerEventSummaryDate.csv")
+	public void test8(int testCaseNumber,String eventDate,String eventStartTime) throws InterruptedException {
+		driver.get(sAppURL);
+		CM_Login(driver,"bxs5836","Asdf!234","loginFunctionTestCase3");
+		String[] date = eventDate.split("-");
+		String newString = date[2]+"-"+date[0]+"-"+date[1];
+		String newTime = eventStartTime.replace("PM", "");
+		driver.findElement(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Date"))).clear();
+		driver.findElement(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Date"))).sendKeys(eventDate);;
+		driver.findElement(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Time"))).clear();
+		driver.findElement(By.xpath(prop.getProperty("DatePicker_CatererManagerHome_Time"))).sendKeys(eventStartTime);;
+		driver.findElement(By.xpath(prop.getProperty("Btn_CatererManagerHome_Submit"))).click();
+		Thread.sleep(2000);
+		WebElement eventTable = driver.findElement(By.xpath(prop.getProperty("Table_CatererManagerEventSummaryDate_table")));
+		int rows = eventTable.findElements(By.tagName("tr")).size();
+		assertFalse(arraysDiff1(getEventSummaryDate(rows,newString,newTime), getTableContentsFromCMDate(rows)));
+	}	
 
 	
 	@Test
 	@FileParameters("test/selenium/CatererManagerAssignStaffTestCase.csv")
-	public void test7(int testCaseNumber,String firstname,String lastname,String err,String staffErr) throws InterruptedException {
+	public void test9(int testCaseNumber,String firstname,String lastname,String err,String staffErr) throws InterruptedException {
 		driver.get(sAppURL);
 		CM_Login(driver,"bxs5836","Asdf!234","loginFunctionTestCase3"+testCaseNumber);
 		driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewEventSummary"))).click();
@@ -297,9 +373,6 @@ public class CatererManagerTest extends CateringManagementFunctions{
 		Thread.sleep(1000);
 
 	}
-
-
-	
 	@After
 	  public void tearDown() throws Exception {
 	    driver.quit();

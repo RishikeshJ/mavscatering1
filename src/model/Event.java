@@ -40,67 +40,96 @@ public class Event implements Serializable{
 			String eventName, String foodType,String meal, String mealFormality, String drinkType, String entertainmentItems,String eventStatus, String eventID,
 			String ccnumber,String ccpin, String ccexpdate, String userid, String depositAmount) 
 	{	
-		this.setLastName(lastName);
-		this.setfirstName(firstName);
-		this.setdate(date);
-		this.setstartTime(startTime);
-		this.setduration(duration);
-		this.sethallName(hallName);
-		this.setestAttendees(estAttendees);
-		this.seteventName(eventName);
-		this.setfoodType(foodType);
-		this.setmeal(mealFormality);
-		this.setmealFormality(mealFormality);
-		this.setdrinkType(drinkType);
-		this.setentertainmentItems(entertainmentItems);
-		this.seteventStatus(eventStatus);
-		this.seteventID(eventID);
-		this.setccnumber(ccnumber);
-		this.setccpin(ccpin);
-		this.setccexpdate(ccexpdate);
-		this.setuserid(userid);
-		this.setDepositAmount(depositAmount);
+		setLastName(lastName);
+		setfirstName(firstName);
+		setdate(date);
+		setstartTime(startTime);
+		setduration(duration);
+		sethallName(hallName);
+		setestAttendees(estAttendees);
+		seteventName(eventName);
+		setfoodType(foodType);
+		setmeal(mealFormality);
+		setmealFormality(mealFormality);
+		setdrinkType(drinkType);
+		setentertainmentItems(entertainmentItems);
+		seteventStatus(eventStatus);
+		seteventID(eventID);
+		setccnumber(ccnumber);
+		setccpin(ccpin);
+		setccexpdate(ccexpdate);
+		setuserid(userid);
+		setDepositAmount(depositAmount);
 	}
 	
 	public void setEvent_v2(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID, String staff_fname,String staff_lname) 
 	{	
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.date = date;
-		this.startTime = startTime;
-		this.duration = duration;
-		this.hallName = hallName;
-		this.estAttendees = estAttendees;
-		this.eventName = eventName;
-		this.foodType = foodType;
-		this.meal = meal;
-		this.mealFormality = mealFormality;
-		this.drinkType = drinkType;
-		this.entertainmentItems = entertainmentItems;
-		this.eventID = eventID;
-		this.staff_fname = staff_fname;
-		this.staff_lname = staff_lname;
-
-		
+//		this.lastName = lastName;
+//		this.firstName = firstName;
+//		this.date = date;
+//		this.startTime = startTime;
+//		this.duration = duration;
+//		this.hallName = hallName;
+//		this.estAttendees = estAttendees;
+//		this.eventName = eventName;
+//		this.foodType = foodType;
+//		this.meal = meal;
+//		this.mealFormality = mealFormality;
+//		this.drinkType = drinkType;
+//		this.entertainmentItems = entertainmentItems;
+//		this.eventID = eventID;
+//		this.staff_fname = staff_fname;
+//		this.staff_lname = staff_lname;
+		setLastName(lastName);
+		setfirstName(firstName);
+		setdate(date);
+		setstartTime(startTime);
+		setduration(duration);
+		sethallName(hallName);
+		setestAttendees(estAttendees);
+		seteventName(eventName);
+		setfoodType(foodType);
+		setmeal(mealFormality);
+		setmealFormality(mealFormality);
+		setdrinkType(drinkType);
+		setentertainmentItems(entertainmentItems);
+		seteventID(eventID);
+		setStaff_fname(staff_fname);
+		setStaff_lname(staff_lname);
 	}
 	public void setEventForUpdate(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID) 
 	{	
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.date = date;
-		this.startTime = startTime;
-		this.duration = duration;
-		this.hallName = hallName;
-		this.estAttendees = estAttendees;
-		this.eventName = eventName;
-		this.foodType = foodType;
-		this.meal = meal;
-		this.mealFormality = mealFormality;
-		this.drinkType = drinkType;
-		this.entertainmentItems = entertainmentItems;
-		this.eventID = eventID;	
+//		this.lastName = lastName;
+//		this.firstName = firstName;
+//		this.date = date;
+//		this.startTime = startTime;
+//		this.duration = duration;
+//		this.hallName = hallName;
+//		this.estAttendees = estAttendees;
+//		this.eventName = eventName;
+//		this.foodType = foodType;
+//		this.meal = meal;
+//		this.mealFormality = mealFormality;
+//		this.drinkType = drinkType;
+//		this.entertainmentItems = entertainmentItems;
+//		this.eventID = eventID;	
+		setLastName(lastName);
+		setfirstName(firstName);
+		setdate(date);
+		setstartTime(startTime);
+		setduration(duration);
+		sethallName(hallName);
+		setestAttendees(estAttendees);
+		seteventName(eventName);
+		setfoodType(foodType);
+		setmeal(mealFormality);
+		setmealFormality(mealFormality);
+		setdrinkType(drinkType);
+		setentertainmentItems(entertainmentItems);
+		seteventID(eventID);
+
 	}
 
 	

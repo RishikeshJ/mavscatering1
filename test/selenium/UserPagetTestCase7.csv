@@ -1,0 +1,3 @@
+1,Bhumit,Shah,07/17/2020,14:00PM,2,Maverick,50,Register,American,Breakfast,Formal,Alcohol,Music,Pending,bdf252,,,,0.0.,Your Credit Card Number cannot be empty,Credit card pin cannot be empty,Your Expiry date field cannot be empty
+2,Bhumit,Shah,07/17/2020,14:00PM,2,Maverick,50,Register,American,Lunch,Informal,Non-Alcohol,Non-Music,Pending,bdf252,123456781234567,583,02/17/2020,0.0.,Credit card number must be 16 digits,Credit card pin must be 4 digits,Credit card exp date must not be in past
+3,Bhumit,Shah,07/17/2020,14:00PM,2,Maverick,50,Register,American,Supper,Formal,Alcohol,Music,Pending,bdf252,a,a,06/30/2020,0.0.,Your Credit Card Number field must be a number,Credit card pin must be a number,

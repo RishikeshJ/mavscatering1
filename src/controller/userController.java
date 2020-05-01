@@ -54,7 +54,7 @@ public class userController extends HttpServlet {
 		User selectedUser = new User();
 		if (action.equalsIgnoreCase("listSpecificUser")) {
 			userDB = UserDAO.searchUser(request.getParameter("id"));
-			System.out.println("UTA ID : " + userDB.get(0).getRole());
+//			System.out.println("UTA ID : " + userDB.get(0).getRole());
 			selectedUser.setUser(	userDB.get(0).getUsername(),userDB.get(0).getPassword(),userDB.get(0).getLastname(),userDB.get(0).getFirstname(),
 									userDB.get(0).getRole(),userDB.get(0).getUtaid(),userDB.get(0).getPhone(),userDB.get(0).getEmail(),
 									userDB.get(0).getStreetnumber(),userDB.get(0).getStreetname(),userDB.get(0).getCity(),userDB.get(0).getState(),
@@ -71,6 +71,17 @@ public class userController extends HttpServlet {
 			//2020-02-12
 			//url = "/EventRequest.jsp";
 			getServletContext().getRequestDispatcher("/EventRequest.jsp").forward(request, response);
+		}
+		else if(action.equals("changeRole1")) {
+			userDB = UserDAO.searchUser(request.getParameter("id"));
+			selectedUser.setUser(	userDB.get(0).getUsername(),userDB.get(0).getPassword(),userDB.get(0).getLastname(),userDB.get(0).getFirstname(),
+									userDB.get(0).getRole(),userDB.get(0).getUtaid(),userDB.get(0).getPhone(),userDB.get(0).getEmail(),
+									userDB.get(0).getStreetnumber(),userDB.get(0).getStreetname(),userDB.get(0).getCity(),userDB.get(0).getState(),
+									userDB.get(0).getZipcode());
+			session.setAttribute("USER", selectedUser);
+			session.setAttribute("lastnamer", userDB.get(0).getLastname());
+			getServletContext().getRequestDispatcher("/changeRole.jsp").forward(request, response);
+			
 		}
 		else // redirect all other gets to post
 			doPost(request,response);
@@ -135,7 +146,6 @@ public class userController extends HttpServlet {
 			User userProfile = UserDAO.getUser(user1.getUsername());
 			if(user1.getUsername().equals(user.getUsername())) {
 				if(userProfile.getRole().equals("Admin") || userProfile.getRole().equals("Caterer Manager")){
-					System.out.println("In admin:");
 					user.validateUser("modifyUserProfile",user,uerrorMsgs);
 				}
 				else {
@@ -143,9 +153,10 @@ public class userController extends HttpServlet {
 				}
 			}
 			else {
+				System.out.println("In 2");
 				user.validateUser("userProfile",user,uerrorMsgs);
 			}
-			//uerrorMsgs.setErrorMsgs();
+			uerrorMsgs.setErrorMsgs();
 			if (!uerrorMsgs.getErrorMsgs().equals("")) {// if error messages
 				getUserParam(request,user);
 				session.setAttribute("errorMsgs", uerrorMsgs);
@@ -181,7 +192,6 @@ public class userController extends HttpServlet {
 		}
 		else if(action.equalsIgnoreCase("refreshPage")) {
 			String lastname = request.getParameter("id");
-			System.out.println("Lastname : "+lastname);
 			ArrayList<User> userInDB = new ArrayList<User>();
 			userInDB = UserDAO.searchUsers(lastname);
 			session.setAttribute("USERS", userInDB);
@@ -223,9 +233,6 @@ public class userController extends HttpServlet {
 				else {
 					url = "/EventRequest.jsp";
 				}
-				
-				//getServletContext().getRequestDispatcher(url).forward(request, response);
-
 			}
 
 		}
@@ -234,6 +241,27 @@ public class userController extends HttpServlet {
 			String lastname = request.getParameter("id1");
 			UserDAO.deleteUser(username);
 			url="/userController?action=refreshPage&id="+lastname;
+		}
+		else if(action.equals("changeRole")) {
+			User newUser = new User();
+
+			newUser.setUsername(request.getParameter("username"));
+			newUser.setRole(request.getParameter("role"));
+		
+			System.out.println("Username: "+newUser.getUsername());
+			System.out.println("Role: "+newUser.getRole());
+
+			newUser.validateUser(action, newUser, uerrorMsgs);
+			uerrorMsgs.setErrorMsgs();
+			if (!uerrorMsgs.getErrorMsgs().equals("")) {// if error messages
+				getUserParam(request,user);
+				session.setAttribute("errorMsgs", uerrorMsgs);
+				url="/changeRole.jsp";
+			}
+			else {
+				UserDAO.modifyUser(newUser.getUsername(), newUser.getRole());
+				url="/userController?action=refreshPage&id="+session.getAttribute("lastnamer");
+			}
 		}
 
 

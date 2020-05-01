@@ -151,7 +151,6 @@ public class AdminPageTest extends CateringManagementFunctions{
 			driver.findElement(By.xpath(prop.getProperty("Link_AdminSearchUser_submit"))).click();
 			Thread.sleep(1000);
 			String username = driver.findElement(By.xpath(prop.getProperty("Txt_seachUserResults_prefix")+"2"+prop.getProperty("Txt_searchUserResults_UserNameCol"))).getText();
-			//System.out.println("Username: "+ username);
 			driver.findElement(By.xpath(prop.getProperty("Link_ViewProfile_view1"))).click();
 			Thread.sleep(1000);
 			verifyViewProfilePageHeaders(driver,"Header_ViewProfile_header",title,"Header2_ViewProfile_header2",subtitle,
@@ -172,6 +171,25 @@ public class AdminPageTest extends CateringManagementFunctions{
 			driver.findElement(By.xpath(prop.getProperty("Link_ViewProfile_Logout"))).click();
 			Thread.sleep(1000);
 
+		}
+		
+		//Verifying view profile page elements
+		@Test
+//		@FileParameters("test/selenium/AdminHomePage6.csv")
+		public void test6() throws InterruptedException {
+			driver.get(sAppURL);
+			CM_Login(driver,"axk987","Bhumit!23","AdminHomePageLogin1");
+			driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).clear();
+			driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).sendKeys("Shah");
+			driver.findElement(By.xpath(prop.getProperty("Link_AdminSearchUser_submit"))).click();
+			Thread.sleep(1000);
+//			String username = driver.findElement(By.xpath(prop.getProperty("Txt_seachUserResults_prefix")+"2"+prop.getProperty("Txt_searchUserResults_UserNameCol"))).getText();
+			driver.findElement(By.xpath(prop.getProperty("Link_ViewProfile_modify1"))).click();
+			Thread.sleep(1000);
+			changeRole(driver,"User","ChangeRole");
+			
 		}
 
 		@After

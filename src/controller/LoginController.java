@@ -82,7 +82,6 @@ public class LoginController extends HttpServlet {
 						
 						//redirect to appropriate home page based on role
 						String role = user.getRole();
-						System.out.println("Login:" + role);
 						if(role.equals("Admin"))
 						  url = "/adminHomePage.jsp"; 
 						else if(role.equals("Caterer Staff"))

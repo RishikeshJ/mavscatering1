@@ -26,21 +26,21 @@ public class User implements Serializable{
 	private String state;
 	private String zipcode;
 	
-	public User() {
-		this.username = "";
-		this.password = "";
-		this.lastname = "";
-		this.firstname = "";
-		this.role = "";
-		this.utaid = "";
-		this.phone = "";
-		this.email = "";
-		this.streetnumber = "";
-		this.streetname = "";
-		this.city = "";
-		this.state = "";
-		this.zipcode = "";
-	}
+//	public User() {
+//		this.username = "";
+//		this.password = "";
+//		this.lastname = "";
+//		this.firstname = "";
+//		this.role = "";
+//		this.utaid = "";
+//		this.phone = "";
+//		this.email = "";
+//		this.streetnumber = "";
+//		this.streetname = "";
+//		this.city = "";
+//		this.state = "";
+//		this.zipcode = "";
+//	}
 	public String getUsername() {
 		return username;
 	}
@@ -189,7 +189,7 @@ public class User implements Serializable{
 		else if(action.equals("userProfile")) {
 			errorMsgs.setFirstNameError(validateFirstname(user.getFirstname()));
 			errorMsgs.setLastNameError(validateLastname(user.getLastname()));
-			errorMsgs.setUsernameError(validateusername(user.getUsername()));
+			//errorMsgs.setUsernameError(validateusername(user.getUsername()));
 			errorMsgs.setPhoneError(validatePhone(user.getPhone()));
 			errorMsgs.setStreetNumberError(validateStreetnumber(user.getStreetnumber()));
 			errorMsgs.setStreetNameError(validateStreetname(user.getStreetname()));
@@ -198,6 +198,9 @@ public class User implements Serializable{
 			errorMsgs.setStateError(validatestate(user.getState()));
 			errorMsgs.setRoleError(validateRole(user.getRole()));
 			errorMsgs.setEmailError(validateEmail(user.getEmail()));
+		}
+		else if(action.equals("changeRole")) {
+			errorMsgs.setRoleError(validateRole(user.getRole()));
 		}
 		else {
 			user.verifyUser(user, errorMsgs);
@@ -405,19 +408,19 @@ public class User implements Serializable{
 	public void setUser(String username, String password, String lastName, String firstName, String role, String utaId,
 			String phone, String email, String streetnumber, String streetname, String city,
 			String state, String zipcode) {
-		this.setUsername(username);
-		this.setPassword(password);
-		this.setFirstname(firstName);
-		this.setLastname(lastName);
-		this.setRole(role);
-		this.setUtaid(utaId);
-		this.setPhone(phone);
-		this.setEmail(email);
-		this.setStreetnumber(streetnumber);
-		this.setStreetname(streetname);
-		this.setCity(city);
-		this.setState(state);
-		this.setZipcode(zipcode);
+		setUsername(username);
+		setPassword(password);
+		setFirstname(firstName);
+		setLastname(lastName);
+		setRole(role);
+		setUtaid(utaId);
+		setPhone(phone);
+		setEmail(email);
+		setStreetnumber(streetnumber);
+		setStreetname(streetname);
+		setCity(city);
+		setState(state);
+		setZipcode(zipcode);
 	}
 
 	public void verifyUser (User user, UserErrorMsgs errorMsgs) {		

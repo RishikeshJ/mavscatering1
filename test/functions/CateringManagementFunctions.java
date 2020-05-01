@@ -7,6 +7,7 @@ import model.Event;
 import model.User;
 import util.SQLConnection;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -110,6 +112,12 @@ public class CateringManagementFunctions {
 			} catch (SQLException e) {}
 			return eventListInDB;
 		}
+	 
+	 public static ArrayList<Event>  listEvents1(String edate, String etime) {  
+			
+			return ReturnMatchingEventList(" SELECT eventname, date, starttime, duration, hallname, lastname, firstname, eventID,eventStatus from eventdetails where date_format(date(concat(date,' ',starttime)), '%m-%d-%Y %H:%i') >= date_format(date(concat('"+edate+"',' ','"+etime+"')), '%m-%d-%Y %H:%i') order by date,startTime");
+		}
+
 	 
 	 public static ArrayList<Event>  listEvents2(String edate, String etime, String fname, String lname) {  
 			
@@ -625,6 +633,29 @@ public class CateringManagementFunctions {
 		 return arrayDB;
 	 }
 	 
+	 public String[][] getEventSummaryDate(int rows,String edate,String etime){
+		 String [][] arrayDB = new String [rows-1][7];
+		 ArrayList<Event> fromDB = listEvents1(edate,etime);
+		    int i=0;
+		    for (Event e:fromDB) {
+		    	
+		    	arrayDB[i][0]=e.geteventName();
+		    	arrayDB[i][1]=e.getdate();
+		    	arrayDB[i][2]=e.getstartTime();
+		    	arrayDB[i][3]=e.getduration();
+		    	arrayDB[i][4]=e.gethallName();
+		    	arrayDB[i][5]=e.getLastName();
+		    	arrayDB[i][6]=e.getfirstName();
+
+		    	System.out.println("Table1:");
+		    	System.out.println(i +" "+arrayDB[i][0]+" "+arrayDB[i][1]+" "+arrayDB[i][2]+" "+arrayDB[i][3]+" "+arrayDB[i][4]+" "+arrayDB[i][5]+" "
+						+arrayDB[i][6]);
+		 		i++;
+		    }
+
+		 return arrayDB;
+	 }
+
 	 public void verifyEventSummaryDetailsHeader(WebDriver driver,String h1OnPage,String exph1,
 			 String h2OnPage,String exph2,
 			 String h3OnPage,String exph3,
@@ -1326,6 +1357,154 @@ public class CateringManagementFunctions {
 
 		 
 	 }
+	 
+	 public void payDepositValidation(WebDriver driver,String CardNumber,String SecurityCode, String ExpDate,String Amount,String invalidCCNum,
+			 String invalidPin,String expDateErr,String SnapshotName) throws InterruptedException {
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_CCNumber"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_CCNumber"))).sendKeys(CardNumber);
 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_CVVNum"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_CVVNum"))).sendKeys(SecurityCode);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_ExpDate"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_ExpDate"))).sendKeys(ExpDate);
+		 
+		 Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Btn_PayDeposit_PayDeposit"))).click();
+		 Thread.sleep(1000);
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtErr_PayDepoit_CCNumber"))).getAttribute("value").equals(invalidCCNum));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtErr_PayDepoit_CVVNum"))).getAttribute("value").equals(invalidPin));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtErr_PayDepoit_ExpDate"))).getAttribute("value").equals(expDateErr));
+	 }
+
+	 public void payDeposit(WebDriver driver,String CardNumber,String SecurityCode, String ExpDate,String SnapshotName) throws InterruptedException {
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_CCNumber"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_CCNumber"))).sendKeys(CardNumber);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_CVVNum"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_CVVNum"))).sendKeys(SecurityCode);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_ExpDate"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_PayDepoit_ExpDate"))).sendKeys(ExpDate);
+		 
+		 Thread.sleep(1000);
+
+		 driver.findElement(By.xpath(prop.getProperty("Btn_PayDeposit_PayDeposit"))).click();
+		 Thread.sleep(1000);
+		 
+	 }
+	 
+	 public void changeRole(WebDriver driver,String role,String SnapshotName) throws InterruptedException {
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Role"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Role"))).sendKeys(role);
+
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ChangeRole_modify"))).click();
+		 Thread.sleep(1000);
+
+		 Alert alertPopUp = driver.switchTo().alert();
+		 alertPopUp.dismiss();
+
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ChangeRole_modify"))).click();
+		 Thread.sleep(1000);
+
+		 alertPopUp.accept();
+	 }
+	 
+	 public void ModifyEventDetailsManager(WebDriver driver,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
+			 String eventHallName,String eventEstAtnds,String eventName,String eventFoodType,String eventMeal,String eventMealFormality,
+			 String eventDrinkType,String eventEntItems,String SnapshotName) throws InterruptedException {
+		 
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_duration"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_duration"))).sendKeys(eventDuration);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_hallName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_hallName"))).sendKeys(eventHallName);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_estAtnds"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_estAtnds"))).sendKeys(eventEstAtnds);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_eventName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_eventName"))).sendKeys(eventName);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_foodType"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_foodType"))).sendKeys(eventFoodType);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_meal"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_meal"))).sendKeys(eventMeal);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_mealFormality"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_mealFormality"))).sendKeys(eventMealFormality);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_drinkType"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_drinkType"))).sendKeys(eventDrinkType);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_entItem"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsManager_entItem"))).sendKeys(eventEntItems);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ModifyEventDetailsManager_modify"))).click();
+		 Thread.sleep(1000);
+
+		 Alert alertPopUp = driver.switchTo().alert();
+		 alertPopUp.dismiss();
+
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ModifyEventDetailsManager_modify"))).click();
+		 Thread.sleep(1000);
+
+		 alertPopUp.accept();
+
+		 
+	 }
+	 
+	 public void ModifyEventDetailsUser(WebDriver driver,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
+			 String eventHallName,String eventEstAtnds,String eventName,String eventFoodType,String eventMeal,String eventMealFormality,
+			 String eventDrinkType,String eventEntItems,String SnapshotName) throws InterruptedException {
+		 
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_duration"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_duration"))).sendKeys(eventDuration);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_hallName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_hallName"))).sendKeys(eventHallName);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_estAtnds"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_estAtnds"))).sendKeys(eventEstAtnds);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_eventName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_eventName"))).sendKeys(eventName);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_foodType"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_foodType"))).sendKeys(eventFoodType);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_meal"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_meal"))).sendKeys(eventMeal);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_mealFormality"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_mealFormality"))).sendKeys(eventMealFormality);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_drinkType"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_drinkType"))).sendKeys(eventDrinkType);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_entItem"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ModifyEventDetailsUser_entItem"))).sendKeys(eventEntItems);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ModifyEventDetailsManager_modify"))).click();
+		 Thread.sleep(1000);
+
+		 Alert alertPopUp = driver.switchTo().alert();
+		 alertPopUp.dismiss();
+
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ModifyEventDetailsUser_modify"))).click();
+		 Thread.sleep(1000);
+
+		 alertPopUp.accept();
+
+		 
+	 }
 
 }

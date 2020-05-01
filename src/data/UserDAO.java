@@ -212,6 +212,7 @@ static SQLConnection DBMgr = SQLConnection.getInstance();
 		Connection conn = SQLConnection.getDBConnection();  
 		PreparedStatement pstmt = null;
 		String sqlUpdate = "update mavs_catering.user set role = '"+role+"' where username = '"+username+"';";
+		System.out.println(sqlUpdate);
 		try {
 			conn.setAutoCommit(false);
 			pstmt = conn.prepareStatement(sqlUpdate);

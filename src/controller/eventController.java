@@ -149,7 +149,6 @@ public class eventController extends HttpServlet {
 				}
 				session.setAttribute("DepositValue", FinalDepositCost);
 				session.setAttribute("EVENT", event);
-				System.out.println("Depsit:" + FinalDepositCost);
 				event.setDepositAmount(String.valueOf(FinalDepositCost));
 
 				EventDAO.registerEvent(event);
@@ -187,7 +186,6 @@ public class eventController extends HttpServlet {
         	}
         }
 		else if(action.equalsIgnoreCase("eventsummary")) {
-			System.out.print("printttt");
 	
 			ArrayList<Event> eventlist = EventDAO.getEventSummary();     
 			session.setAttribute("Event", eventlist);		
@@ -216,10 +214,8 @@ public class eventController extends HttpServlet {
 			session.setAttribute("errorMsgs", EerrorMsgs);
 		}
 		else if(action.equalsIgnoreCase("assignStaff")) {
-			System.out.print("In assign staff");
 			event.seteventID((String)session.getAttribute("eid"));
 			String id = session.getAttribute("eid").toString();
-			System.out.println(id);
 			EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
 			session.setAttribute("errorMsgs", EerrorMsgs);
 			EerrorMsgs.setStaffError(event.validateStaff(request.getParameter("firstname"), request.getParameter("lastname")));
@@ -237,17 +233,16 @@ public class eventController extends HttpServlet {
 			}
 			
 		}
-		else if(action.equalsIgnoreCase("goupdateevent")) {
+		else if(action.equals("goupdateevent")) {
 			url="/ModifyEvent.jsp";
 			Event eventdetails=EventDAO.getSpecificEventdetails(request.getParameter("id"));
 			session.setAttribute("EVENT", eventdetails);
 			session.setAttribute("eid", request.getParameter("id"));
 		}
-		
-		
-		else if(action.equals("ModifyEventDetails")) {
+		else if(action.equalsIgnoreCase("ModifyEventDetails")) {
 			event.seteventID((String)session.getAttribute("eid"));
 			String id = session.getAttribute("eid").toString();
+			
 			EventErrorMsgs E_errorMsgs = new EventErrorMsgs();
 			UserErrorMsgs U_errorMsgs = new UserErrorMsgs();
 			
@@ -257,16 +252,11 @@ public class eventController extends HttpServlet {
 			U_errorMsgs.setErrorMsgs();
 			E_errorMsgs.setErrorMsg();
 			if(E_errorMsgs.getErrorMsg().equals("") && U_errorMsgs.getErrorMsgs().equals("")) {
-				
-				
 				getEventParam(request,event);
 				EventDAO.Modifyevent_v2(event,id);
-				String date = (String) session.getAttribute("Date");
-				String time = (String) session.getAttribute("Time");
-				ArrayList<Event> eventInDB=EventDAO.listEvents1(date,time);
+				ArrayList<Event> eventInDB=EventDAO.getEventSummary();
 				session.setAttribute("EVENTS", eventInDB);
-				url="/viewEvents1.jsp";
-
+				url="/eventsummary.jsp";
 			}
 			
 			else {
@@ -274,7 +264,6 @@ public class eventController extends HttpServlet {
 			}
 			
 		}
-		
 		else if (action.equalsIgnoreCase("EventDetails")) {
 		Event eventInDB2 = new Event();
 		System.out.println("ID "+request.getParameter("id"));
@@ -307,14 +296,14 @@ public class eventController extends HttpServlet {
 			session.setAttribute("EVENTS", eventInDB);				
 			url="/ViewAssignedEvents.jsp";
 		}
-		else if (action.equalsIgnoreCase("ViewAssignedEvents")) {
-			ArrayList<Event> eventInDB = new ArrayList<Event>();
-			String date = (String) session.getAttribute("Date");
-			String time = (String) session.getAttribute("Time");
-			eventInDB=EventDAO.listEvents1(date,time);
-			session.setAttribute("EVENTS", eventInDB);				
-			url="/ViewAssignedEvents.jsp";
-		}
+//		else if (action.equalsIgnoreCase("ViewAssignedEvents")) {
+//			ArrayList<Event> eventInDB = new ArrayList<Event>();
+//			String date = (String) session.getAttribute("Date");
+//			String time = (String) session.getAttribute("Time");
+//			eventInDB=EventDAO.listEvents1(date,time);
+//			session.setAttribute("EVENTS", eventInDB);				
+//			url="/ViewAssignedEvents.jsp";
+//		}
 		else if (action.equalsIgnoreCase("getDateforevent")) {
 			System.out.println("Hello");
 			String date = (String) request.getParameter("iddate");
@@ -327,6 +316,8 @@ public class eventController extends HttpServlet {
 			ArrayList<Event> eventInDB = new ArrayList<Event>();
 			String date = (String) session.getAttribute("Date");
 			String time = (String) session.getAttribute("Time");
+			System.out.println(date);
+			System.out.println(time);
 			eventInDB=EventDAO.listEvents1(date,time);
 			session.setAttribute("EVENTS", eventInDB);				
 			url="/viewEvents1.jsp";

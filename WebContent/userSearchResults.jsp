@@ -32,7 +32,7 @@
 			<td class="myTable20 "><c:out value="${item.username}" /></td>
 			<td class="myTable30 "><c:out value="${item.role}" /></td>
             <td> <a href="<c:url value='/userController?action=listSpecificUser&id=${item.username}' />">View</a></td>
-            <td> <a href="<c:url value='/userController?action=listSpecificUser&id=${item.username}'/>">Modify Profile</a></td>
+            <td> <a href="<c:url value='/userController?action=changeRole1&id=${item.username}'/>">Modify Role</a></td>
             <td> <a href="<c:url value='/userController?action=deleteSpecificUser&id=${item.username}&id1=${item.lastname}'/>" onclick="if (confirm('Delete selected item?')){return true;}else{event.stopPropagation(); event.preventDefault();};">
             Delete</a></td><!-- Javascript Popup Confirmation -->
 			</tr>
