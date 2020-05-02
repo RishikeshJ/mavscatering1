@@ -173,11 +173,68 @@ public class AdminPageTest extends CateringManagementFunctions{
 
 		}
 		
-		//Verifying view profile page elements
+	//Modifying Profile Admin
+	@Test
+	@FileParameters("test/selenium/AdminHomePage9.csv")
+	public void test6(int testCaseNumber,String firstNameErr,String firstName,String lastName,String Phone,String email,String StreetNo,String StreetName,
+			 String City,String State,String Zipcode,String err,String err1) throws InterruptedException {
+		//fail("Not yet implemented");
+		driver.get(sAppURL);
+		CM_Login(driver,"axk987","Bhumit!23","AdminHomePageLogin"+testCaseNumber);
+		driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_view/ModifyProfile"))).click();
+		Thread.sleep(1000);
+		modifyProfile(driver,firstNameErr,firstName,lastName,Phone,email,StreetNo,StreetName,
+				 City,State,Zipcode,err,err1,"ModifyProfileAdmin"+testCaseNumber);
+		
+	}
+	
+		//Change Role Validation
+		@Test
+		@FileParameters("test/selenium/AdminHomePage7.csv")
+		public void test7(int testCaseNumber,String lastName,String role,String err,String err1) throws InterruptedException {
+			//fail("Not yet implemented");
+			driver.get(sAppURL);
+			CM_Login(driver,"axk987","Bhumit!23","AdminHomePageLogin"+testCaseNumber);
+			driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).clear();
+			driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).sendKeys(lastName);
+			driver.findElement(By.xpath(prop.getProperty("Link_AdminSearchUser_submit"))).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(prop.getProperty("Link_ViewProfile_modify1"))).click();
+			changeRoleValidation(driver,role,err,err1,"ChangeRoleValidation"+testCaseNumber);
+			
+		}
+
+		//Change Role
+		@Test
+		@FileParameters("test/selenium/AdminHomePage8.csv")
+		public void test8(int testCaseNumber,String lastName,String role) throws InterruptedException {
+			//fail("Not yet implemented");
+			driver.get(sAppURL);
+			CM_Login(driver,"axk987","Bhumit!23","AdminHomePageLogin"+testCaseNumber);
+			driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).clear();
+			driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).sendKeys(lastName);
+			driver.findElement(By.xpath(prop.getProperty("Link_AdminSearchUser_submit"))).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(prop.getProperty("Link_ViewProfile_modify1"))).click();
+			changeRole(driver,role,"ChangeRole"+testCaseNumber);
+			driver.findElement(By.xpath(prop.getProperty("Link_AdminViewUser_logout"))).click();
+			Thread.sleep(1000);
+			
+		}
+		
+		//Deleting User
 		@Test
 //		@FileParameters("test/selenium/AdminHomePage6.csv")
-		public void test6() throws InterruptedException {
+		public void test9() throws InterruptedException {
 			driver.get(sAppURL);
+			driver.findElement(By.xpath(prop.getProperty("Btn_login_Register"))).click();
+			Thread.sleep(1000);
+			RegisterCatererManager(driver,"abc123","Bhumit!23","User","1234567890","Abhishek","Shah","1234567890","abc@gmail.com","848","Mitchell",
+					"Arlington","TX","76001", "UserRegistraion");
 			CM_Login(driver,"axk987","Bhumit!23","AdminHomePageLogin1");
 			driver.findElement(By.xpath(prop.getProperty("Link_AdminHomePage_Search_for_User"))).click();
 			Thread.sleep(1000);
@@ -185,11 +242,9 @@ public class AdminPageTest extends CateringManagementFunctions{
 			driver.findElement(By.xpath(prop.getProperty("Txt_AdminSearchUser_UsersLastname"))).sendKeys("Shah");
 			driver.findElement(By.xpath(prop.getProperty("Link_AdminSearchUser_submit"))).click();
 			Thread.sleep(1000);
-//			String username = driver.findElement(By.xpath(prop.getProperty("Txt_seachUserResults_prefix")+"2"+prop.getProperty("Txt_searchUserResults_UserNameCol"))).getText();
-			driver.findElement(By.xpath(prop.getProperty("Link_ViewProfile_modify1"))).click();
+			deleteUser(driver,"DeleteUser");
+			driver.findElement(By.xpath(prop.getProperty("Link_AdminViewUser_logout"))).click();
 			Thread.sleep(1000);
-			changeRole(driver,"User","ChangeRole");
-			
 		}
 
 		@After

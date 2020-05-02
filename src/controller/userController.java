@@ -160,7 +160,7 @@ public class userController extends HttpServlet {
 			if (!uerrorMsgs.getErrorMsgs().equals("")) {// if error messages
 				getUserParam(request,user);
 				session.setAttribute("errorMsgs", uerrorMsgs);
-				url="/modifyUserProfile.jsp";
+				url="/viewMyProfile.jsp";
 			}
 			else {
 

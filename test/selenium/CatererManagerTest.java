@@ -356,12 +356,26 @@ public class CatererManagerTest extends CateringManagementFunctions{
 		WebElement eventTable = driver.findElement(By.xpath(prop.getProperty("Table_CatererManagerEventSummaryDate_table")));
 		int rows = eventTable.findElements(By.tagName("tr")).size();
 		assertFalse(arraysDiff1(getEventSummaryDate(rows,newString,newTime), getTableContentsFromCMDate(rows)));
-	}	
-
+	}
 	
+	//Modifying Profile Caterer Manager
+	@Test
+	@FileParameters("test/selenium/CatererManager9.csv")
+	public void test9(int testCaseNumber,String firstNameErr,String firstName,String lastName,String Phone,String email,String StreetNo,String StreetName,
+			 String City,String State,String Zipcode,String err,String err1) throws InterruptedException {
+		//fail("Not yet implemented");
+		driver.get(sAppURL);
+		CM_Login(driver,"bxs5836","Asdf!234","CMHomePageLogin"+testCaseNumber);
+		driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewProfile"))).click();
+		Thread.sleep(1000);
+		modifyProfile(driver,firstNameErr,firstName,lastName,Phone,email,StreetNo,StreetName,
+				 City,State,Zipcode,err,err1,"ModifyProfileCM"+testCaseNumber);
+		
+	}
+
 	@Test
 	@FileParameters("test/selenium/CatererManagerAssignStaffTestCase.csv")
-	public void test9(int testCaseNumber,String firstname,String lastname,String err,String staffErr) throws InterruptedException {
+	public void test10(int testCaseNumber,String firstname,String lastname,String err,String staffErr) throws InterruptedException {
 		driver.get(sAppURL);
 		CM_Login(driver,"bxs5836","Asdf!234","loginFunctionTestCase3"+testCaseNumber);
 		driver.findElement(By.xpath(prop.getProperty("Link_CatererManagerHome_ViewEventSummary"))).click();

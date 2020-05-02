@@ -108,9 +108,25 @@ public class CatererStaffTest extends CateringManagementFunctions{
 
 	}
 	
+	//Modifying Profile Caterer Staff
+	@Test
+	@FileParameters("test/selenium/CatererStaffTestCase3.csv")
+	public void test1(int testCaseNumber,String firstNameErr,String firstName,String lastName,String Phone,String email,String StreetNo,String StreetName,
+			 String City,String State,String Zipcode,String err,String err1) throws InterruptedException {
+		//fail("Not yet implemented");
+		driver.get(sAppURL);
+		CM_Login(driver,"fbf2883c","Db@10uta","StaffHomePageLogin"+testCaseNumber);
+		driver.findElement(By.xpath(prop.getProperty("Link_CatererStaff_ViewProfile"))).click();
+		Thread.sleep(1000);
+		modifyProfile(driver,firstNameErr,firstName,lastName,Phone,email,StreetNo,StreetName,
+				 City,State,Zipcode,err,err1,"ModifyProfileCStaff"+testCaseNumber);
+		
+	}
+
+	
 	@Test
 	@FileParameters("test/selenium/CatererStaffTestCase2.csv")
-	public void test1(int testCaseNumber,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
+	public void test2(int testCaseNumber,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
 			String eventHallName,String eventEstAtnds,String eventName,String eventFoodType,String eventMeal,String eventMealFormality,
 			String eventDrinkType,String eventEntItems,String h1,String h2,String h3,String h4,String h5,String h6,String h7,String h8,String h9,
 			String h10,String h11,String h12,String h13) throws InterruptedException {

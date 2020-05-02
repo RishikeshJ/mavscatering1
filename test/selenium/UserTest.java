@@ -250,11 +250,27 @@ public class UserTest extends CateringManagementFunctions{
 		assertFalse(arraysDiff(userEventsummaryfromDB(rows,"bdf252","Bhumit","Shah"), getTableContentsFromUserSummaryPage(rows)));
 
 	}
+	
+	//Modifying Profile User
+	@Test
+	@FileParameters("test/selenium/UserPagetTestCase10.csv")
+	public void test9(int testCaseNumber,String firstNameErr,String firstName,String lastName,String Phone,String email,String StreetNo,String StreetName,
+			 String City,String State,String Zipcode,String err,String err1) throws InterruptedException {
+		//fail("Not yet implemented");
+		driver.get(sAppURL);
+		CM_Login(driver,"bdf252","Bhumit!23","UserHomePageLogin"+testCaseNumber);
+		driver.findElement(By.xpath(prop.getProperty("Link_UserHome_ViewProfile"))).click();
+		Thread.sleep(1000);
+		modifyProfile(driver,firstNameErr,firstName,lastName,Phone,email,StreetNo,StreetName,
+				 City,State,Zipcode,err,err1,"ModifyProfileUser"+testCaseNumber);
+		
+	}
+
 
 	//verifying view selected event
 	@Test
 	@FileParameters("test/selenium/UserPagetTestCase6.csv")
-	public void test9(int testCaseNumber,String exph1, String exph2, String exph3, String exph4, String exph5, String exph6, String exph7, String exph8, String exph9,
+	public void test10(int testCaseNumber,String exph1, String exph2, String exph3, String exph4, String exph5, String exph6, String exph7, String exph8, String exph9,
 			 String exph10, String exph11, String exph12, String exph13, String exph14) throws InterruptedException {
 		//fail("Not yet implemented");
 		

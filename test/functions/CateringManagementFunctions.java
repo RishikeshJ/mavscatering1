@@ -60,7 +60,9 @@ public class CateringManagementFunctions {
 	 
 	 public void CM_Login(WebDriver driver, String username, String password, String SnapshotName) {
 		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_login_Username"))).clear();;
 		 driver.findElement(By.xpath(prop.getProperty("Txt_login_Username"))).sendKeys(username);
+		 driver.findElement(By.xpath(prop.getProperty("Txt_login_Password"))).clear();;
 		 driver.findElement(By.xpath(prop.getProperty("Txt_login_Password"))).sendKeys(password);
 		 driver.findElement(By.xpath(prop.getProperty("Btn_login_login"))).click();
 		 takeScreenshot(driver,SnapshotName);
@@ -1375,6 +1377,8 @@ public class CateringManagementFunctions {
 		 driver.findElement(By.xpath(prop.getProperty("Btn_PayDeposit_PayDeposit"))).click();
 		 Thread.sleep(1000);
 		 
+		 takeScreenshot(driver,SnapshotName);
+		 
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtErr_PayDepoit_CCNumber"))).getAttribute("value").equals(invalidCCNum));
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtErr_PayDepoit_CVVNum"))).getAttribute("value").equals(invalidPin));
 		 assertTrue(driver.findElement(By.xpath(prop.getProperty("TxtErr_PayDepoit_ExpDate"))).getAttribute("value").equals(expDateErr));
@@ -1400,19 +1404,23 @@ public class CateringManagementFunctions {
 	 
 	 public void changeRole(WebDriver driver,String role,String SnapshotName) throws InterruptedException {
 		 
-		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Role"))).clear();
-		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewProfile_Role"))).sendKeys(role);
-
-		 driver.findElement(By.xpath(prop.getProperty("Btn_ChangeRole_modify"))).click();
-		 Thread.sleep(1000);
-
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ChangeRole_Role"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ChangeRole_Role"))).sendKeys(role);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ChangeRole_Modify"))).click();
+		 
 		 Alert alertPopUp = driver.switchTo().alert();
 		 alertPopUp.dismiss();
-
-		 driver.findElement(By.xpath(prop.getProperty("Btn_ChangeRole_modify"))).click();
+		 Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ChangeRole_Modify"))).click();
+		 
+		 alertPopUp.accept();
 		 Thread.sleep(1000);
 
-		 alertPopUp.accept();
+
+		 
+		 takeScreenshot(driver,SnapshotName);
 	 }
 	 
 	 public void ModifyEventDetailsManager(WebDriver driver,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
@@ -1503,8 +1511,99 @@ public class CateringManagementFunctions {
 		 Thread.sleep(1000);
 
 		 alertPopUp.accept();
+	 }
+	 
+	 public void changeRoleValidation(WebDriver driver,String role,String err,String err1,String SnapshotName) throws InterruptedException {
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ChangeRole_Role"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ChangeRole_Role"))).sendKeys(role);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ChangeRole_Modify"))).click();
+		 Thread.sleep(1000);
+		 
+		 Alert alertPopUp = driver.switchTo().alert();
+		 alertPopUp.dismiss();
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ChangeRole_Modify"))).click();
+		 Thread.sleep(1000);
+
+		 alertPopUp.accept();
 
 		 
+		 takeScreenshot(driver,SnapshotName);
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_ChangeRole_Error"))).getAttribute("value").equals(err));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_ChangeRole_Error1"))).getAttribute("value").equals(err1));
+
+	 }
+	 
+	 public void deleteUser(WebDriver driver,String SnapshotName) throws InterruptedException {
+			driver.findElement(By.xpath(prop.getProperty("Link_ViewProfile_delete1"))).click();
+			Thread.sleep(1000);
+			
+			Alert alertPopUp = driver.switchTo().alert();
+			alertPopUp.dismiss();
+			 
+			driver.findElement(By.xpath(prop.getProperty("Link_ViewProfile_delete1"))).click();
+			Thread.sleep(1000);
+			 
+			alertPopUp.accept();
+			Thread.sleep(1000);
+			 
+			takeScreenshot(driver,SnapshotName);
+	 }
+	 
+	 public void modifyProfile(WebDriver driver,String firstNameErr,String firstName,String lastName,String Phone,String email,String StreetNo,String StreetName,
+			 String City,String State,String Zipcode,String err,String err1,String SnapshotName) throws InterruptedException {
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_FirstName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_FirstName"))).sendKeys(firstNameErr);
+
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_LastName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_LastName"))).sendKeys(lastName);
+	
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_Phone"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_Phone"))).sendKeys(Phone);
+	
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_Email"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_Email"))).sendKeys(email);
+	
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_StreetNumber"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_StreetNumber"))).sendKeys(StreetNo);
+	
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_StreetName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_StreetName"))).sendKeys(StreetName);
+	
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_City"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_City"))).sendKeys(City);
+	
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_State"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_State"))).sendKeys(State);
+	
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_Zipcode"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_Zipcode"))).sendKeys(Zipcode);
+	
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ViewModifyProfile_Modify"))).click();
+		 Thread.sleep(1000);
+		 
+		 Alert alertPopUp = driver.switchTo().alert();
+		 alertPopUp.accept();
+		 
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_ViewModifyProfile_Error"))).getAttribute("value").equals(err));
+		 assertTrue(driver.findElement(By.xpath(prop.getProperty("Err_ViewModifyProfile_Error1"))).getAttribute("value").equals(err1));
+		 Thread.sleep(1000);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_FirstName"))).clear();
+		 driver.findElement(By.xpath(prop.getProperty("Txt_ViewModifyProfile_FirstName"))).sendKeys(firstName);
+		 
+		 driver.findElement(By.xpath(prop.getProperty("Btn_ViewModifyProfile_Modify"))).click();
+		 Thread.sleep(1000);
+
+		 alertPopUp.accept();
+		 Thread.sleep(1000);
+
+		 takeScreenshot(driver,SnapshotName);
+
 	 }
 
 }
