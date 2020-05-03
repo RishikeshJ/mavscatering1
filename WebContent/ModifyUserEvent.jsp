@@ -15,7 +15,7 @@
 <table>
 <tr>
    <td>
-    <form name="Modifyevent" action="<c:url value='/eventController?action=Modify_Event_Details' />" method="post">
+    <form name="Modifyevent" action="<c:url value='/eventController?action=ModifyEventDetails1' />" method="post">
     <table style="width: 1200px; ">
     
      

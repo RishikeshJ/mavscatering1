@@ -152,10 +152,6 @@ public class userController extends HttpServlet {
 					user.validateUser("userProfile",user,uerrorMsgs);
 				}
 			}
-			else {
-				System.out.println("In 2");
-				user.validateUser("userProfile",user,uerrorMsgs);
-			}
 			uerrorMsgs.setErrorMsgs();
 			if (!uerrorMsgs.getErrorMsgs().equals("")) {// if error messages
 				getUserParam(request,user);
@@ -183,11 +179,6 @@ public class userController extends HttpServlet {
 					UserDAO.modifyUserProfile(user);
 					url="/HomePage.jsp";			
 				}
-				else {
-					UserDAO.modifyUserProfile(user);
-					url="/userController?action=refreshPage&id="+user.getLastname();			
-				}
-
 			}
 		}
 		else if(action.equalsIgnoreCase("refreshPage")) {
@@ -229,9 +220,6 @@ public class userController extends HttpServlet {
 					session.setAttribute("time", selectedTime);
 					session.setAttribute("Event", event);
 					url = "/EventBook.jsp";
-				}
-				else {
-					url = "/EventRequest.jsp";
 				}
 			}
 

@@ -258,11 +258,6 @@ public class eventController extends HttpServlet {
 				session.setAttribute("EVENTS", eventInDB);
 				url="/eventsummary.jsp";
 			}
-			
-			else {
-				url="/ModifyEvent.jsp";
-			}
-			
 		}
 		else if (action.equalsIgnoreCase("EventDetails")) {
 		Event eventInDB2 = new Event();
@@ -296,14 +291,6 @@ public class eventController extends HttpServlet {
 			session.setAttribute("EVENTS", eventInDB);				
 			url="/ViewAssignedEvents.jsp";
 		}
-//		else if (action.equalsIgnoreCase("ViewAssignedEvents")) {
-//			ArrayList<Event> eventInDB = new ArrayList<Event>();
-//			String date = (String) session.getAttribute("Date");
-//			String time = (String) session.getAttribute("Time");
-//			eventInDB=EventDAO.listEvents1(date,time);
-//			session.setAttribute("EVENTS", eventInDB);				
-//			url="/ViewAssignedEvents.jsp";
-//		}
 		else if (action.equalsIgnoreCase("getDateforevent")) {
 			System.out.println("Hello");
 			String date = (String) request.getParameter("iddate");
@@ -328,7 +315,7 @@ public class eventController extends HttpServlet {
 			session.setAttribute("EVENT", eventdetails);
 			session.setAttribute("eid", request.getParameter("id"));
 		}
-		else if(action.equals("Modify_Event_Details")) {
+		else if(action.equals("ModifyEventDetails1")) {
 				System.out.println("Modify_Event_Details");
 				String id = session.getAttribute("eid").toString();
 				getEventParam(request,event);

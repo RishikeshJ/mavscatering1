@@ -1460,11 +1460,13 @@ public class CateringManagementFunctions {
 
 		 Alert alertPopUp = driver.switchTo().alert();
 		 alertPopUp.dismiss();
+		 Thread.sleep(1000);
 
 		 driver.findElement(By.xpath(prop.getProperty("Btn_ModifyEventDetailsManager_modify"))).click();
 		 Thread.sleep(1000);
 
 		 alertPopUp.accept();
+		 Thread.sleep(1000);
 
 		 
 	 }
@@ -1506,11 +1508,13 @@ public class CateringManagementFunctions {
 
 		 Alert alertPopUp = driver.switchTo().alert();
 		 alertPopUp.dismiss();
+		 Thread.sleep(1000);
 
 		 driver.findElement(By.xpath(prop.getProperty("Btn_ModifyEventDetailsUser_modify"))).click();
 		 Thread.sleep(1000);
 
 		 alertPopUp.accept();
+		 Thread.sleep(1000);
 	 }
 	 
 	 public void changeRoleValidation(WebDriver driver,String role,String err,String err1,String SnapshotName) throws InterruptedException {

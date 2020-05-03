@@ -194,6 +194,7 @@ public class UserTest extends CateringManagementFunctions{
 
 	}
 	
+	//Modifying Event User
 	@Test
 	@FileParameters("test/selenium/UserPagetTestCase9.csv")
 	public void test7(int testCaseNumber,String eventID,String eventFirstName,String eventLastName,String eventDate,String eventStartTime,String eventDuration,
@@ -210,8 +211,6 @@ public class UserTest extends CateringManagementFunctions{
 		ModifyEventDetailsUser(driver,eventID,eventFirstName,eventLastName,eventDate,eventStartTime,eventDuration,
 		 eventHallName,eventEstAtnds,eventName,eventFoodType,eventMeal,eventMealFormality,
 		 eventDrinkType,eventEntItems,"ModifyEventDetailsUser"+testCaseNumber);
-
-
 	}
 	
 	
