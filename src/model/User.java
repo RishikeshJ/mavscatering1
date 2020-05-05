@@ -218,7 +218,7 @@ public class User implements Serializable{
 				error = "First name must start with a capital letter";
 		else if(firstname.length() <= 2 || firstname.length() >= 30)
 			error = "First name length must be >2 and <30";
-		else if(!isStringOnlyAlpha(firstname))
+		else if(!isStringOnlyAlphabet(firstname))
 			error = "First name cannot contain a number or special characters";
 		return error;
 	}
@@ -397,9 +397,9 @@ public class User implements Serializable{
 	public String validateRole(String Role) {
 		String error = "";
 		ArrayList<String> roles = UserDAO.checkRoles();
-		if(Role.equals("Admin") && roles.contains("Admin"))
+		if(Role.equals("Admin") && roles.contains("Admin")) // TF MCDC won't be covered as cannot delete from database
 			error = "There can only be one admin";
-		else if(Role.equals("Caterer Manager") && roles.contains("Caterer Manager"))
+		else if(Role.equals("Caterer Manager") && roles.contains("Caterer Manager")) // TF MCDC won't be covered as cannot delete from database
 			error = "There can only be one Caterer Manager";
 		return error;
 	}

@@ -65,22 +65,6 @@ public class Event implements Serializable{
 	public void setEvent_v2(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID, String staff_fname,String staff_lname) 
 	{	
-//		this.lastName = lastName;
-//		this.firstName = firstName;
-//		this.date = date;
-//		this.startTime = startTime;
-//		this.duration = duration;
-//		this.hallName = hallName;
-//		this.estAttendees = estAttendees;
-//		this.eventName = eventName;
-//		this.foodType = foodType;
-//		this.meal = meal;
-//		this.mealFormality = mealFormality;
-//		this.drinkType = drinkType;
-//		this.entertainmentItems = entertainmentItems;
-//		this.eventID = eventID;
-//		this.staff_fname = staff_fname;
-//		this.staff_lname = staff_lname;
 		setLastName(lastName);
 		setfirstName(firstName);
 		setdate(date);
@@ -101,20 +85,6 @@ public class Event implements Serializable{
 	public void setEventForUpdate(String lastName,String firstName, String date,String startTime,String duration,String hallName,
 			String eventName,String meal, String mealFormality, String foodType, String drinkType,String estAttendees, String entertainmentItems, String eventID) 
 	{	
-//		this.lastName = lastName;
-//		this.firstName = firstName;
-//		this.date = date;
-//		this.startTime = startTime;
-//		this.duration = duration;
-//		this.hallName = hallName;
-//		this.estAttendees = estAttendees;
-//		this.eventName = eventName;
-//		this.foodType = foodType;
-//		this.meal = meal;
-//		this.mealFormality = mealFormality;
-//		this.drinkType = drinkType;
-//		this.entertainmentItems = entertainmentItems;
-//		this.eventID = eventID;	
 		setLastName(lastName);
 		setfirstName(firstName);
 		setdate(date);
@@ -132,33 +102,6 @@ public class Event implements Serializable{
 
 	}
 
-	
-//	public void updateEvent(String lastName,String firstName, String date,String startTime,String duration,String hallName,String estAttendees,
-//			String eventName, String foodType,String meal, String mealFormality, String drinkType, String entertainmentItems,String eventStatus,String eventID,
-//			String ccnumber,String ccpin, String ccexpdate, String userid, String depsoitAmount, String depositAmount) 
-//	{	
-//		this.lastName = lastName;
-//		this.firstName = firstName;
-//		this.date = date;
-//		this.startTime = startTime;
-//		this.duration = duration;
-//		this.hallName = hallName;
-//		this.estAttendees = estAttendees;
-//		this.eventName = eventName;
-//		this.foodType = foodType;
-//		this.meal = meal;
-//		this.mealFormality = mealFormality;
-//		this.drinkType = drinkType;
-//		this.entertainmentItems = entertainmentItems;
-//		this.eventStatus = eventStatus;
-//		this.eventID = eventID;
-//		this.ccnumber = ccnumber;
-//		this.ccpin = ccpin;
-//		this.ccexpdate = ccexpdate;
-//		this.userid = userid;
-//		this.depositAmount = depositAmount;
-//	}
-	
 	public String geteventID() {
 		return eventID;
 	}

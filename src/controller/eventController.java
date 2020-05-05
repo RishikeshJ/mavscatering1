@@ -117,35 +117,33 @@ public class eventController extends HttpServlet {
 				double MealFormalityCost = 0 ;
 				double DrinkCost = 0;
 				//double EntertainmentCost = 0;
-				String estAttendees = request.getParameter("estAttendees").toString();
-				if(!estAttendees.isEmpty()) {
-					/*Food meal type: breakfast, lunch, supper. Meal cost: breakfast $8/person attending, 
-					lunch $12/person attending, and supper $18/person attending.*/
-					if(Meal.equals("Breakfast")) {	
-						FoodMealCost = Integer.parseInt(estAttendees)* 8;
-					}else if(Meal.equals("Lunch")) {
-						FoodMealCost = Integer.parseInt(estAttendees)* 12;
-					}
-					else if(Meal.equals("Supper")) {
-						FoodMealCost = Integer.parseInt(estAttendees)* 18;
-					}
-					
-					//Formal is 1.5 times the cost of the meal 
-					if(MealFormality.equals("Formal")) {
-						FoodMealCost = 1.5 * FoodMealCost;
-					}
-					//Alcohol is $15/person attending.
-					if(DrinkType.equals("Alcohol")) {
-						DrinkCost = Integer.parseInt(estAttendees)* 15;
-					}
-					
-					
-					if(EntertainmentItems.equals("Music")) {
-						FinalDepositCost = FoodMealCost + MealFormalityCost + DrinkCost + 50;
-					}
-					else {
-						FinalDepositCost = FoodMealCost + MealFormalityCost + DrinkCost;
-					}
+			String estAttendees = request.getParameter("estAttendees").toString();
+				/*Food meal type: breakfast, lunch, supper. Meal cost: breakfast $8/person attending, 
+				lunch $12/person attending, and supper $18/person attending.*/
+				if(Meal.equals("Breakfast")) {	
+					FoodMealCost = Integer.parseInt(estAttendees)* 8;
+				}else if(Meal.equals("Lunch")) {
+					FoodMealCost = Integer.parseInt(estAttendees)* 12;
+				}
+				else {
+					FoodMealCost = Integer.parseInt(estAttendees)* 18;
+				}
+				
+				//Formal is 1.5 times the cost of the meal 
+				if(MealFormality.equals("Formal")) {
+					FoodMealCost = 1.5 * FoodMealCost;
+				}
+				//Alcohol is $15/person attending.
+				if(DrinkType.equals("Alcohol")) {
+					DrinkCost = Integer.parseInt(estAttendees)* 15;
+				}
+				
+				
+				if(EntertainmentItems.equals("Music")) {
+					FinalDepositCost = FoodMealCost + MealFormalityCost + DrinkCost + 50;
+				}
+				else {
+					FinalDepositCost = FoodMealCost + MealFormalityCost + DrinkCost;
 				}
 				session.setAttribute("DepositValue", FinalDepositCost);
 				session.setAttribute("EVENT", event);
@@ -220,7 +218,6 @@ public class eventController extends HttpServlet {
 			session.setAttribute("errorMsgs", EerrorMsgs);
 			EerrorMsgs.setStaffError(event.validateStaff(request.getParameter("firstname"), request.getParameter("lastname")));
 			EerrorMsgs.setErrorMsg();
-			//session.setAttribute("e_errorMsgs", EerrorMsgs);
 
 			if(EerrorMsgs.getErrorMsg().equals("")) {
 				event.setStaff_fname(request.getParameter("firstname"));
@@ -251,13 +248,13 @@ public class eventController extends HttpServlet {
 
 			U_errorMsgs.setErrorMsgs();
 			E_errorMsgs.setErrorMsg();
-			if(E_errorMsgs.getErrorMsg().equals("") && U_errorMsgs.getErrorMsgs().equals("")) {
+//			if(E_errorMsgs.getErrorMsg().equals("") && U_errorMsgs.getErrorMsgs().equals("")) {
 				getEventParam(request,event);
 				EventDAO.Modifyevent_v2(event,id);
 				ArrayList<Event> eventInDB=EventDAO.getEventSummary();
 				session.setAttribute("EVENTS", eventInDB);
 				url="/eventsummary.jsp";
-			}
+//			}
 		}
 		else if (action.equalsIgnoreCase("EventDetails")) {
 		Event eventInDB2 = new Event();
@@ -315,7 +312,9 @@ public class eventController extends HttpServlet {
 			session.setAttribute("EVENT", eventdetails);
 			session.setAttribute("eid", request.getParameter("id"));
 		}
-		else if(action.equals("ModifyEventDetails1")) {
+//		else if(action.equals("ModifyEventDetails1")) {
+		else {
+
 				System.out.println("Modify_Event_Details");
 				String id = session.getAttribute("eid").toString();
 				getEventParam(request,event);

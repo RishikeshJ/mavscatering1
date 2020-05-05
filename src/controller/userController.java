@@ -144,13 +144,11 @@ public class userController extends HttpServlet {
 			getUserParam(request,user);
 			User user1 = (User)session.getAttribute("currentUser");
 			User userProfile = UserDAO.getUser(user1.getUsername());
-			if(user1.getUsername().equals(user.getUsername())) {
-				if(userProfile.getRole().equals("Admin") || userProfile.getRole().equals("Caterer Manager")){
-					user.validateUser("modifyUserProfile",user,uerrorMsgs);
-				}
-				else {
-					user.validateUser("userProfile",user,uerrorMsgs);
-				}
+			if(userProfile.getRole().equals("Admin") || userProfile.getRole().equals("Caterer Manager")){
+				user.validateUser("modifyUserProfile",user,uerrorMsgs);
+			}
+			else {
+				user.validateUser("userProfile",user,uerrorMsgs);
 			}
 			uerrorMsgs.setErrorMsgs();
 			if (!uerrorMsgs.getErrorMsgs().equals("")) {// if error messages
@@ -159,23 +157,19 @@ public class userController extends HttpServlet {
 				url="/viewMyProfile.jsp";
 			}
 			else {
-
-				System.out.println("In modify"+user.getRole());
-	
-				if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("Admin")) {
+				if(user.getRole().equals("Admin")) {
 					UserDAO.modifyUserProfile(user);
 					url="/adminHomePage.jsp";			
 				}
-				else if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("Caterer Manager")) {
+				else if(user.getRole().equals("Caterer Manager")) {
 					UserDAO.modifyUserProfile(user);
 					url="/ManagerHome.jsp";			
 				}
-				else if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("User")) {
+				else if(user.getRole().equals("User")) {
 					UserDAO.modifyUserProfile(user);
 					url="/UserHome.jsp";			
 				}
-				
-				else if(user1.getUsername().equals(user.getUsername()) && user.getRole().equals("Caterer Staff")) {
+				else {
 					UserDAO.modifyUserProfile(user);
 					url="/HomePage.jsp";			
 				}
@@ -209,18 +203,14 @@ public class userController extends HttpServlet {
 				String selectedDate = request.getParameter("iddate");
 				String selectedTime = request.getParameter("idtime");
 				EventErrorMsgs EerrorMsgs = new EventErrorMsgs();
-				session.setAttribute("TIMEERROR", EerrorMsgs);
-				if (EerrorMsgs.getErrorMsg().equals("")) {
-					session.removeAttribute("errorMsgs");
-					String firstname = EventDAO.getfirstname(user1.getUsername());
-					String lastname = EventDAO.getlastname(user1.getUsername());
-					session.setAttribute("fname", firstname);
-					session.setAttribute("lname", lastname);
-					session.setAttribute("date", selectedDate);
-					session.setAttribute("time", selectedTime);
-					session.setAttribute("Event", event);
-					url = "/EventBook.jsp";
-				}
+				String firstname = EventDAO.getfirstname(user1.getUsername());
+				String lastname = EventDAO.getlastname(user1.getUsername());
+				session.setAttribute("fname", firstname);
+				session.setAttribute("lname", lastname);
+				session.setAttribute("date", selectedDate);
+				session.setAttribute("time", selectedTime);
+				session.setAttribute("Event", event);
+				url = "/EventBook.jsp";
 			}
 
 		}
@@ -230,7 +220,8 @@ public class userController extends HttpServlet {
 			UserDAO.deleteUser(username);
 			url="/userController?action=refreshPage&id="+lastname;
 		}
-		else if(action.equals("changeRole")) {
+		else {
+	
 			User newUser = new User();
 
 			newUser.setUsername(request.getParameter("username"));
